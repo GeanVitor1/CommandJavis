@@ -1,0 +1,15 @@
+﻿<Window x:Class="JarvisComando.MicWidget"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="120" Height="48"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" ShowActivated="False" Topmost="True"
+        ResizeMode="NoResize" Focusable="False"
+        IsHitTestVisible="False">
+    <Border x:Name="Root" Background="{DynamicResource WidgetBgBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1.5" CornerRadius="24" Padding="14,0">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock x:Name="MicIcon" Text="&#xE720;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource DangerBrush}" VerticalAlignment="Center"/>
+            <TextBlock x:Name="Label" Text="Ouvindo..." Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12.5" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</Window>

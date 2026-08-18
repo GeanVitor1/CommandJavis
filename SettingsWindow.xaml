@@ -1,0 +1,69 @@
+﻿<Window x:Class="JarvisComando.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ConfiguraÃ§Ãµes"
+        Width="470" Height="540"
+        WindowStyle="None"
+        Background="{DynamicResource BgBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        FontFamily="Segoe UI Variable Text, Segoe UI"
+        FontSize="13"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <TextBlock Text="ConfiguraÃ§Ãµes" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="14,0,0,0" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource TitleBarButton}" Content="&#xE8BB;" Click="Close_Click" ToolTip="Fechar"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="28,22">
+                <StackPanel>
+                    <TextBlock Text="Assistente de voz" FontSize="15" FontWeight="SemiBold"/>
+                    <TextBlock Text="Reconhecimento offline, do jeito Jarvis" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,3,0,0"/>
+
+                    <CheckBox x:Name="EnableVoiceCheck" Content="Habilitar comando de voz" Margin="0,18,0,0" Checked="EnableVoice_Changed" Unchecked="EnableVoice_Changed"/>
+                    <CheckBox x:Name="AutoStartCheck" Content="Iniciar com o Windows" Margin="0,10,0,0"/>
+
+                    <TextBlock Text="Segure para falar (tecla global)" FontSize="12.5" FontWeight="SemiBold" Margin="0,22,0,6"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Style="{StaticResource KeycapLarge}">
+                            <TextBlock x:Name="HotkeyDisplay" Text="F9" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Button x:Name="HotkeyButton" Style="{StaticResource GhostButton}" Content="Capturar tecla" Margin="12,0,0,0" Click="CaptureKey_Click"/>
+                    </StackPanel>
+                    <TextBlock x:Name="CaptureHint" Text="Pressione a tecla desejada (ou Esc para cancelar)" Foreground="{DynamicResource AccentBrush}" FontSize="11.5" Margin="0,6,0,0" Visibility="Collapsed"/>
+
+                    <Button Style="{StaticResource GhostButton}" Content="Testar voz de resposta" Margin="0,22,0,0" HorizontalAlignment="Left" Click="TestVoice_Click"/>
+
+                    <TextBlock Text="AparÃªncia" FontSize="15" FontWeight="SemiBold" Margin="0,26,0,0"/>
+                    <TextBlock Text="Tema do aplicativo" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,3,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                        <RadioButton x:Name="ThemeDark" Style="{StaticResource TypePill}" Content="Escuro"/>
+                        <RadioButton x:Name="ThemeLight" Style="{StaticResource TypePill}" Content="Claro"/>
+                        <RadioButton x:Name="ThemeSystem" Style="{StaticResource TypePill}" Content="Sistema" IsChecked="True"/>
+                    </StackPanel>
+
+                    <TextBlock x:Name="StatusText" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11.5" Margin="0,14,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="2" Background="{DynamicResource TitleBarBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="20,12">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource GhostButton}" Content="Cancelar" Click="Cancel_Click"/>
+                    <Button Style="{StaticResource PrimaryButton}" Content="Salvar" Margin="10,0,0,0" Click="Save_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,192 @@
+{
+    "voice":  {
+        "enabled":  true,
+        "talkHotkey":  "F9"
+    },
+    "appearance":  {
+        "theme":  "system"
+    },
+    "hotkeys":  [
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "V",
+      "action": "open",
+      "target": "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe",
+      "arguments": "",
+      "description": "Visual Studio Code"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "C",
+      "action": "open",
+      "target": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "arguments": "",
+      "description": "Google Chrome"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "D",
+      "action": "open",
+      "target": "%LOCALAPPDATA%\\Discord\\Update.exe",
+      "arguments": "--processStart Discord.exe",
+      "description": "Discord"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "W",
+      "action": "open",
+      "target": "shell:AppsFolder\\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App",
+      "arguments": "",
+      "description": "WhatsApp",
+      "icon": "https://www.google.com/s2/favicons?domain=whatsapp.com&sz=64"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "T",
+      "action": "open",
+      "target": "shell:AppsFolder\\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App",
+      "arguments": "",
+      "description": "Windows Terminal"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "S",
+      "action": "open",
+      "target": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "arguments": "",
+      "description": "Steam"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "E",
+      "action": "open",
+      "target": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+      "arguments": "",
+      "description": "Excel"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "O",
+      "action": "open",
+      "target": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE",
+      "arguments": "",
+      "description": "Word"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "P",
+      "action": "open",
+      "target": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "arguments": "",
+      "description": "PowerShell"
+    },
+    {
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "B",
+      "action": "open",
+      "target": "C:\\Windows\\System32\\notepad.exe",
+      "arguments": "",
+      "description": "Bloco de Notas"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "Y",
+      "action": "url",
+      "target": "https://www.youtube.com",
+      "arguments": "",
+      "description": "YouTube"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "G",
+      "action": "url",
+      "target": "https://www.google.com.br",
+      "arguments": "",
+      "description": "Google"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "H",
+      "action": "url",
+      "target": "https://web.whatsapp.com",
+      "arguments": "",
+      "description": "WhatsApp Web"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "I",
+      "action": "url",
+      "target": "https://www.instagram.com",
+      "arguments": "",
+      "description": "Instagram"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "F",
+      "action": "url",
+      "target": "https://www.facebook.com",
+      "arguments": "",
+      "description": "Facebook"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "X",
+      "action": "url",
+      "target": "https://x.com",
+      "arguments": "",
+      "description": "X (Twitter)"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "K",
+      "action": "url",
+      "target": "https://www.tiktok.com",
+      "arguments": "",
+      "description": "TikTok"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "N",
+      "action": "url",
+      "target": "https://www.netflix.com",
+      "arguments": "",
+      "description": "Netflix"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "M",
+      "action": "url",
+      "target": "https://www.mercadolivre.com.br",
+      "arguments": "",
+      "description": "Mercado Livre"
+    },
+    {
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "L",
+      "action": "url",
+      "target": "https://www.globo.com",
+      "arguments": "",
+      "description": "Globo (G1)"
+    }
+  ]
+}

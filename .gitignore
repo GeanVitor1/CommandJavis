@@ -1,0 +1,13 @@
+# Build artifacts
+bin/
+obj/
+publish/
+tests/**/bin/
+tests/**/obj/
+
+# IDE
+.vs/
+*.user
+
+# Runtime
+*.tmp
