@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "epc3Z4DEKk4=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\geand\\OneDrive\\Documentos\\JarvisComando\\JarvisComando.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\geand\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512"
+  ],
+  "logs": []
+}
