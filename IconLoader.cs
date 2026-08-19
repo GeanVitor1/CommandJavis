@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -6,7 +7,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace JarvisComando;
+namespace Vox;
 
 public static class IconLoader
 {
@@ -15,7 +16,9 @@ public static class IconLoader
     private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(15) };
     private static readonly string CacheDir = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "JarvisComando", "Icons");
+        "Vox", "Icons");
+
+    private static readonly ConcurrentDictionary<string, ImageSource> MemoryCache = new(StringComparer.Ordinal);
 
     public static async Task LoadAsync(HotkeyBinding b)
     {
@@ -25,15 +28,36 @@ public static class IconLoader
                 return;
 
             ImageSource? icon = null;
+            string? cacheKey = null;
             if (!string.IsNullOrWhiteSpace(b.IconPath))
-                icon = await LoadFromFieldAsync(b.IconPath);
+            {
+                cacheKey = "path|" + b.IconPath;
+                if (!MemoryCache.TryGetValue(cacheKey, out icon))
+                    icon = await LoadFromFieldAsync(b.IconPath);
+            }
             else if (b.Action.Equals("url", StringComparison.OrdinalIgnoreCase))
-                icon = await LoadSiteIconAsync(b.Target);
+            {
+                if (Uri.TryCreate(b.Target, UriKind.Absolute, out var uri))
+                {
+                    cacheKey = "fav|" + uri.Host;
+                    if (!MemoryCache.TryGetValue(cacheKey, out icon))
+                        icon = await LoadSiteIconAsync(b.Target);
+                }
+            }
             else
-                icon = await Task.Run(() => LoadAppIcon(b));
+            {
+                var target = Environment.ExpandEnvironmentVariables(b.Target);
+                cacheKey = "app|" + target;
+                if (!MemoryCache.TryGetValue(cacheKey, out icon))
+                    icon = await Task.Run(() => LoadAppIcon(b));
+            }
 
             if (icon != null)
+            {
+                if (cacheKey != null)
+                    MemoryCache[cacheKey] = icon;
                 b.Icon = icon;
+            }
         }
         catch (Exception ex)
         {

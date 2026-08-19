@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace JarvisComando;
+namespace Vox;
 
 public class ShortcutManager : IDisposable
 {

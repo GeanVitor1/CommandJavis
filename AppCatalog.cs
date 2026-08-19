@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
-namespace JarvisComando;
+namespace Vox;
 
 public class InstalledApp : INotifyPropertyChanged
 {
@@ -46,7 +46,7 @@ public static class AppCatalog
     private static readonly TimeSpan CacheMaxAge = TimeSpan.FromDays(7);
     private static readonly string CacheFile = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "JarvisComando", "apps.json");
+        "Vox", "apps.json");
 
     private static List<InstalledApp>? _cache;
     private static Dictionary<string, string>? _shortcuts;

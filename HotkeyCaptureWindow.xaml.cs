@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using K = System.Windows.Input.Key;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class HotkeyCaptureWindow : Window
 {
@@ -101,12 +101,6 @@ public partial class HotkeyCaptureWindow : Window
 
     private void Cancel_Click(object sender, RoutedEventArgs e) => DialogResult = false;
 
-    private void Close_Click(object sender, RoutedEventArgs e) => DialogResult = false;
-
-    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.ButtonState == MouseButtonState.Pressed)
-            DragMove();
-    }
+private void Close_Click(object sender, RoutedEventArgs e) => DialogResult = false;
 }
 

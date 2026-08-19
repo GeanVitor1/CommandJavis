@@ -1,6 +1,21 @@
 # IDE
 .vs/
 *.user
+*.suo
+*.userosscache
+
+# Build (regenerado pelo dotnet build/publish)
+bin/
+obj/
 
 # Runtime
 *.tmp
+*.bak
+*.log
+
+# Testes
+TestResults/
+
+# publish/ e voice/ ficam versionados de proposito:
+# eles carregam o Vox.exe funcionando e os modelos de voz
+# para usar em outra maquina via git LFS.

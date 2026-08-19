@@ -1,12 +1,12 @@
 using System.Globalization;
 using System.Text;
 
-namespace JarvisComando;
+namespace Vox;
 
-public record VoiceCommand(HotkeyBinding? Binding, string? Query, SystemCommand? System)
+public record VoiceCommand(HotkeyBinding? Binding, string? Query, SystemCommand? System, string? SystemText = null, int SystemNumber = 0)
 {
     public static VoiceCommand Open(HotkeyBinding b, string? q) => new(b, q, null);
-    public static VoiceCommand SystemAction(SystemCommand cmd) => new(null, null, cmd);
+    public static VoiceCommand SystemAction(SystemCommand cmd, string? text = null, int number = 0) => new(null, null, cmd, text, number);
 }
 
 public static class CommandParser
@@ -19,9 +19,9 @@ public static class CommandParser
         StripStart(ref t, "por favor ");
         StripWakeWord(ref t);
 
-        var system = TrySystemCommand(t);
-        if (system != null)
-            return VoiceCommand.SystemAction(system.Value);
+        var sys = TrySystemCommand(t);
+        if (sys != null)
+            return VoiceCommand.SystemAction(sys.Value.Command, sys.Value.Text, sys.Value.Number);
 
         var wantPlay = false;
         if (StripStartWord(ref t, "tocar ", "toque ", "toca "))
@@ -93,6 +93,196 @@ public static class CommandParser
         return VoiceCommand.Open(best, query);
     }
 
+    private static (SystemCommand Command, string? Text, int Number)? TrySystemCommand(string t)
+    {
+        if (HasAny(t, "lembre em", "lembrar em", "me lembre em", "me lembra em", "me avise em", "me avisa em",
+                      "lembrete em", "alarme em", "alarme para", "timer de", "cronometro de", "desperte em",
+                      "me desperte em", "avise em") && TryParseDuration(t, out var seconds))
+            return (SystemCommand.Timer, seconds.ToString(), seconds);
+
+        if (HasAny(t, "que horas sao", "que horas e", "que horas", "me diga as horas", "me diz as horas",
+                      "fala a hora", "diga a hora", "que hora sao", "hora atual"))
+            return (SystemCommand.Time, null, 0);
+
+        if (HasAny(t, "que dia e hoje", "que dia e", "qual a data", "qual data", "data de hoje",
+                      "que dia sao hoje", "que data e hoje"))
+            return (SystemCommand.Date, null, 0);
+
+        if (HasWord(t, "cancelar", "cancela", "cancele"))
+            return (SystemCommand.Cancel, null, 0);
+
+        if (HasAny(t, "leia a area de transferencia", "leia o que esta na area", "ler a area de transferencia")
+            || HasWord(t, "clipboard", "area de transferencia"))
+            return (SystemCommand.Clipboard, null, 0);
+
+        var theme = TryTheme(t);
+        if (theme != null)
+            return (SystemCommand.Theme, theme, 0);
+
+        if (StripStartWord(ref t, "quanto e ", "quanto da ", "quanto ficou ", "calcule ", "calcula ", "me calcula ", "calcular ")
+            && t.Length > 0 && Calculator.Evaluate(t) != null)
+            return (SystemCommand.Calc, t, 0);
+
+        var vol = TryVolumeSet(t);
+        if (vol != null)
+            return (SystemCommand.VolumeSet, null, vol.Value);
+
+        if (HasAny(t, "recarregue o config", "recarregar o config", "recarregar config", "recarregue o vox",
+                      "recarregar o vox", "atualize o config", "atualizar o config"))
+            return (SystemCommand.ReloadConfig, null, 0);
+
+        if (HasAny(t, "tire um print", "tira um print", "tirar um print", "captura de tela", "capturar a tela",
+                      "capturar tela", "print da tela", "foto da tela", "tirar print", "tirar foto da tela")
+            || HasWord(t, "screenshot", "print"))
+            return (SystemCommand.Screenshot, null, 0);
+
+        if (HasAny(t, "minimize tudo", "minimizar tudo", "minimize as janelas", "mostre a area de trabalho",
+                      "mostrar a area de trabalho", "mostra a area de trabalho", "mostrar o desktop",
+                      "mostre o desktop", "mostra o desktop", "voltar para a area de trabalho"))
+            return (SystemCommand.ShowDesktop, null, 0);
+
+        if (HasAny(t, "que clima faz", "previsao do tempo", "como esta o tempo", "que tempo faz", "tempo hoje",
+                      "previsao de hoje", "previsao do dia", "como esta o clima", "clima de hoje", "esta calor",
+                      "esta frio", "esta chovendo", "esta ensolarado"))
+            return (SystemCommand.Weather, null, 0);
+
+        var appName = TryCloseApp(t);
+        if (appName != null)
+            return (SystemCommand.CloseApp, appName, 0);
+
+        if (HasAny(t, "mostre o vox", "mostrar o vox", "mostra o vox", "abra o vox", "abre o vox", "abrir o vox",
+                      "abra o assistente", "mostre o assistente", "mostrar o assistente"))
+            return (SystemCommand.ShowWindow, null, 0);
+
+        if (HasAny(t, "aumenta o volume", "aumentar o volume", "aumentar volume", "volume mais alto", "mais alto",
+                      "aumenta o som", "aumentar o som", "sobe o volume", "aumenta volume", "subir o volume"))
+            return (SystemCommand.VolumeUp, null, 0);
+        if (HasAny(t, "diminui o volume", "diminuir o volume", "diminuir volume", "volume mais baixo", "mais baixo",
+                      "abaixa o volume", "abaixar o volume", "diminui o som", "desce o volume", "diminui volume", "baixar o volume"))
+            return (SystemCommand.VolumeDown, null, 0);
+        if (HasAny(t, "sem som", "sem volume", "mutar", "silenciar", "tirar o som", "desmutar", "ativar o som")
+            || HasWord(t, "mudo", "mutado", "silencioso"))
+            return (SystemCommand.Mute, null, 0);
+        if (HasAny(t, "proxima faixa", "proxima musica", "passar a faixa", "pular faixa")
+            || HasWord(t, "proxima", "pular", "passa"))
+            return (SystemCommand.Next, null, 0);
+        if (HasAny(t, "faixa anterior", "musica anterior", "volta a musica", "voltar a musica")
+            || HasWord(t, "anterior"))
+            return (SystemCommand.Previous, null, 0);
+        if (HasAny(t, "pausar", "parar a musica", "para a musica", "continuar", "retomar", "parar musica", "pausar a musica")
+            || HasWord(t, "pausa", "play", "continua", "retoma"))
+            return (SystemCommand.PlayPause, null, 0);
+        if (HasAny(t, "bloqueia a tela", "bloquear a tela", "trancar a tela", "travar a tela", "bloquear tela", "travar tela")
+            || HasWord(t, "bloqueia", "bloquear", "tranca", "trava"))
+            return (SystemCommand.Lock, null, 0);
+        if (HasWord(t, "hiberna", "hibernar"))
+            return (SystemCommand.Hibernate, null, 0);
+        if (HasAny(t, "vai dormir", "colocar para dormir")
+            || HasWord(t, "dormir", "suspender", "dorme"))
+            return (SystemCommand.Sleep, null, 0);
+
+        return null;
+    }
+
+    private static string? TryTheme(string t)
+    {
+        if (HasAny(t, "tema escuro", "modo escuro", "tema preto", "tema dark"))
+            return "dark";
+        if (HasAny(t, "tema claro", "modo claro", "tema branco", "tema light"))
+            return "light";
+        if (HasAny(t, "tema do sistema", "modo automatico", "tema sistema", "modo sistema"))
+            return "system";
+        return null;
+    }
+
+    private static string? TryCloseApp(string t)
+    {
+        foreach (var w in new[] { "fecha o ", "feche o ", "fechar o ", "fechar a ", "fecha a ", "feche a ",
+                                  "fecha ", "feche ", "fechar ", "encerre o ", "encerra o " })
+        {
+            if (t.StartsWith(w, StringComparison.Ordinal) && t.Length > w.Length)
+            {
+                var rest = t[w.Length..].Trim();
+                if (rest.Length > 0 && !IsStopWord(rest.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]))
+                    return rest;
+            }
+        }
+        return null;
+    }
+
+    private static int? TryVolumeSet(string t)
+    {
+        var idx = FindWordIndex(t, "volume", "som");
+        if (idx < 0) return null;
+
+        var rest = t[idx..];
+        StripStartWord(ref rest, "volume ", "som ");
+
+        rest = StripLeadingStopwords(rest);
+        rest = CleanNumberPhrase(rest);
+        if (rest.Length == 0) return null;
+
+        if (HasWord(rest, "maximo", "total", "cheio", "todo", "cem")) return 100;
+        if (HasWord(rest, "minimo", "zero", "desligado")) return 0;
+        if (HasWord(rest, "metade", "meio")) return 50;
+
+        if (Calculator.TryParseNumber(rest, out var v))
+            return (int)Math.Round(Math.Clamp(v, 0, 100));
+
+        return null;
+    }
+
+    private static bool TryParseDuration(string t, out int seconds)
+    {
+        seconds = 0;
+        var tokens = t.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 0; i < tokens.Length; i++)
+        {
+            long mult = tokens[i] switch
+            {
+                "segundo" or "segundos" => 1,
+                "minuto" or "minutos" => 60,
+                "hora" or "horas" => 3600,
+                _ => 0
+            };
+            if (mult == 0) continue;
+            if (i >= 1 && Calculator.TryParseNumber(tokens[i - 1], out var val))
+            {
+                seconds = (int)(val * mult);
+                return seconds > 0;
+            }
+        }
+        if (HasAny(t, "meia hora", "meia-hora"))
+        {
+            seconds = 1800;
+            return true;
+        }
+        return false;
+    }
+
+    private static string CleanNumberPhrase(string s)
+    {
+        foreach (var w in new[] { "por cento", "porcento" })
+            if (s.EndsWith(w, StringComparison.Ordinal) && s.Length > w.Length)
+            {
+                s = s[..^w.Length].Trim();
+                break;
+            }
+        return s;
+    }
+
+    private static int FindWordIndex(string t, params string[] words)
+    {
+        int pos = 0;
+        foreach (var tok in t.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+        {
+            if (words.Contains(tok))
+                return pos;
+            pos += tok.Length + 1;
+        }
+        return -1;
+    }
+
     private static List<(HotkeyBinding Binding, string Name)> BuildNames(IReadOnlyList<HotkeyBinding> bindings)
     {
         var names = new List<(HotkeyBinding, string)>();
@@ -103,13 +293,19 @@ public static class CommandParser
             if (b.Category == "site" && Uri.TryCreate(b.Target, UriKind.Absolute, out var uri) && !string.IsNullOrWhiteSpace(uri.Host))
                 names.Add((b, uri.Host.Replace("www.", "", StringComparison.OrdinalIgnoreCase).Split('.')[0]));
         }
+        var vsCode = bindings.FirstOrDefault(b =>
+            b.Description != null && b.Description.Contains("visual studio code", StringComparison.OrdinalIgnoreCase));
+        if (vsCode != null)
+            names.Add((vsCode, "vs code"));
         return names;
     }
 
     private static (HotkeyBinding Binding, string Name)? FuzzyMatch(string t, List<(HotkeyBinding Binding, string Name)> names)
     {
-        var phraseWords = t.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+        var phraseWords = t.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(IsSignificantWord).ToList();
         if (phraseWords.Count == 0) return null;
+        if (phraseWords.Count == 1 && phraseWords[0].Length < 3) return null;
 
         HotkeyBinding? best = null;
         string? bestName = null;
@@ -123,7 +319,7 @@ public static class CommandParser
 
             var matched = phraseWords.Count(pw => nameWords.Any(nw => FuzzyEquals(pw, nw)));
             var score = (double)matched / phraseWords.Count;
-            if (score >= 0.5 && score > bestScore)
+            if (matched >= 1 && score >= 0.5 && score > bestScore)
             {
                 best = binding;
                 bestName = name;
@@ -166,37 +362,6 @@ public static class CommandParser
         return prev[b.Length];
     }
 
-    private static SystemCommand? TrySystemCommand(string t)
-    {
-        if (HasAny(t, "aumenta o volume", "aumentar o volume", "aumentar volume", "volume mais alto", "mais alto", "aumenta o som", "aumentar o som", "sobe o volume"))
-            return SystemCommand.VolumeUp;
-        if (HasAny(t, "diminui o volume", "diminuir o volume", "diminuir volume", "volume mais baixo", "mais baixo", "abaixa o volume", "abaixar o volume", "diminui o som", "desce o volume"))
-            return SystemCommand.VolumeDown;
-        if (HasAny(t, "sem som", "mutar", "silenciar") || HasWord(t, "mudo"))
-            return SystemCommand.Mute;
-        if (HasAny(t, "proxima faixa", "proxima musica", "passar a faixa") || HasWord(t, "proxima", "pular", "passa"))
-            return SystemCommand.Next;
-        if (HasAny(t, "faixa anterior", "musica anterior", "volta a musica") || HasWord(t, "anterior"))
-            return SystemCommand.Previous;
-        if (HasAny(t, "pausar", "parar a musica", "para a musica", "continuar", "retomar")
-            || HasWord(t, "pausa", "play", "continua", "retoma"))
-            return SystemCommand.PlayPause;
-        if (HasAny(t, "bloqueia a tela", "bloquear a tela", "trancar a tela", "travar a tela")
-            || HasWord(t, "bloqueia", "bloquear", "tranca", "trava"))
-            return SystemCommand.Lock;
-        if (HasWord(t, "hiberna", "hibernar"))
-            return SystemCommand.Hibernate;
-        if (HasAny(t, "vai dormir") || HasWord(t, "dormir", "suspender", "dorme"))
-            return SystemCommand.Sleep;
-        return null;
-    }
-
-    private static bool HasWord(string t, params string[] words)
-    {
-        var tokens = t.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        return tokens.Any(tok => words.Any(w => tok == w));
-    }
-
     private static HotkeyBinding? FindYoutube(IReadOnlyList<HotkeyBinding> bindings)
         => bindings.FirstOrDefault(b => b.Category == "site" && b.Target.Contains("youtube", StringComparison.OrdinalIgnoreCase));
 
@@ -214,7 +379,7 @@ public static class CommandParser
 
     private static void StripWakeWord(ref string t)
     {
-        foreach (var w in new[] { "ei jarvis ", "hey jarvis ", "oi jarvis ", "ola jarvis ", "e ai jarvis ", "jarvis " })
+        foreach (var w in new[] { "ei vox ", "hey vox ", "oi vox ", "ola vox ", "e ai vox ", "vox " })
             if (StripStart(ref t, w))
                 return;
         StripStart(ref t, "ei ");
@@ -253,6 +418,12 @@ public static class CommandParser
 
     private static bool HasAny(string t, params string[] candidates)
         => candidates.Any(c => t.Contains(c, StringComparison.Ordinal));
+
+    private static bool HasWord(string t, params string[] words)
+    {
+        var tokens = t.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return tokens.Any(tok => words.Any(w => tok == w));
+    }
 
     private static string Normalize(string s)
     {

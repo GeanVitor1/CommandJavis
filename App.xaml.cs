@@ -1,12 +1,12 @@
 using System.Windows;
 using Microsoft.Win32;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class App : System.Windows.Application
 {
-    private const string AppMutex = "JarvisComando.SingleInstance";
-    private const string ShowEvent = "JarvisComando.ShowSignal.v1";
+    private const string AppMutex = "Vox.SingleInstance";
+    private const string ShowEvent = "Vox.ShowSignal.v1";
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
     private Mutex? _mutex;
@@ -53,10 +53,16 @@ public partial class App : System.Windows.Application
         Toaster.EnsureRegistered();
 
         _manager = new ShortcutManager();
-        _manager.Notification += msg => Notify("Jarvis Comando", msg);
+        _manager.Notification += msg => Notify("Vox", msg);
 
         _voice = new VoiceAssistant(_manager);
         _voice.ListeningChanged += OnListeningChanged;
+        _voice.PartialResult += text =>
+        {
+            _widget?.SetPartial(text);
+            if (_window is { IsVisible: true })
+                _window.SetVoiceStatus(text);
+        };
 
         ApplySettings();
         Theme.Apply(Config.LoadAppearance().Theme);
@@ -82,7 +88,7 @@ public partial class App : System.Windows.Application
         _tray = new System.Windows.Forms.NotifyIcon
         {
             Icon = IconFactory.Create(),
-            Text = "Jarvis Comando",
+            Text = "Vox",
             Visible = true,
             ContextMenuStrip = BuildTrayMenu()
         };
@@ -124,6 +130,7 @@ public partial class App : System.Windows.Application
         if (_voice == null) return;
         var voice = Config.LoadVoice();
         _voice.ConfigureTalkHotkey(voice.Enabled ? voice.TalkHotkey : "");
+        _voice.SetWakeWordEnabled(voice.Enabled && voice.WakeWord);
     }
 
     private void OnListeningChanged(bool listening)
@@ -145,7 +152,7 @@ public partial class App : System.Windows.Application
     private System.Windows.Forms.ContextMenuStrip BuildTrayMenu()
     {
         var menu = new System.Windows.Forms.ContextMenuStrip();
-        menu.Items.Add("Abrir Jarvis Comando", null, (_, _) => ShowWindow());
+        menu.Items.Add("Abrir Vox", null, (_, _) => ShowWindow());
         menu.Items.Add("Configurações", null, (_, _) => OpenSettings());
         menu.Items.Add("Recarregar config", null, (_, _) => _manager?.ReloadFromDisk());
         menu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
@@ -155,14 +162,21 @@ public partial class App : System.Windows.Application
 
     private void OpenSettings()
     {
+        if (_window == null) return;
+        if (_settings is { IsVisible: true })
+        {
+            _settings.Activate();
+            return;
+        }
+        if (!_window.IsVisible)
+            ShowWindow();
         if (_settings == null)
         {
             _settings = new SettingsWindow(_voice!) { Owner = _window };
             _settings.Closed += (_, _) => _settings = null;
         }
         _settings.Owner = _window;
-        _settings.Show();
-        _settings.Activate();
+        _settings.ShowDialog();
     }
 
     private void ShowWindow()
@@ -172,6 +186,10 @@ public partial class App : System.Windows.Application
         _window.WindowState = WindowState.Normal;
         _window.Activate();
     }
+
+    public void ActivateMainWindow() => ShowWindow();
+
+    public void ReloadConfig() => _manager?.ReloadFromDisk();
 
     private void ExitApp()
     {
@@ -206,7 +224,7 @@ public partial class App : System.Windows.Application
         try
         {
             using var key = Registry.CurrentUser.OpenSubKey(RunKey);
-            return key?.GetValue("JarvisComando") != null;
+            return key?.GetValue("Vox") != null;
         }
         catch
         {
@@ -220,9 +238,9 @@ public partial class App : System.Windows.Application
         {
             using var key = Registry.CurrentUser.CreateSubKey(RunKey, writable: true);
             if (enabled)
-                key.SetValue("JarvisComando", $"\"{Environment.ProcessPath}\"");
+                key.SetValue("Vox", $"\"{Environment.ProcessPath}\"");
             else
-                key.DeleteValue("JarvisComando", false);
+                key.DeleteValue("Vox", false);
         }
         catch
         {

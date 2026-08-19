@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class SettingsWindow : Window
 {
@@ -16,8 +16,10 @@ public partial class SettingsWindow : Window
         var s = Config.LoadVoice();
         _talkKey = string.IsNullOrWhiteSpace(s.TalkHotkey) ? "F9" : s.TalkHotkey;
         EnableVoiceCheck.IsChecked = s.Enabled;
+        WakeWordCheck.IsChecked = s.Enabled && s.WakeWord;
         HotkeyDisplay.Text = _talkKey;
         HotkeyButton.IsEnabled = s.Enabled;
+        WakeWordCheck.IsEnabled = s.Enabled;
         AutoStartCheck.IsChecked = App.IsAutoStart();
         var appearance = Config.LoadAppearance();
         if (appearance.Theme.Equals("dark", StringComparison.OrdinalIgnoreCase))
@@ -27,15 +29,19 @@ public partial class SettingsWindow : Window
         else
             ThemeSystem.IsChecked = true;
         KeyDown += OnKeyDown;
-        StatusText.Text = "Dica: use a tecla global para falar com o Jarvis de qualquer lugar.";
+        StatusText.Text = "Dica: use a tecla global para falar com o Vox de qualquer lugar.";
     }
 
     private void EnableVoice_Changed(object sender, RoutedEventArgs e)
     {
         var enabled = EnableVoiceCheck.IsChecked == true;
         HotkeyButton.IsEnabled = enabled;
+        WakeWordCheck.IsEnabled = enabled;
         if (!enabled)
+        {
+            WakeWordCheck.IsChecked = false;
             CaptureHint.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void CaptureKey_Click(object sender, RoutedEventArgs e)
@@ -95,7 +101,8 @@ public partial class SettingsWindow : Window
         var s = new VoiceSettings
         {
             Enabled = EnableVoiceCheck.IsChecked == true,
-            TalkHotkey = _talkKey
+            TalkHotkey = _talkKey,
+            WakeWord = WakeWordCheck.IsChecked == true
         };
         Config.SaveVoice(s);
         var theme = ThemeDark.IsChecked == true ? "dark"
@@ -105,16 +112,10 @@ public partial class SettingsWindow : Window
         App.SetAutoStart(AutoStartCheck.IsChecked == true);
         if (System.Windows.Application.Current is App app)
             app.ApplySettings();
-        DialogResult = true;
+        Close();
     }
 
-    private void Cancel_Click(object sender, RoutedEventArgs e) => DialogResult = false;
+    private void Cancel_Click(object sender, RoutedEventArgs e) => Close();
 
-    private void Close_Click(object sender, RoutedEventArgs e) => DialogResult = false;
-
-    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.ButtonState == MouseButtonState.Pressed)
-            DragMove();
-    }
+    private void Close_Click(object sender, RoutedEventArgs e) => Close();
 }

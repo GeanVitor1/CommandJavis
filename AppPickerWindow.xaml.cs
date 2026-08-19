@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class AppPickerWindow : Window
 {
@@ -82,10 +82,4 @@ public partial class AppPickerWindow : Window
     private void Cancel_Click(object sender, RoutedEventArgs e) => DialogResult = false;
 
     private void Close_Click(object sender, RoutedEventArgs e) => DialogResult = false;
-
-    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.ButtonState == MouseButtonState.Pressed)
-            DragMove();
-    }
 }

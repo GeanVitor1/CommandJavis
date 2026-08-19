@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace JarvisComando;
+namespace Vox;
 
 [ComImport]
 [Guid("BCC18B79-BA16-442F-80C4-8A59C30C463B")]

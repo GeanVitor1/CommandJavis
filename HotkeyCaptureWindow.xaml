@@ -1,4 +1,4 @@
-﻿<Window x:Class="JarvisComando.HotkeyCaptureWindow"
+﻿<Window x:Class="Vox.HotkeyCaptureWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
@@ -24,15 +24,15 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- ===== Barra de tÃ­tulo ===== -->
-            <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <!-- ===== Barra de título ===== -->
+            <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}">
                 <Grid>
                     <TextBlock Text="Definir atalho" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" VerticalAlignment="Center" Margin="16,0,0,0"/>
                     <Button Style="{StaticResource TitleBarCloseButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Click="Close_Click"/>
                 </Grid>
             </Border>
 
-            <!-- ===== ConteÃºdo ===== -->
+            <!-- ===== Conteúdo ===== -->
             <Grid Grid.Row="1" Margin="28,22,28,16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -52,20 +52,20 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Style="{StaticResource KeycapLarge}">
-                                        <TextBlock Text="{Binding}" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+<Border Style="{StaticResource KeycapLarge}">
+                                        <TextBlock Text="{Binding}" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <TextBlock x:Name="PressHint" Text="Pressione a combinaÃ§Ã£o..." Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="PressHint" Text="Pressione a combinação..." Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
 
                 <TextBlock x:Name="HintText" Grid.Row="2" Text="Dica: Ctrl, Alt, Shift ou Win + tecla  (ex.: Alt+V)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11.5" HorizontalAlignment="Center" Margin="0,12,0,0"/>
             </Grid>
 
-            <!-- ===== BotÃµes ===== -->
+            <!-- ===== Botões ===== -->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="28,0,28,22">
                 <Button Style="{StaticResource GhostButton}" Content="Cancelar" Click="Cancel_Click"/>
                 <Button x:Name="SaveButton" Style="{StaticResource PrimaryButton}" Content="Salvar" Margin="10,0,0,0" IsEnabled="False" Click="Save_Click"/>

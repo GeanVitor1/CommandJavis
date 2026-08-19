@@ -2,11 +2,11 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace JarvisComando;
+namespace Vox;
 
 public static class Toaster
 {
-    public const string Aumid = "JarvisComando.App";
+    public const string Aumid = "Vox.App";
 
     private static bool _ready;
     private static bool _tried;
@@ -92,7 +92,7 @@ public static class Toaster
         try
         {
             var startMenu = Environment.GetFolderPath(Environment.SpecialFolder.Programs);
-            var lnk = Path.Combine(startMenu, "Jarvis Comando.lnk");
+            var lnk = Path.Combine(startMenu, "Vox.lnk");
             var exe = CurrentExePath();
             if (File.Exists(lnk))
             {

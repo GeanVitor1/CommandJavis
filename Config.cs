@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows.Media;
 
-namespace JarvisComando;
+namespace Vox;
 
 public class HotkeyBinding : INotifyPropertyChanged
 {
@@ -17,6 +17,7 @@ public class HotkeyBinding : INotifyPropertyChanged
     public string Arguments { get; set; } = "";
     public string Description { get; set; } = "";
     public string IconPath { get; set; } = "";
+    public string SearchTemplate { get; set; } = "";
 
     private ImageSource? _icon;
 
@@ -61,6 +62,7 @@ public class VoiceSettings
 {
     public bool Enabled { get; set; } = true;
     public string TalkHotkey { get; set; } = "F9";
+    public bool WakeWord { get; set; } = false;
 }
 
 public class AppearanceSettings

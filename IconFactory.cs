@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace JarvisComando;
+namespace Vox;
 
 public static class IconFactory
 {

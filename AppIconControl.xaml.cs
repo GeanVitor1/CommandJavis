@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class AppIconControl : System.Windows.Controls.UserControl
 {

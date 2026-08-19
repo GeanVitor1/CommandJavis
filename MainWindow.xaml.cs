@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class MainWindow : Window
 {
@@ -47,7 +47,13 @@ public partial class MainWindow : Window
         RefreshAll();
         var voiceSettings = Config.LoadVoice();
         var talkKey = voiceSettings.Enabled ? voiceSettings.TalkHotkey : "botão";
-        VoiceStatusText.Text = $"Segure o botão ou a tecla {talkKey} e fale, ex: \"ei jarvis abra o youtube em coldplay paradise\"";
+        VoiceStatusText.Text = $"Segure o botão ou a tecla {talkKey} e fale, ex: \"ei vox abra o youtube em coldplay paradise\" ou \"que horas são\"";
+    }
+
+    private void History_Click(object sender, RoutedEventArgs e)
+    {
+        var win = new VoxHelpWindow(_voice) { Owner = this };
+        win.ShowDialog();
     }
 
     private async void MicButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -90,6 +96,8 @@ public partial class MainWindow : Window
     }
 
     private void Settings_Click(object sender, RoutedEventArgs e) => _openSettings();
+
+    public void SetVoiceStatus(string text) => VoiceStatusText.Text = text;
 
     private void SetMicVisual(bool listening)
     {
@@ -207,13 +215,13 @@ public partial class MainWindow : Window
             return;
         var err = _manager.Rebind(b, win.Modifiers, win.Key);
         if (err != null)
-            System.Windows.MessageBox.Show(this, err, "Jarvis Comando", MessageBoxButton.OK, MessageBoxImage.Warning);
+            System.Windows.MessageBox.Show(this, err, "Vox", MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 
     private void Remove_Click(object sender, RoutedEventArgs e)
     {
         var b = (HotkeyBinding)((FrameworkElement)sender).DataContext;
-        var res = System.Windows.MessageBox.Show(this, $"Remover \"{b.Description}\"?", "Jarvis Comando",
+        var res = System.Windows.MessageBox.Show(this, $"Remover \"{b.Description}\"?", "Vox",
             MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (res == MessageBoxResult.Yes)
             _manager.Remove(b);
@@ -227,7 +235,7 @@ public partial class MainWindow : Window
             return;
         var err = _manager.Add(win.Result);
         if (err != null)
-            System.Windows.MessageBox.Show(this, err, "Jarvis Comando", MessageBoxButton.OK, MessageBoxImage.Warning);
+            System.Windows.MessageBox.Show(this, err, "Vox", MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 
     private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;

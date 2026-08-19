@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Threading;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class MicWidget : Window
 {
@@ -23,7 +23,13 @@ public partial class MicWidget : Window
     public void ShowListening()
     {
         if (!_pulse.IsEnabled) _pulse.Start();
+        Label.Text = "Ouvindo...";
         Show();
+    }
+
+    public void SetPartial(string text)
+    {
+        Label.Text = text;
     }
 
     public void HideListening()

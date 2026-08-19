@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace JarvisComando;
+namespace Vox;
 
 public partial class WatermarkTextBox : System.Windows.Controls.UserControl
 {
@@ -28,6 +28,15 @@ public partial class WatermarkTextBox : System.Windows.Controls.UserControl
     {
         add => Box.TextChanged += value;
         remove => Box.TextChanged -= value;
+    }
+
+    public static readonly DependencyProperty HasErrorProperty =
+        DependencyProperty.Register(nameof(HasError), typeof(bool), typeof(WatermarkTextBox), new PropertyMetadata(false));
+
+    public bool HasError
+    {
+        get => (bool)GetValue(HasErrorProperty);
+        set => SetValue(HasErrorProperty, value);
     }
 
     public WatermarkTextBox()

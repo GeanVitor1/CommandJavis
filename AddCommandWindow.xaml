@@ -1,10 +1,10 @@
-﻿<Window x:Class="JarvisComando.AddCommandWindow"
+﻿<Window x:Class="Vox.AddCommandWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:JarvisComando"
+        xmlns:local="clr-namespace:Vox"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="Adicionar comando"
-        Width="580" Height="460"
+        Width="600" Height="620"
         WindowStyle="None"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
@@ -17,6 +17,67 @@
         <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="0" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
     </shell:WindowChrome.WindowChrome>
 
+    <Window.Resources>
+        <!-- ===== Cartão de tipo (Site / Aplicativo / Comando) ===== -->
+        <Style x:Key="TypeCard" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="bd" Background="{DynamicResource SurfaceBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                CornerRadius="10" Padding="12,9" Margin="0,0,8,0">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{DynamicResource SurfaceHoverBrush}"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource BorderHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{DynamicResource AccentGradientBrush}"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== Cabeçalho de passo ===== -->
+        <Style x:Key="StepHeader" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="StepNumber" TargetType="Border">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="StepLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="StepHint" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="Margin" Value="0,6,0,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Window.Resources>
+
     <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
         <Grid>
             <Grid.RowDefinitions>
@@ -25,53 +86,120 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- ===== Barra de tÃ­tulo ===== -->
-            <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <!-- ===== Barra de título ===== -->
+            <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}">
                 <Grid>
                     <TextBlock x:Name="TitleText" Text="Adicionar comando" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" VerticalAlignment="Center" Margin="16,0,0,0"/>
-                    <Button Style="{StaticResource TitleBarCloseButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Click="Close_Click"/>
+                    <Button Style="{StaticResource TitleBarCloseButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Click="Close_Click" ToolTip="Fechar"/>
                 </Grid>
             </Border>
 
-            <!-- ===== ConteÃºdo ===== -->
-            <Grid Grid.Row="1" Margin="28,22,28,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <!-- ===== Conteúdo ===== -->
+            <Grid Grid.Row="1" Margin="28,20,28,14">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="14"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="14"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="14"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="14"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="14"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="DescriÃ§Ã£o" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
-                <TextBox x:Name="DescriptionBox" Grid.Column="1" Style="{StaticResource TextField}"/>
+                <!-- ===== Passo 1: nome ===== -->
+                <StackPanel Grid.Row="0" Style="{StaticResource StepHeader}">
+                    <Border Style="{StaticResource StepNumber}">
+                        <TextBlock Text="1" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Style="{StaticResource StepLabel}" Text="Qual o nome do comando?"/>
+                </StackPanel>
+                <local:WatermarkTextBox x:Name="DescriptionBox" Grid.Row="1"/>
+                <TextBlock x:Name="NameError" Grid.Row="2" Text="Digite um nome para o comando" FontSize="11"
+                           Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
 
-                <TextBlock Grid.Row="2" Text="Destino" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
-                <Grid Grid.Row="2" Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <local:WatermarkTextBox x:Name="TargetBox"/>
-                    <Button x:Name="PickAppButton" Grid.Row="1" Style="{StaticResource GhostButton}" Content="Escolher app instalado..." HorizontalAlignment="Left" Margin="0,6,0,0" Padding="12,6" Click="PickApp_Click"/>
-                </Grid>
+                <!-- ===== Passo 2: destino ===== -->
+                <StackPanel Grid.Row="4" Style="{StaticResource StepHeader}">
+                    <Border Style="{StaticResource StepNumber}">
+                        <TextBlock Text="2" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Style="{StaticResource StepLabel}" Text="O que ele vai abrir?"/>
+                </StackPanel>
+                <local:WatermarkTextBox x:Name="TargetBox" Grid.Row="5"/>
+                <TextBlock x:Name="TargetError" Grid.Row="6" Text="Digite um link, caminho ou escolha um app" FontSize="11"
+                           Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
+                <Button x:Name="PickAppButton" Grid.Row="7" Style="{StaticResource GhostButton}" HorizontalAlignment="Left" Margin="0,8,0,0" Padding="14,7" Click="PickApp_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE71A;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock Text="Escolher app instalado..." Margin="7,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <TextBlock Grid.Row="8" Style="{StaticResource StepHint}"
+                           Text="Cole um link, digite o caminho de um programa ou clique no botão acima."/>
 
-                <TextBlock Grid.Row="4" Text="Tipo" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
-                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <RadioButton x:Name="UrlType" Style="{StaticResource TypePill}" Content="Site (url)"/>
-                    <RadioButton x:Name="OpenType" Style="{StaticResource TypePill}" Content="Aplicativo"/>
-                    <RadioButton x:Name="CommandType" Style="{StaticResource TypePill}" Content="Comando (cmd)"/>
+                <!-- ===== Passo 3: tipo ===== -->
+                <StackPanel Grid.Row="10" Style="{StaticResource StepHeader}">
+                    <Border Style="{StaticResource StepNumber}">
+                        <TextBlock Text="3" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Style="{StaticResource StepLabel}" Text="Que tipo é?"/>
+                </StackPanel>
+                <StackPanel Grid.Row="11" Orientation="Horizontal">
+                    <RadioButton x:Name="UrlType" Style="{StaticResource TypeCard}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center" Opacity="0.9"/>
+                            <StackPanel Margin="9,0,0,0">
+                                <TextBlock Text="Site" FontWeight="SemiBold" FontSize="12.5"/>
+                                <TextBlock Text="Abre uma página na web" FontSize="10.5" Opacity="0.65"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="OpenType" Style="{StaticResource TypeCard}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE71A;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center" Opacity="0.9"/>
+                            <StackPanel Margin="9,0,0,0">
+                                <TextBlock Text="Aplicativo" FontWeight="SemiBold" FontSize="12.5"/>
+                                <TextBlock Text="Abre um programa instalado" FontSize="10.5" Opacity="0.65"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="CommandType" Style="{StaticResource TypeCard}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center" Opacity="0.9"/>
+                            <StackPanel Margin="9,0,0,0">
+                                <TextBlock Text="Comando" FontWeight="SemiBold" FontSize="12.5"/>
+                                <TextBlock Text="Roda um comando no terminal" FontSize="10.5" Opacity="0.65"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </RadioButton>
                 </StackPanel>
 
-                <TextBlock Grid.Row="6" Text="Atalho" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
-                <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Style="{StaticResource GhostButton}" Content="Definir..." Padding="12,6" Click="DefineHotkey_Click"/>
+                <!-- ===== Passo 4: atalho ===== -->
+                <StackPanel Grid.Row="13" Style="{StaticResource StepHeader}">
+                    <Border Style="{StaticResource StepNumber}">
+                        <TextBlock Text="4" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Style="{StaticResource StepLabel}" Text="Definir atalho do teclado?"/>
+                    <TextBlock Text="(opcional)" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Row="14" Orientation="Horizontal">
+                    <Button x:Name="HotkeyButton" Style="{StaticResource GhostButton}" Padding="14,7" Click="DefineHotkey_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="HotkeyButtonText" Text="Definir tecla" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                     <ItemsControl x:Name="KeycapDisplay" VerticalAlignment="Center" Margin="10,0,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -81,21 +209,68 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource Keycap}" Margin="2,0,0,0">
-                                    <TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="11.5" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="11.5" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock x:Name="NoHotkeyText" Text="sem atalho" Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="12" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="NoHotkeyText" Text="sem atalho" Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0"/>
                 </StackPanel>
+                <TextBlock x:Name="CaptureHint" Grid.Row="15" Style="{StaticResource StepHint}" Visibility="Collapsed"
+                           Text="Pressione a combinação desejada (ex: Ctrl+Alt+S) ou Esc para cancelar"/>
+                <TextBlock x:Name="HotkeyHint" Grid.Row="15" Style="{StaticResource StepHint}"
+                           Text="Você pode usar o comando só pela voz — o atalho é opcional."
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                <!-- ===== Prévia ===== -->
+                <TextBlock Grid.Row="17" Text="Seu comando vai ficar assim:" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                <Border Grid.Row="18" Style="{StaticResource CommandCard}" Margin="0,6,0,0" Padding="12,9">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <local:AppIconControl x:Name="PreviewIcon" Category="app" Size="32" AvatarChar="?" HasIcon="False"/>
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="PreviewName" Text="Nome do comando" FontSize="12.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock x:Name="PreviewTarget" Text="Destino do comando" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <ItemsControl Grid.Column="2" x:Name="PreviewKeycap" VerticalAlignment="Center">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource Keycap}" Margin="2,0,0,0">
+                                        <TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="11" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
             </Grid>
 
-            <!-- ===== BotÃµes ===== -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="28,0,28,22">
-                <Button Style="{StaticResource GhostButton}" Content="Cancelar" Click="Cancel_Click"/>
-                <Button Style="{StaticResource PrimaryButton}" Content="Adicionar" Margin="10,0,0,0" Click="Confirm_Click"/>
-            </StackPanel>
+            <!-- ===== Botões ===== -->
+            <Grid Grid.Row="2" Margin="28,0,28,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="ReadyText" VerticalAlignment="Center" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" Text="Preencha o nome e o destino para continuar"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource GhostButton}" Content="Cancelar" IsCancel="True" Click="Cancel_Click"/>
+                    <Button x:Name="ConfirmButton" Style="{StaticResource PrimaryButton}" IsDefault="True" Padding="18,9" Margin="10,0,0,0" Click="Confirm_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="Adicionar comando" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Border>
 </Window>
-

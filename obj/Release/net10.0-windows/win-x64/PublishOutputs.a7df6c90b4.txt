@@ -1,7 +1,0 @@
-C:\Users\geand\OneDrive\Documentos\JarvisComando\publish\JarvisComando.pdb
-C:\Users\geand\OneDrive\Documentos\JarvisComando\publish\D3DCompiler_47_cor3.dll
-C:\Users\geand\OneDrive\Documentos\JarvisComando\publish\PenImc_cor3.dll
-C:\Users\geand\OneDrive\Documentos\JarvisComando\publish\PresentationNative_cor3.dll
-C:\Users\geand\OneDrive\Documentos\JarvisComando\publish\vcruntime140_cor3.dll
-C:\Users\geand\OneDrive\Documentos\JarvisComando\publish\wpfgfx_cor3.dll
-C:\Users\geand\OneDrive\Documentos\JarvisComando\publish\JarvisComando.exe

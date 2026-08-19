@@ -1,4 +1,4 @@
-namespace JarvisComando;
+namespace Vox;
 
 public class HotkeyWindow : NativeWindow
 {

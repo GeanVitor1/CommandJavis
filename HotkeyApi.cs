@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace JarvisComando;
+namespace Vox;
 
 public static class HotkeyApi
 {
