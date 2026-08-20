@@ -8,6 +8,9 @@ public partial class SettingsWindow : Window
     private readonly VoiceAssistant _voice;
     private bool _capturing;
     private string _talkKey = "F9";
+    private string _microphoneId = "";
+    private List<MicrophoneDevice> _microphones = new();
+    private bool _loadingMicrophones;
 
     public SettingsWindow(VoiceAssistant voice)
     {
@@ -20,6 +23,7 @@ public partial class SettingsWindow : Window
         HotkeyDisplay.Text = _talkKey;
         HotkeyButton.IsEnabled = s.Enabled;
         WakeWordCheck.IsEnabled = s.Enabled;
+        _microphoneId = s.MicrophoneId ?? "";
         AutoStartCheck.IsChecked = App.IsAutoStart();
         var appearance = Config.LoadAppearance();
         if (appearance.Theme.Equals("dark", StringComparison.OrdinalIgnoreCase))
@@ -29,7 +33,62 @@ public partial class SettingsWindow : Window
         else
             ThemeSystem.IsChecked = true;
         KeyDown += OnKeyDown;
-        StatusText.Text = "Dica: use a tecla global para falar com o Vox de qualquer lugar.";
+        SetStatus("Dica: use a tecla global para falar com o Vox de qualquer lugar.");
+        RefreshMicrophonesAsync();
+    }
+
+    private void SetStatus(string text)
+    {
+        StatusText.Text = text;
+        StatusBorder.Visibility = string.IsNullOrWhiteSpace(text) ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private async void RefreshMicrophonesAsync()
+    {
+        if (_loadingMicrophones) return;
+        _loadingMicrophones = true;
+        RefreshMicrophonesButton.IsEnabled = false;
+        try
+        {
+            var mics = await MicrophoneSelector.GetMicrophonesAsync();
+            _microphones = mics;
+            var selected = _microphoneId;
+            var previous = MicrophoneCombo.SelectedItem;
+
+            MicrophoneCombo.Items.Clear();
+            MicrophoneCombo.Items.Add(new MicrophoneDevice { Id = "", Name = "Padrão do Windows" });
+            foreach (var m in mics)
+                MicrophoneCombo.Items.Add(m);
+
+            if (mics.Count == 0)
+                SetStatus("Nenhum microfone detectado. Conecte um microfone e clique em Atualizar.");
+            else if (previous == null && string.IsNullOrEmpty(selected))
+                MicrophoneCombo.SelectedIndex = 0;
+            else
+                MicrophoneCombo.SelectedItem = MicrophoneCombo.Items
+                    .Cast<MicrophoneDevice>()
+                    .FirstOrDefault(m => string.Equals(m.Id, selected, StringComparison.OrdinalIgnoreCase))
+                    ?? MicrophoneCombo.Items[0];
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("RefreshMicrophones", ex);
+            SetStatus("Não foi possível listar os microfones.");
+        }
+        finally
+        {
+            _loadingMicrophones = false;
+            RefreshMicrophonesButton.IsEnabled = true;
+        }
+    }
+
+    private void RefreshMicrophones_Click(object sender, RoutedEventArgs e) => RefreshMicrophonesAsync();
+
+    private void Microphone_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (_loadingMicrophones) return;
+        if (MicrophoneCombo.SelectedItem is MicrophoneDevice m)
+            _microphoneId = m.Id;
     }
 
     private void EnableVoice_Changed(object sender, RoutedEventArgs e)
@@ -40,7 +99,7 @@ public partial class SettingsWindow : Window
         if (!enabled)
         {
             WakeWordCheck.IsChecked = false;
-            CaptureHint.Visibility = Visibility.Collapsed;
+            CaptureHintBorder.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -48,7 +107,7 @@ public partial class SettingsWindow : Window
     {
         if (EnableVoiceCheck.IsChecked != true) return;
         _capturing = true;
-        CaptureHint.Visibility = Visibility.Visible;
+        CaptureHintBorder.Visibility = Visibility.Visible;
         HotkeyButton.Focus();
     }
 
@@ -59,7 +118,7 @@ public partial class SettingsWindow : Window
         if (e.Key == Key.Escape)
         {
             _capturing = false;
-            CaptureHint.Visibility = Visibility.Collapsed;
+            CaptureHintBorder.Visibility = Visibility.Collapsed;
             e.Handled = true;
             return;
         }
@@ -71,15 +130,15 @@ public partial class SettingsWindow : Window
         var key = e.Key == Key.System ? e.SystemKey : e.Key;
         if (!IsValidKey(key))
         {
-            StatusText.Text = "Use uma tecla comum, como uma letra, número ou F1-F12.";
+            SetStatus("Use uma tecla comum, como uma letra, número ou F1-F12.");
             return;
         }
 
         _talkKey = key.ToString();
         HotkeyDisplay.Text = _talkKey;
         _capturing = false;
-        CaptureHint.Visibility = Visibility.Collapsed;
-        StatusText.Text = $"Tecla para falar definida: {_talkKey}";
+        CaptureHintBorder.Visibility = Visibility.Collapsed;
+        SetStatus($"Tecla para falar definida: {_talkKey}");
         e.Handled = true;
     }
 
@@ -93,7 +152,7 @@ public partial class SettingsWindow : Window
     private void TestVoice_Click(object sender, RoutedEventArgs e)
     {
         _voice.TestSpeech();
-        StatusText.Text = "Ouvindo a voz de resposta...";
+        SetStatus("Ouvindo a voz de resposta...");
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
@@ -102,7 +161,8 @@ public partial class SettingsWindow : Window
         {
             Enabled = EnableVoiceCheck.IsChecked == true,
             TalkHotkey = _talkKey,
-            WakeWord = WakeWordCheck.IsChecked == true
+            WakeWord = WakeWordCheck.IsChecked == true,
+            MicrophoneId = _microphoneId
         };
         Config.SaveVoice(s);
         var theme = ThemeDark.IsChecked == true ? "dark"

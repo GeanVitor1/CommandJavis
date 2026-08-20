@@ -35,6 +35,7 @@ public class VoiceAssistant : IDisposable
     private bool _wakeEnabled;
     private bool _wakeLoopRunning;
     private DateTime _wakeCooldownUntil;
+    private string _microphoneId = "";
 
     public event Action<string>? StatusChanged;
     public event Action<string>? PartialResult;
@@ -100,6 +101,20 @@ public void ConfigureTalkHotkey(string keyName)
             if (dispatcher != null && !dispatcher.HasShutdownStarted)
                 _ = dispatcher.BeginInvoke(() => _ = WakeLoopAsync());
         }
+    }
+
+    public void SetMicrophone(string deviceId)
+    {
+        if (string.Equals(deviceId, _microphoneId, StringComparison.OrdinalIgnoreCase))
+            return;
+        _microphoneId = deviceId ?? "";
+        ResetRecognizer();
+    }
+
+    private void ResetRecognizer()
+    {
+        try { _recognizer?.Dispose(); } catch { }
+        _recognizer = null;
     }
 
     private async Task WakeLoopAsync()
@@ -235,16 +250,39 @@ public async Task<bool> StartAsync()
                 return await StartAsync();
             }
             PrivacyFixRequested?.Invoke();
-            SetStatus("Ative a fala em ConfiguraÃ§Ãµes > Privacidade e seguranÃ§a > Fala");
+            SetStatus("Ative a fala em Configurações > Privacidade e segurança > Fala");
             return false;
         }
-        catch
+        catch (Exception ex)
         {
             _listening = false;
             ListeningChanged?.Invoke(false);
-            SetStatus("Microfone nÃ£o disponÃ­vel");
+            Logger.Error("StartAsync", ex);
+            if (IsMicrophoneFailure(ex))
+            {
+                if (!_privacyRetried)
+                {
+                    _privacyRetried = true;
+                    ResetRecognizer();
+                    SetStatus("Microfone não disponível. Tentando novamente...");
+                    await Task.Delay(500);
+                    return await StartAsync();
+                }
+                SetStatus("Microfone não disponível. Abra as Configurações e selecione o microfone.");
+                PrivacyFixRequested?.Invoke();
+                return false;
+            }
+            SetStatus("Microfone não disponível");
             return false;
         }
+    }
+
+    private static bool IsMicrophoneFailure(Exception ex)
+    {
+        if (ex.HResult == unchecked((int)0x8004550B)) return true;
+        if (ex.Message.Contains("microphone", StringComparison.OrdinalIgnoreCase)) return true;
+        if (ex.Message.Contains("audio", StringComparison.OrdinalIgnoreCase)) return true;
+        return false;
     }
 
     public async Task StopAsync()
@@ -663,6 +701,12 @@ public void TestSpeech()
         if (_recognizer != null) return true;
         try
         {
+            if (!string.IsNullOrWhiteSpace(_microphoneId))
+            {
+                var ok = MicrophoneSelector.SetDefaultCaptureDevice(_microphoneId);
+                Logger.Info($"SetDefaultCaptureDevice({_microphoneId}) -> {ok}");
+            }
+
             var tag = PickLanguageTag();
             if (tag == null)
             {
@@ -699,7 +743,7 @@ public void TestSpeech()
                 if (compiled.Status != SpeechRecognitionResultStatus.Success)
                 {
                     rec.Dispose();
-                    SetStatus("Reconhecimento de voz indisponÃ­vel");
+                    SetStatus("Reconhecimento de voz indisponível");
                     return false;
                 }
             }

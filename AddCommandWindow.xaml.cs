@@ -1,5 +1,8 @@
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using WBrush = System.Windows.Media.Brush;
+using WBrushes = System.Windows.Media.Brushes;
 using K = System.Windows.Input.Key;
 
 namespace Vox;
@@ -22,9 +25,12 @@ public partial class AddCommandWindow : Window
         DescriptionBox.Placeholder = "Ex: Abrir Spotify";
         TargetBox.Placeholder = category == "site"
             ? "Cole o endereço do site (ex: https://youtube.com)"
-            : "Digite o caminho do programa ou escolha um app abaixo";
+            : "Cole um link ou informe o caminho do programa";
         if (category == "site") UrlType.IsChecked = true; else OpenType.IsChecked = true;
         PreviewIcon.Category = category;
+        UrlType.Checked += (_, _) => UpdatePreview();
+        OpenType.Checked += (_, _) => UpdatePreview();
+        CommandType.Checked += (_, _) => UpdatePreview();
         UpdateKeycaps();
         UpdatePreview();
         DescriptionBox.TextChanged += (_, _) => UpdatePreview();
@@ -45,8 +51,6 @@ public partial class AddCommandWindow : Window
         if (string.IsNullOrWhiteSpace(_key))
             DefineHotkey_Click(this, new RoutedEventArgs());
     }
-
-    // ===== Captura de tecla inline =====
 
     private void DefineHotkey_Click(object sender, RoutedEventArgs e)
     {
@@ -109,6 +113,7 @@ public partial class AddCommandWindow : Window
         _modifiers = string.Join("+", mods);
         _key = name;
         UpdateKeycaps();
+        UpdatePreview();
         StopCapture();
     }
 
@@ -122,10 +127,10 @@ public partial class AddCommandWindow : Window
     {
         _capturingHotkey = false;
         _winDown = false;
-        HotkeyButtonText.Text = "Definir tecla";
-        HotkeyButton.Background = System.Windows.Media.Brushes.Transparent;
-        HotkeyButton.Foreground = (System.Windows.Media.Brush)FindResource("TextSecondaryBrush");
-        HotkeyButton.BorderBrush = (System.Windows.Media.Brush)FindResource("BorderBrush");
+        HotkeyButtonText.Text = "Definir teclas";
+        HotkeyButton.Background = WBrushes.Transparent;
+        HotkeyButton.Foreground = (WBrush)FindResource("TextSecondaryBrush");
+        HotkeyButton.BorderBrush = (WBrush)FindResource("BorderBrush");
         CaptureHint.Visibility = Visibility.Collapsed;
         HotkeyHint.Visibility = Visibility.Visible;
     }
@@ -137,8 +142,6 @@ public partial class AddCommandWindow : Window
         if (key >= K.F1 && key <= K.F24) return key.ToString();
         return null;
     }
-
-    // ===== Tipo automático =====
 
     private void AutoDetectType()
     {
@@ -169,8 +172,6 @@ public partial class AddCommandWindow : Window
         }
     }
 
-    // ===== Estado do formulário =====
-
     private void UpdateKeycaps()
     {
         var parts = new List<string>();
@@ -181,21 +182,64 @@ public partial class AddCommandWindow : Window
         KeycapDisplay.ItemsSource = parts;
         PreviewKeycap.ItemsSource = parts;
         NoHotkeyText.Visibility = parts.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        PreviewHotkeyLabel.Text = parts.Count == 0 ? "Sem atalho" : string.Join(" + ", parts);
+    }
+
+    private void SyncChecks()
+    {
+        CheckUrl.Visibility = UrlType.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        CheckApp.Visibility = OpenType.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        CheckCmd.Visibility = CommandType.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void UpdateProgress()
+    {
+        bool hasName = DescriptionBox.Text.Trim().Length > 0;
+        bool hasDestino = TargetBox.Text.Trim().Length > 0;
+        bool hasTipo = UrlType.IsChecked == true || OpenType.IsChecked == true || CommandType.IsChecked == true;
+        bool hasAtalho = !string.IsNullOrWhiteSpace(_key);
+        int step = hasName && hasDestino && hasTipo ? (hasAtalho ? 4 : 3) : hasName && hasDestino ? 2 : hasName ? 1 : 0;
+        void SetStep(Border circle, TextBlock label, bool done, bool active)
+        {
+            if (done || active)
+            {
+                circle.Background = (WBrush)FindResource("AccentGradientBrush");
+                circle.BorderBrush = null;
+                circle.BorderThickness = new Thickness(0);
+                if (circle.Child is TextBlock tb) tb.Foreground = WBrushes.White;
+                label.Foreground = (WBrush)FindResource("TextPrimaryBrush");
+                label.FontWeight = FontWeights.SemiBold;
+            }
+            else
+            {
+                circle.Background = WBrushes.Transparent;
+                circle.BorderBrush = (WBrush)FindResource("BorderBrush");
+                circle.BorderThickness = new Thickness(1);
+                if (circle.Child is TextBlock tb) tb.Foreground = (WBrush)FindResource("TextSecondaryBrush");
+                label.Foreground = (WBrush)FindResource("TextSecondaryBrush");
+                label.FontWeight = FontWeights.Normal;
+            }
+        }
+        SetStep(StepCircle1, StepLabel1, step >= 1, step >= 0);
+        SetStep(StepCircle2, StepLabel2, step >= 2, step >= 1);
+        SetStep(StepCircle3, StepLabel3, step >= 3, step >= 2);
+        SetStep(StepCircle4, StepLabel4, step >= 4, step >= 3);
     }
 
     private void UpdatePreview()
     {
         var desc = DescriptionBox.Text.Trim();
-        PreviewName.Text = desc.Length > 0 ? desc : "Nome do comando";
+        PreviewName.Text = desc.Length > 0 ? desc : "Abrir Spotify";
         PreviewIcon.AvatarChar = desc.Length > 0
             ? char.ToUpperInvariant(desc[0]).ToString()
-            : "?";
+            : "A";
 
-        var target = TargetBox.Text.Trim();
-        PreviewTarget.Text = target.Length > 0 ? target : "Destino do comando";
+        var typeLabel = UrlType.IsChecked == true ? "Site" : OpenType.IsChecked == true ? "Aplicativo" : "Comando";
+        PreviewTypeText.Text = typeLabel;
+        PreviewStatusText.Text = "Pronto para usar";
 
         var hasDesc = desc.Length > 0;
-        var hasTarget = target.Length > 0;
+        var hasTarget = TargetBox.Text.Trim().Length > 0;
 
         NameError.Visibility = hasDesc ? Visibility.Collapsed : Visibility.Visible;
         DescriptionBox.HasError = !hasDesc;
@@ -213,6 +257,8 @@ public partial class AddCommandWindow : Window
         ReadyText.Foreground = hasDesc && hasTarget
             ? (System.Windows.Media.Brush)FindResource("AccentBrush")
             : (System.Windows.Media.Brush)FindResource("TextSecondaryBrush");
+        SyncChecks();
+        UpdateProgress();
     }
 
     private void Confirm_Click(object sender, RoutedEventArgs e)

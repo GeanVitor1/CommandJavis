@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using Microsoft.Win32;
 
@@ -16,7 +18,6 @@ public partial class App : System.Windows.Application
     private MainWindow? _window;
     private MicWidget? _widget;
     private System.Windows.Forms.NotifyIcon? _tray;
-    private SettingsWindow? _settings;
     private Thread? _waiter;
     private bool _exiting;
 
@@ -39,6 +40,11 @@ public partial class App : System.Windows.Application
 
         if (!TryAcquireMutex())
         {
+            if (ShouldAutoUpdateRunningInstance())
+            {
+                Shutdown();
+                return;
+            }
             try
             {
                 using var signal = new EventWaitHandle(false, EventResetMode.AutoReset, ShowEvent);
@@ -67,7 +73,7 @@ public partial class App : System.Windows.Application
         ApplySettings();
         Theme.Apply(Config.LoadAppearance().Theme);
 
-        _window = new MainWindow(_manager, _voice, OpenSettings);
+        _window = new MainWindow(_manager, _voice);
         _window.Closing += (_, args) =>
         {
             if (!_exiting)
@@ -94,7 +100,123 @@ public partial class App : System.Windows.Application
         };
         _tray.DoubleClick += (_, _) => ShowWindow();
 
-        _window.Show();
+        ShowMainWindowWithRecovery();
+    }
+
+    private void ShowMainWindowWithRecovery()
+    {
+        if (_window == null) return;
+        try { _window.Show(); }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("Visibility"))
+        {
+            Logger.Error("ShowWindow.VerifyCanShow", ex);
+            try { _window.Close(); } catch { }
+            if (_manager == null || _voice == null) return;
+            _window = new MainWindow(_manager, _voice);
+            _window.Closing += (_, args) =>
+            {
+                if (!_exiting) { args.Cancel = true; _window.Hide(); }
+            };
+            _window.IsVisibleChanged += (_, _) => { if (_window.IsVisible) _widget?.HideListening(); };
+            _window.Show();
+        }
+    }
+
+    private static string InstalledExePath => System.IO.Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Vox", "Vox.exe");
+
+    private bool ShouldAutoUpdateRunningInstance()
+    {
+        try
+        {
+            var installed = InstalledExePath;
+            var current = Environment.ProcessPath ?? "";
+            if (string.IsNullOrWhiteSpace(installed) || string.IsNullOrWhiteSpace(current))
+                return false;
+            if (!File.Exists(installed))
+                return false;
+            var installedFull = System.IO.Path.GetFullPath(installed);
+            var currentFull = System.IO.Path.GetFullPath(current);
+            if (string.Equals(installedFull, currentFull, StringComparison.OrdinalIgnoreCase))
+                return false;
+            if (!IsInstalledNewerThanCurrent(currentFull, installedFull))
+                return false;
+            return TryReplaceInstalledAndRestart(installedFull);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("ShouldAutoUpdateRunningInstance", ex);
+            return false;
+        }
+    }
+
+    private static bool IsInstalledNewerThanCurrent(string currentPath, string installedPath)
+    {
+        try
+        {
+            var cur = new FileInfo(currentPath);
+            var inst = new FileInfo(installedPath);
+            if (!cur.Exists || !inst.Exists) return false;
+            if (inst.LastWriteTimeUtc > cur.LastWriteTimeUtc.AddSeconds(2)) return true;
+            if (inst.Length != cur.Length) return true;
+            var curVer = FileVersionInfo.GetVersionInfo(currentPath).FileVersion;
+            var instVer = FileVersionInfo.GetVersionInfo(installedPath).FileVersion;
+            if (!string.IsNullOrWhiteSpace(curVer) && !string.IsNullOrWhiteSpace(instVer) &&
+                string.Compare(instVer, curVer, StringComparison.OrdinalIgnoreCase) != 0)
+                return true;
+            return false;
+        }
+        catch { return false; }
+    }
+
+    private static bool TryReplaceInstalledAndRestart(string installedPath)
+    {
+        try
+        {
+            foreach (var p in System.Diagnostics.Process.GetProcessesByName("Vox"))
+            {
+                try
+                {
+                    var exe = p.MainModule?.FileName;
+                    if (!string.IsNullOrWhiteSpace(exe) &&
+                        string.Equals(System.IO.Path.GetFullPath(exe), installedPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        p.CloseMainWindow();
+                    }
+                }
+                catch { }
+            }
+            for (int i = 0; i < 40; i++)
+            {
+                var still = System.Diagnostics.Process.GetProcessesByName("Vox").Any(p =>
+                {
+                    try { return string.Equals(System.IO.Path.GetFullPath(p.MainModule?.FileName ?? ""), installedPath, StringComparison.OrdinalIgnoreCase); }
+                    catch { return false; }
+                });
+                if (!still) break;
+                Thread.Sleep(100);
+            }
+            foreach (var p in System.Diagnostics.Process.GetProcessesByName("Vox"))
+            {
+                try
+                {
+                    var exe = p.MainModule?.FileName;
+                    if (!string.IsNullOrWhiteSpace(exe) &&
+                        string.Equals(System.IO.Path.GetFullPath(exe), installedPath, StringComparison.OrdinalIgnoreCase))
+                        p.Kill();
+                }
+                catch { }
+            }
+            Thread.Sleep(400);
+            var psi = new System.Diagnostics.ProcessStartInfo(installedPath) { UseShellExecute = true };
+            System.Diagnostics.Process.Start(psi);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("TryReplaceInstalledAndRestart", ex);
+            return false;
+        }
     }
 
     private bool TryAcquireMutex()
@@ -131,6 +253,7 @@ public partial class App : System.Windows.Application
         var voice = Config.LoadVoice();
         _voice.ConfigureTalkHotkey(voice.Enabled ? voice.TalkHotkey : "");
         _voice.SetWakeWordEnabled(voice.Enabled && voice.WakeWord);
+        _voice.SetMicrophone(voice.Enabled ? voice.MicrophoneId ?? "" : "");
     }
 
     private void OnListeningChanged(bool listening)
@@ -162,27 +285,37 @@ public partial class App : System.Windows.Application
 
     private void OpenSettings()
     {
-        if (_window == null) return;
-        if (_settings is { IsVisible: true })
-        {
-            _settings.Activate();
-            return;
-        }
-        if (!_window.IsVisible)
-            ShowWindow();
-        if (_settings == null)
-        {
-            _settings = new SettingsWindow(_voice!) { Owner = _window };
-            _settings.Closed += (_, _) => _settings = null;
-        }
-        _settings.Owner = _window;
-        _settings.ShowDialog();
+        ShowWindow();
+        _window?.NavigateToSettings();
+    }
+
+    public void OpenHistory()
+    {
+        ShowWindow();
+        _window?.NavigateToHistory();
     }
 
     private void ShowWindow()
     {
         if (_window == null) return;
-        _window.Show();
+        try
+        {
+            if (!_window.IsVisible) ShowMainWindowWithRecovery();
+            else _window.Show();
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains("Visibility"))
+        {
+            Logger.Error("ShowWindow.VerifyCanShow", ex);
+            try { _window.Close(); } catch { }
+            if (_manager == null || _voice == null) return;
+            _window = new MainWindow(_manager, _voice);
+            _window.Closing += (_, args) =>
+            {
+                if (!_exiting) { args.Cancel = true; _window.Hide(); }
+            };
+            _window.IsVisibleChanged += (_, _) => { if (_window.IsVisible) _widget?.HideListening(); };
+            _window.Show();
+        }
         _window.WindowState = WindowState.Normal;
         _window.Activate();
     }

@@ -40,6 +40,22 @@ public class ConfigTests : IDisposable
     }
 
     [Fact]
+    public void MicrophoneId_roundtrip()
+    {
+        var path = PathFor("config.json");
+        var voice = new VoiceSettings
+        {
+            Enabled = true,
+            TalkHotkey = "F9",
+            MicrophoneId = @"\\?\SWD\MMDEVAPI\{0.0.1.00000000}.{abc123}"
+        };
+        Config.Save(new List<HotkeyBinding>(), voice, path);
+
+        var loaded = Config.LoadVoice(path);
+        Assert.Equal(voice.MicrophoneId, loaded.MicrophoneId);
+    }
+
+    [Fact]
     public void Save_preserves_voice_when_null()
     {
         var path = PathFor("config.json");

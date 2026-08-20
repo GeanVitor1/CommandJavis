@@ -63,6 +63,7 @@ public class VoiceSettings
     public bool Enabled { get; set; } = true;
     public string TalkHotkey { get; set; } = "F9";
     public bool WakeWord { get; set; } = false;
+    public string MicrophoneId { get; set; } = "";
 }
 
 public class AppearanceSettings
