@@ -1,25 +1,37 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- vox • Design Read: desktop utility for power users — Linear-calm, editorial clarity, Variance 5 / Motion 3 / Density 4 -->
+    <!-- shape lock: cards 12 • buttons 9 • inputs 8 • keycaps 6 • pills 999 (only pills) • micro circles 999 -->
     <SolidColorBrush x:Key="BgBrush" Color="#0D1117"/>
-    <SolidColorBrush x:Key="TitleBarBrush" Color="#0F141D"/>
+    <SolidColorBrush x:Key="TitleBarBrush" Color="#0F141E"/>
     <SolidColorBrush x:Key="SurfaceBrush" Color="#161D29"/>
-    <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#1B2433"/>
+    <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#1C2535"/>
+    <SolidColorBrush x:Key="SurfaceMutedBrush" Color="#121821"/>
     <SolidColorBrush x:Key="BorderBrush" Color="#263142"/>
     <SolidColorBrush x:Key="BorderHoverBrush" Color="#34435A"/>
+    <SolidColorBrush x:Key="BorderSubtleBrush" Color="#1E2A3A"/>
     <SolidColorBrush x:Key="TextPrimaryBrush" Color="#E9EFF7"/>
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#93A1B4"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8E9BB0"/>
+    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#6B7A90"/>
     <SolidColorBrush x:Key="AccentBrush" Color="#6C5CE7"/>
-    <SolidColorBrush x:Key="AccentHoverBrush" Color="#8175F2"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#7A6AF0"/>
+    <SolidColorBrush x:Key="AccentPressedBrush" Color="#5E4ED6"/>
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="#221E3E"/>
+    <SolidColorBrush x:Key="AccentGhostBrush" Color="#1A1830"/>
+    <SolidColorBrush x:Key="FocusRingBrush" Color="#8B7CF7"/>
     <SolidColorBrush x:Key="DangerBrush" Color="#E5534B"/>
-    <SolidColorBrush x:Key="KeycapBorderBrush" Color="#3A4657"/>
+    <SolidColorBrush x:Key="DangerHoverBrush" Color="#EA6A62"/>
+    <SolidColorBrush x:Key="KeycapBorderBrush" Color="#2E3A4D"/>
     <SolidColorBrush x:Key="WidgetBgBrush" Color="#CC0D1117"/>
     <SolidColorBrush x:Key="IconFallbackBrush" Color="#1E2836"/>
-    <SolidColorBrush x:Key="TabActiveBrush" Color="#222B3A"/>
-    <SolidColorBrush x:Key="SelectionBrush" Color="#22304A"/>
+    <SolidColorBrush x:Key="TabActiveBrush" Color="#1E2636"/>
+    <SolidColorBrush x:Key="SelectionBrush" Color="#201E3A"/>
     <SolidColorBrush x:Key="ScrollThumbBrush" Color="#2C394D"/>
     <SolidColorBrush x:Key="ScrollThumbHoverBrush" Color="#3A4A63"/>
+    <SolidColorBrush x:Key="ShadowTintBrush" Color="#060A12"/>
 
+    <!-- single accent gradient — use sparingly (mic + primary hero only), not on every badge -->
     <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#6C5CE7" Offset="0"/>
         <GradientStop Color="#4C8DFF" Offset="1"/>
@@ -28,9 +40,7 @@
         <GradientStop Color="#3B82F6" Offset="0"/>
         <GradientStop Color="#14B8A6" Offset="1"/>
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="KeycapBrush" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#243044" Offset="0"/>
-        <GradientStop Color="#1A2330" Offset="1"/>
-    </LinearGradientBrush>
+    <!-- keycap now flat — no heavy gradient, keep subtle depth via border -->
+    <SolidColorBrush x:Key="KeycapBrush" Color="#1C2535"/>
 
 </ResourceDictionary>

@@ -5,7 +5,7 @@
         <TextBox x:Name="Box" Style="{StaticResource TextField}" TextChanged="Box_TextChanged"/>
         <TextBlock x:Name="WatermarkText"
                    Text="{Binding Placeholder, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                   Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12.5"
-                   Margin="13,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                   Foreground="{DynamicResource TextTertiaryBrush}" FontSize="13"
+                   Margin="14,0,28,0" VerticalAlignment="Center" IsHitTestVisible="False" Opacity="0.95" TextTrimming="CharacterEllipsis"/>
     </Grid>
 </UserControl>

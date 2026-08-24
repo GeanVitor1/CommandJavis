@@ -6,10 +6,15 @@
         ShowInTaskbar="False" ShowActivated="False" Topmost="True"
         ResizeMode="NoResize" Focusable="False"
         IsHitTestVisible="False">
-    <Border x:Name="Root" Background="{DynamicResource WidgetBgBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1.5" CornerRadius="24" Padding="14,0">
+    <Border x:Name="Root" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="24" Padding="14,0" SnapsToDevicePixels="True">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="14" ShadowDepth="4" Opacity="0.12" Color="#000000"/>
+        </Border.Effect>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBlock x:Name="MicIcon" Text="&#xE720;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource DangerBrush}" VerticalAlignment="Center"/>
-            <TextBlock x:Name="Label" Text="Ouvindo..." Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12.5" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+            <Border Width="22" Height="22" CornerRadius="11" Background="{DynamicResource DangerBrush}" VerticalAlignment="Center">
+                <TextBlock x:Name="MicIcon" Text="&#xE720;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <TextBlock x:Name="Label" Text="Ouvindo…" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12" FontWeight="SemiBold" Margin="9,0,0,0" VerticalAlignment="Center"/>
         </StackPanel>
     </Border>
 </Window>

@@ -34,6 +34,8 @@ public partial class MainWindow : Window
     private string _addKey = "";
     private bool _capturingAddHotkey;
     private bool _addWinDown;
+    private bool _addWasApp = true;
+    private bool _addSuppressClear;
 
     // Settings view state
     private string _settingsTalkKey = "F9";
@@ -96,9 +98,9 @@ public partial class MainWindow : Window
 
         DescriptionBox.TextChanged += (_, _) => UpdateAddPreview();
         TargetBox.TextChanged += (_, _) => { UpdateAddPreview(); AutoDetectType(); };
-        UrlType.Checked += (_, _) => UpdateAddPreview();
-        OpenType.Checked += (_, _) => UpdateAddPreview();
-        CommandType.Checked += (_, _) => UpdateAddPreview();
+        UrlType.Checked += (_, _) => { if (!_addSuppressClear && _addWasApp && TargetBox.Text.Trim().Length > 0) { TargetBox.Text = ""; if (PreviewIcon != null) { PreviewIcon.HasIcon = false; PreviewIcon.Icon = null; } } _addWasApp = false; TargetBox.Placeholder = "Cole o endereço do site (ex: https://youtube.com)"; UpdateAddPreview(); };
+        OpenType.Checked += (_, _) => { _addWasApp = true; TargetBox.Placeholder = "Cole um link ou informe o caminho do programa"; UpdateAddPreview(); };
+        CommandType.Checked += (_, _) => { if (!_addSuppressClear && _addWasApp && TargetBox.Text.Trim().Length > 0) { TargetBox.Text = ""; if (PreviewIcon != null) { PreviewIcon.HasIcon = false; PreviewIcon.Icon = null; } } _addWasApp = false; TargetBox.Placeholder = "Digite o comando (ex: notepad, calc)"; UpdateAddPreview(); };
 
         HistoryList.ItemsSource = _voice.History;
         UpdateHistoryEmpty();
@@ -235,7 +237,7 @@ public partial class MainWindow : Window
     {
         MicButton.Background = listening
             ? (WBrush)WApplication.Current.FindResource("DangerBrush")
-            : (WBrush)WApplication.Current.FindResource("AccentGradientBrush");
+            : (WBrush)WApplication.Current.FindResource("AccentBrush");
         var scale = (ScaleTransform)MicButton.RenderTransform;
         if (listening)
         {
@@ -358,6 +360,7 @@ public partial class MainWindow : Window
         _addKey = "";
         _capturingAddHotkey = false;
         _addWinDown = false;
+        _addWasApp = _addCategory != "site";
         if (_addCategory == "site") UrlType.IsChecked = true; else OpenType.IsChecked = true;
         PreviewIcon.Category = _addCategory;
         HotkeyButtonText.Text = "Definir teclas";
@@ -366,6 +369,8 @@ public partial class MainWindow : Window
         HotkeyButton.BorderBrush = (WBrush)FindResource("BorderBrush");
         CaptureHint.Visibility = Visibility.Collapsed;
         HotkeyHint.Visibility = Visibility.Visible;
+        if (InlinePreviewContainer != null) InlinePreviewContainer.Visibility = Visibility.Collapsed;
+        if (InlinePreviewPanel != null) InlinePreviewPanel.Visibility = Visibility.Visible;
         UpdateAddKeycaps();
         UpdateAddPreview();
     }
@@ -381,9 +386,9 @@ public partial class MainWindow : Window
         _capturingAddHotkey = !_capturingAddHotkey;
         if (_capturingAddHotkey)
         {
-            HotkeyButtonText.Text = "Pressione as teclas...";
+            HotkeyButtonText.Text = "Pressione as teclas…";
             HotkeyButton.BorderBrush = WBrushes.Transparent;
-            HotkeyButton.Background = FindResource("AccentGradientBrush") as WBrush;
+            HotkeyButton.Background = FindResource("AccentBrush") as WBrush;
             HotkeyButton.Foreground = WBrushes.White;
             CaptureHint.Visibility = Visibility.Visible;
             HotkeyHint.Visibility = Visibility.Collapsed;
@@ -435,6 +440,7 @@ public partial class MainWindow : Window
         var typeLabel = UrlType.IsChecked == true ? "Site" : OpenType.IsChecked == true ? "Aplicativo" : "Comando";
         if (PreviewTypeText != null) PreviewTypeText.Text = typeLabel;
         if (PreviewStatusText != null) PreviewStatusText.Text = "Pronto para usar";
+        PreviewIcon.Category = UrlType.IsChecked == true ? "site" : "app";
         var hasDesc = desc.Length > 0;
         var hasTarget = TargetBox.Text.Trim().Length > 0;
         NameError.Visibility = hasDesc ? Visibility.Collapsed : Visibility.Visible;
@@ -454,20 +460,20 @@ public partial class MainWindow : Window
         bool hasDestino = TargetBox.Text.Trim().Length > 0;
         bool hasTipo = UrlType.IsChecked == true || OpenType.IsChecked == true || CommandType.IsChecked == true;
         bool hasAtalho = !string.IsNullOrWhiteSpace(_addKey);
-        int step = hasName && hasDestino && hasTipo ? (hasAtalho ? 4 : 3) : hasName && hasDestino ? 2 : hasName ? 1 : 0;
+        int step = hasName && hasTipo && hasDestino ? (hasAtalho ? 4 : 3) : hasName && hasTipo ? 2 : hasName ? 1 : 0;
 
         void SetStep(Border circle, TextBlock label, int n, bool done, bool active)
         {
             if (circle == null || label == null) return;
             if (active || done)
             {
-                circle.Background = (WBrush)FindResource("AccentGradientBrush");
+                circle.Background = (WBrush)FindResource("AccentBrush");
                 circle.BorderBrush = null;
                 circle.BorderThickness = new Thickness(0);
                 var tb = circle.Child as TextBlock;
                 if (tb != null) tb.Foreground = WBrushes.White;
                 label.Foreground = (WBrush)FindResource("TextPrimaryBrush");
-                label.FontWeight = FontWeights.SemiBold;
+                label.FontWeight = FontWeights.Medium;
             }
             else
             {
@@ -475,12 +481,12 @@ public partial class MainWindow : Window
                 circle.BorderBrush = (WBrush)FindResource("BorderBrush");
                 circle.BorderThickness = new Thickness(1);
                 var tb = circle.Child as TextBlock;
-                if (tb != null) tb.Foreground = (WBrush)FindResource("TextSecondaryBrush");
+                if (tb != null) tb.Foreground = (WBrush)FindResource("TextTertiaryBrush");
                 label.Foreground = (WBrush)FindResource("TextSecondaryBrush");
                 label.FontWeight = FontWeights.Normal;
             }
             circle.Opacity = 1;
-            label.Opacity = active || done ? 1 : 0.9;
+            label.Opacity = active || done ? 1 : 0.85;
         }
 
         SetStep(StepCircle1, StepLabel1, 1, step >= 1, step >= 0);
@@ -493,14 +499,19 @@ public partial class MainWindow : Window
     {
         var t = TargetBox.Text.Trim();
         if (t.Length == 0) return;
-        if (t.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || t.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || t.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
-            UrlType.IsChecked = true;
-        else if (t.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || t.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase) || t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
+        _addSuppressClear = true;
+        try
         {
-            if (t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase)) CommandType.IsChecked = true; else OpenType.IsChecked = true;
+            if (t.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || t.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || t.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+                UrlType.IsChecked = true;
+            else if (t.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) || t.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase) || t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
+            {
+                if (t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase)) CommandType.IsChecked = true; else OpenType.IsChecked = true;
+            }
+            else if (t.StartsWith("cmd ", StringComparison.OrdinalIgnoreCase) || t.StartsWith("powershell", StringComparison.OrdinalIgnoreCase) || t.Contains(" | ") || t.Contains("&&"))
+                CommandType.IsChecked = true;
         }
-        else if (t.StartsWith("cmd ", StringComparison.OrdinalIgnoreCase) || t.StartsWith("powershell", StringComparison.OrdinalIgnoreCase) || t.Contains(" | ") || t.Contains("&&"))
-            CommandType.IsChecked = true;
+        finally { _addSuppressClear = false; }
     }
 
     private void ConfirmAdd_Click(object sender, RoutedEventArgs e)
@@ -558,7 +569,7 @@ public partial class MainWindow : Window
 
     private void ChooseApp_Click(object sender, RoutedEventArgs e) => ConfirmPicker();
 
-    private void ConfirmPicker()
+    private async void ConfirmPicker()
     {
         if (AppListBox.SelectedItem is InstalledApp app)
         {
@@ -566,6 +577,24 @@ public partial class MainWindow : Window
             TargetBox.Text = app.Target;
             OpenType.IsChecked = true;
             AppPickerOverlay.Visibility = Visibility.Collapsed;
+            if (InlinePreviewContainer != null) InlinePreviewContainer.Visibility = Visibility.Visible;
+            if (InlinePreviewPanel != null) InlinePreviewPanel.Visibility = Visibility.Visible;
+            if (PreviewIcon != null)
+            {
+                PreviewIcon.Icon = app.Icon;
+                PreviewIcon.HasIcon = app.HasIcon;
+                PreviewIcon.AvatarChar = app.AvatarChar;
+                PreviewIcon.Category = "app";
+                if (!app.HasIcon)
+                {
+                    await AppCatalog.LoadIconAsync(app);
+                    if (app.HasIcon)
+                    {
+                        PreviewIcon.Icon = app.Icon;
+                        PreviewIcon.HasIcon = true;
+                    }
+                }
+            }
         }
     }
 

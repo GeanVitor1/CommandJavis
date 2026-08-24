@@ -14,6 +14,8 @@ public partial class AddCommandWindow : Window
     private string _key = "";
     private bool _capturingHotkey;
     private bool _winDown;
+    private bool _wasApp = true;
+    private bool _suppressClear;
 
     public HotkeyBinding? Result { get; private set; }
 
@@ -26,11 +28,12 @@ public partial class AddCommandWindow : Window
         TargetBox.Placeholder = category == "site"
             ? "Cole o endereço do site (ex: https://youtube.com)"
             : "Cole um link ou informe o caminho do programa";
+        _wasApp = category != "site";
         if (category == "site") UrlType.IsChecked = true; else OpenType.IsChecked = true;
         PreviewIcon.Category = category;
-        UrlType.Checked += (_, _) => UpdatePreview();
-        OpenType.Checked += (_, _) => UpdatePreview();
-        CommandType.Checked += (_, _) => UpdatePreview();
+        UrlType.Checked += (_, _) => { if (!_suppressClear && _wasApp && TargetBox.Text.Trim().Length > 0) { TargetBox.Text = ""; if (PreviewIcon != null) { PreviewIcon.HasIcon = false; PreviewIcon.Icon = null; } } _wasApp = false; TargetBox.Placeholder = "Cole o endereço do site (ex: https://youtube.com)"; UpdatePreview(); };
+        OpenType.Checked += (_, _) => { _wasApp = true; TargetBox.Placeholder = "Cole um link ou informe o caminho do programa"; UpdatePreview(); };
+        CommandType.Checked += (_, _) => { if (!_suppressClear && _wasApp && TargetBox.Text.Trim().Length > 0) { TargetBox.Text = ""; if (PreviewIcon != null) { PreviewIcon.HasIcon = false; PreviewIcon.Icon = null; } } _wasApp = false; TargetBox.Placeholder = "Digite o comando (ex: notepad, calc)"; UpdatePreview(); };
         UpdateKeycaps();
         UpdatePreview();
         DescriptionBox.TextChanged += (_, _) => UpdatePreview();
@@ -48,6 +51,24 @@ public partial class AddCommandWindow : Window
         DescriptionBox.Text = win.Result.Name;
         TargetBox.Text = win.Result.Target;
         OpenType.IsChecked = true;
+        PreviewContainer.Visibility = Visibility.Visible;
+        PreviewPanel.Visibility = Visibility.Visible;
+        if (PreviewIcon != null)
+        {
+            PreviewIcon.Icon = win.Result.Icon;
+            PreviewIcon.HasIcon = win.Result.HasIcon;
+            PreviewIcon.AvatarChar = win.Result.AvatarChar;
+            PreviewIcon.Category = "app";
+            if (!win.Result.HasIcon)
+            {
+                await AppCatalog.LoadIconAsync(win.Result);
+                if (win.Result.HasIcon)
+                {
+                    PreviewIcon.Icon = win.Result.Icon;
+                    PreviewIcon.HasIcon = true;
+                }
+            }
+        }
         if (string.IsNullOrWhiteSpace(_key))
             DefineHotkey_Click(this, new RoutedEventArgs());
     }
@@ -57,9 +78,9 @@ public partial class AddCommandWindow : Window
         _capturingHotkey = !_capturingHotkey;
         if (_capturingHotkey)
         {
-            HotkeyButtonText.Text = "Pressione as teclas...";
+            HotkeyButtonText.Text = "Pressione as teclas…";
             HotkeyButton.BorderBrush = System.Windows.Media.Brushes.Transparent;
-            HotkeyButton.Background = FindResource("AccentGradientBrush") as System.Windows.Media.Brush;
+            HotkeyButton.Background = FindResource("AccentBrush") as System.Windows.Media.Brush;
             HotkeyButton.Foreground = System.Windows.Media.Brushes.White;
             CaptureHint.Visibility = Visibility.Visible;
             HotkeyHint.Visibility = Visibility.Collapsed;
@@ -148,28 +169,33 @@ public partial class AddCommandWindow : Window
         var t = TargetBox.Text.Trim();
         if (t.Length == 0)
             return;
-        if (t.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-            t.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
-            t.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+        _suppressClear = true;
+        try
         {
-            UrlType.IsChecked = true;
-        }
-        else if (t.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
-                 t.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase) ||
-                 t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
-        {
-            if (t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
+            if (t.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                t.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+                t.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+            {
+                UrlType.IsChecked = true;
+            }
+            else if (t.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
+                     t.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase) ||
+                     t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
+            {
+                if (t.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
+                    CommandType.IsChecked = true;
+                else
+                    OpenType.IsChecked = true;
+            }
+            else if (t.StartsWith("cmd ", StringComparison.OrdinalIgnoreCase) ||
+                     t.StartsWith("powershell", StringComparison.OrdinalIgnoreCase) ||
+                     t.Contains(" | ") ||
+                     t.Contains("&&"))
+            {
                 CommandType.IsChecked = true;
-            else
-                OpenType.IsChecked = true;
+            }
         }
-        else if (t.StartsWith("cmd ", StringComparison.OrdinalIgnoreCase) ||
-                 t.StartsWith("powershell", StringComparison.OrdinalIgnoreCase) ||
-                 t.Contains(" | ") ||
-                 t.Contains("&&"))
-        {
-            CommandType.IsChecked = true;
-        }
+        finally { _suppressClear = false; }
     }
 
     private void UpdateKeycaps()
@@ -198,24 +224,24 @@ public partial class AddCommandWindow : Window
         bool hasDestino = TargetBox.Text.Trim().Length > 0;
         bool hasTipo = UrlType.IsChecked == true || OpenType.IsChecked == true || CommandType.IsChecked == true;
         bool hasAtalho = !string.IsNullOrWhiteSpace(_key);
-        int step = hasName && hasDestino && hasTipo ? (hasAtalho ? 4 : 3) : hasName && hasDestino ? 2 : hasName ? 1 : 0;
+        int step = hasName && hasTipo && hasDestino ? (hasAtalho ? 4 : 3) : hasName && hasTipo ? 2 : hasName ? 1 : 0;
         void SetStep(Border circle, TextBlock label, bool done, bool active)
         {
             if (done || active)
             {
-                circle.Background = (WBrush)FindResource("AccentGradientBrush");
+                circle.Background = (WBrush)FindResource("AccentBrush");
                 circle.BorderBrush = null;
                 circle.BorderThickness = new Thickness(0);
                 if (circle.Child is TextBlock tb) tb.Foreground = WBrushes.White;
                 label.Foreground = (WBrush)FindResource("TextPrimaryBrush");
-                label.FontWeight = FontWeights.SemiBold;
+                label.FontWeight = FontWeights.Medium;
             }
             else
             {
                 circle.Background = WBrushes.Transparent;
                 circle.BorderBrush = (WBrush)FindResource("BorderBrush");
                 circle.BorderThickness = new Thickness(1);
-                if (circle.Child is TextBlock tb) tb.Foreground = (WBrush)FindResource("TextSecondaryBrush");
+                if (circle.Child is TextBlock tb) tb.Foreground = (WBrush)FindResource("TextTertiaryBrush");
                 label.Foreground = (WBrush)FindResource("TextSecondaryBrush");
                 label.FontWeight = FontWeights.Normal;
             }
@@ -237,6 +263,7 @@ public partial class AddCommandWindow : Window
         var typeLabel = UrlType.IsChecked == true ? "Site" : OpenType.IsChecked == true ? "Aplicativo" : "Comando";
         PreviewTypeText.Text = typeLabel;
         PreviewStatusText.Text = "Pronto para usar";
+        PreviewIcon.Category = UrlType.IsChecked == true ? "site" : "app";
 
         var hasDesc = desc.Length > 0;
         var hasTarget = TargetBox.Text.Trim().Length > 0;

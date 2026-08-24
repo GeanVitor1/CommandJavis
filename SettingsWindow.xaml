@@ -46,7 +46,10 @@
         </Style>
     </Window.Resources>
 
-    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="22" ShadowDepth="6" Opacity="0.14" Color="#000000"/>
+        </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="42"/>
@@ -54,9 +57,12 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}">
+            <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}" CornerRadius="12,12,0,0" SnapsToDevicePixels="True">
                 <Grid>
-                    <TextBlock Text="Configurações" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+                        <Border Width="22" Height="22" CornerRadius="11" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                        <TextBlock Text="Configurações" Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="SemiBold" FontSize="12" Margin="9,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <Button Style="{StaticResource TitleBarCloseButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Click="Close_Click" ToolTip="Fechar"/>
                 </Grid>
             </Border>
@@ -65,12 +71,12 @@
                 <StackPanel Margin="28,20,28,14">
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                        <Border Width="32" Height="32" CornerRadius="9" Background="{DynamicResource AccentGradientBrush}">
+                        <Border Width="32" Height="32" CornerRadius="9" Background="{DynamicResource AccentBrush}" SnapsToDevicePixels="True">
                             <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="Configurações" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                            <TextBlock Text="Personalize o Vox do seu jeito" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                            <TextBlock Text="Configurações" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource TextPrimaryBrush}" TextOptions.TextFormattingMode="Ideal"/>
+                            <TextBlock Text="Personalize o Vox do seu jeito" FontSize="11.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,2,0,0"/>
                         </StackPanel>
                     </StackPanel>
 

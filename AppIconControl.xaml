@@ -5,13 +5,13 @@
              Focusable="False">
     <Border x:Name="Circle" Width="{Binding Size, ElementName=Root}" Height="{Binding Size, ElementName=Root}" ClipToBounds="True">
         <Grid>
-            <Border x:Name="GradientLayer">
+            <!-- taste: single accent — both categories share AccentBrush, no purple/blue split (lock) -->
+            <Border x:Name="GradientLayer" Background="{DynamicResource AccentBrush}">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="Background" Value="{DynamicResource AccentGradientBrush}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Category, ElementName=Root}" Value="site">
-                                <Setter Property="Background" Value="{DynamicResource SiteGradientBrush}"/>
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
