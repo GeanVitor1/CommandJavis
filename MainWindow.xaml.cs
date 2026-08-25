@@ -116,6 +116,8 @@ public partial class MainWindow : Window
 
     private enum View { List, Add, Settings, History }
 
+    private HotkeyBinding? _pendingDelete;
+
     private void ShowView(View view)
     {
         if (AppPickerOverlay != null && EditHotkeyOverlay != null)
@@ -124,6 +126,7 @@ public partial class MainWindow : Window
             if (view != View.Settings) CloseSettingsCapture();
             AppPickerOverlay.Visibility = Visibility.Collapsed;
             EditHotkeyOverlay.Visibility = Visibility.Collapsed;
+            if (DeleteConfirmOverlay != null) DeleteConfirmOverlay.Visibility = Visibility.Collapsed;
         }
 
         if (ListViewRoot == null || AddViewRoot == null || SettingsViewRoot == null || HistoryViewRoot == null)
@@ -337,8 +340,36 @@ public partial class MainWindow : Window
     private void Remove_Click(object sender, RoutedEventArgs e)
     {
         var b = (HotkeyBinding)((FrameworkElement)sender).DataContext;
-        var res = WMessageBox.Show(this, $"Remover \"{b.Description}\"?", "Vox", MessageBoxButton.YesNo, MessageBoxImage.Question);
-        if (res == System.Windows.MessageBoxResult.Yes) _manager.Remove(b);
+        _pendingDelete = b;
+        DeleteConfirmName.Text = b.Description;
+        DeleteConfirmTarget.Text = b.Target;
+        DeleteConfirmIcon.Icon = b.Icon;
+        DeleteConfirmIcon.HasIcon = b.HasIcon;
+        DeleteConfirmIcon.AvatarChar = b.AvatarChar;
+        DeleteConfirmIcon.Category = b.Category;
+        DeleteConfirmOverlay.Visibility = Visibility.Visible;
+    }
+
+    private void DeleteConfirmCancel_Click(object sender, RoutedEventArgs e)
+    {
+        DeleteConfirmOverlay.Visibility = Visibility.Collapsed;
+        _pendingDelete = null;
+    }
+
+    private void DeleteConfirmConfirm_Click(object sender, RoutedEventArgs e)
+    {
+        DeleteConfirmOverlay.Visibility = Visibility.Collapsed;
+        if (_pendingDelete != null) _manager.Remove(_pendingDelete);
+        _pendingDelete = null;
+    }
+
+    private void DeleteOverlay_BackdropClick(object sender, WMouseButtonEventArgs e)
+    {
+        if (e.OriginalSource == DeleteConfirmOverlay)
+        {
+            DeleteConfirmOverlay.Visibility = Visibility.Collapsed;
+            _pendingDelete = null;
+        }
     }
 
     private void Add_Click(object sender, RoutedEventArgs e)
@@ -756,6 +787,7 @@ public partial class MainWindow : Window
     // ===== Global key handling =====
     private void Main_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
+        if (DeleteConfirmOverlay != null && DeleteConfirmOverlay.Visibility == Visibility.Visible && e.Key == K.Escape) { DeleteConfirmOverlay.Visibility = Visibility.Collapsed; _pendingDelete = null; e.Handled = true; return; }
         if (AppPickerOverlay.Visibility == Visibility.Visible && e.Key == K.Escape) { AppPickerOverlay.Visibility = Visibility.Collapsed; e.Handled = true; return; }
         if (EditHotkeyOverlay.Visibility == Visibility.Visible)
         {

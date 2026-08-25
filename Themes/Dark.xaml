@@ -22,6 +22,9 @@
     <SolidColorBrush x:Key="FocusRingBrush" Color="#8B7CF7"/>
     <SolidColorBrush x:Key="DangerBrush" Color="#E5534B"/>
     <SolidColorBrush x:Key="DangerHoverBrush" Color="#EA6A62"/>
+    <SolidColorBrush x:Key="DangerPressedBrush" Color="#C84038"/>
+    <SolidColorBrush x:Key="DangerSoftBrush" Color="#2A1D22"/>
+    <SolidColorBrush x:Key="DangerGhostBrush" Color="#1F1518"/>
     <SolidColorBrush x:Key="KeycapBorderBrush" Color="#2E3A4D"/>
     <SolidColorBrush x:Key="WidgetBgBrush" Color="#CC0D1117"/>
     <SolidColorBrush x:Key="IconFallbackBrush" Color="#1E2836"/>
