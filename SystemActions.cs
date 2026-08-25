@@ -29,7 +29,10 @@ public enum SystemCommand
     Screenshot,
     CloseApp,
     ShowDesktop,
-    Weather
+    Weather,
+    MinimizeApp,
+    MaximizeApp,
+    FocusApp
 }
 
 public static class SystemActions
@@ -139,6 +142,9 @@ public static class SystemActions
             SystemCommand.Cancel => "Ação cancelada",
             SystemCommand.Screenshot => "Captura de tela",
             SystemCommand.CloseApp => "Fechando aplicativo",
+            SystemCommand.MinimizeApp => "Minimizando aplicativo",
+            SystemCommand.MaximizeApp => "Maximizando aplicativo",
+            SystemCommand.FocusApp => "Trazendo para frente",
             SystemCommand.ShowDesktop => "Mostrando a área de trabalho",
             SystemCommand.Weather => "Clima",
             _ => "Pronto"
@@ -214,6 +220,20 @@ public static class WindowControl
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern bool IsIconic(IntPtr hWnd);
+
+    private const int SW_MINIMIZE = 6;
+    private const int SW_RESTORE = 9;
+    private const int SW_MAXIMIZE = 3;
+    private const int SW_SHOWNORMAL = 1;
 
     public static void ShowDesktop()
     {
@@ -308,6 +328,88 @@ public static class WindowControl
         {
         }
         return closed;
+    }
+
+    public static bool MinimizeAppByName(string name)
+    {
+        var hWnd = FindBestWindow(name);
+        if (hWnd == IntPtr.Zero) return false;
+        ShowWindow(hWnd, SW_MINIMIZE);
+        return true;
+    }
+
+    public static bool MaximizeAppByName(string name)
+    {
+        var hWnd = FindBestWindow(name);
+        if (hWnd == IntPtr.Zero) return false;
+        if (IsIconic(hWnd)) ShowWindow(hWnd, SW_RESTORE);
+        ShowWindow(hWnd, SW_MAXIMIZE);
+        SetForegroundWindow(hWnd);
+        return true;
+    }
+
+    public static bool FocusAppByName(string name)
+    {
+        var hWnd = FindBestWindow(name);
+        if (hWnd == IntPtr.Zero) return false;
+        if (IsIconic(hWnd)) ShowWindow(hWnd, SW_RESTORE);
+        else ShowWindow(hWnd, SW_SHOWNORMAL);
+        SetForegroundWindow(hWnd);
+        return true;
+    }
+
+    private static IntPtr FindBestWindow(string name)
+    {
+        var normalized = Normalize(name);
+        if (normalized.Length == 0) return IntPtr.Zero;
+        IntPtr best = IntPtr.Zero;
+        var bestScore = 0;
+        var ownPid = Environment.ProcessId;
+        EnumWindows((hWnd, _) =>
+        {
+            if (!IsWindowVisible(hWnd)) return true;
+            GetWindowThreadProcessId(hWnd, out var pid);
+            if (pid == ownPid) return true;
+            var score = 0;
+            try
+            {
+                using var proc = Process.GetProcessById((int)pid);
+                var procName = Normalize(proc.ProcessName);
+                if (procName.Length > 0 && procName.Contains(normalized))
+                    score = Math.Max(score, 20 + normalized.Length);
+                // tambem tenta exe path se disponivel
+                try
+                {
+                    var main = proc.MainModule?.FileName;
+                    if (!string.IsNullOrWhiteSpace(main))
+                    {
+                        var file = Normalize(Path.GetFileNameWithoutExtension(main));
+                        if (file.Contains(normalized) || normalized.Contains(file))
+                            score = Math.Max(score, 18 + normalized.Length);
+                    }
+                }
+                catch { }
+            }
+            catch { }
+            var len = GetWindowTextLength(hWnd);
+            if (len > 0)
+            {
+                var sb = new StringBuilder(len + 1);
+                GetWindowText(hWnd, sb, sb.Capacity);
+                var title = Normalize(sb.ToString());
+                if (title.Length > 0 && title.Contains(normalized))
+                    score = Math.Max(score, 10 + normalized.Length);
+                if (title.Length > 0 && normalized.Contains(title) && title.Length >= 3)
+                    score = Math.Max(score, 8 + title.Length);
+            }
+            if (score > bestScore)
+            {
+                bestScore = score;
+                best = hWnd;
+            }
+            return true;
+        }, IntPtr.Zero);
+        return best;
     }
 
     private static string Normalize(string s)

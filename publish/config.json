@@ -1,373 +1,192 @@
 {
-  "Hotkeys": [
+    "voice":  {
+        "enabled":  true,
+        "talkHotkey":  "F9"
+    },
+    "appearance":  {
+        "theme":  "dark"
+    },
+    "hotkeys":  [
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "V",
-      "Action": "open",
-      "Target": "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe",
-      "Arguments": "",
-      "Description": "Visual Studio Code",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "V",
-      "ComboParts": [
-        "Alt",
-        "V"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "V",
+      "action": "open",
+      "target": "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe",
+      "arguments": "",
+      "description": "Visual Studio Code"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "C",
-      "Action": "open",
-      "Target": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-      "Arguments": "",
-      "Description": "Google Chrome",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "G",
-      "ComboParts": [
-        "Alt",
-        "C"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "C",
+      "action": "open",
+      "target": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "arguments": "",
+      "description": "Google Chrome"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "D",
-      "Action": "open",
-      "Target": "%LOCALAPPDATA%\\Discord\\Update.exe",
-      "Arguments": "--processStart Discord.exe",
-      "Description": "Discord",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "D",
-      "ComboParts": [
-        "Alt",
-        "D"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "D",
+      "action": "open",
+      "target": "%LOCALAPPDATA%\\Discord\\Update.exe",
+      "arguments": "--processStart Discord.exe",
+      "description": "Discord"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "W",
-      "Action": "open",
-      "Target": "shell:AppsFolder\\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App",
-      "Arguments": "",
-      "Description": "WhatsApp",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "W",
-      "ComboParts": [
-        "Alt",
-        "W"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "W",
+      "action": "open",
+      "target": "shell:AppsFolder\\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App",
+      "arguments": "",
+      "description": "WhatsApp",
+      "icon": "https://www.google.com/s2/favicons?domain=whatsapp.com&sz=64"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "T",
-      "Action": "open",
-      "Target": "shell:AppsFolder\\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App",
-      "Arguments": "",
-      "Description": "Windows Terminal",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "W",
-      "ComboParts": [
-        "Alt",
-        "T"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "T",
+      "action": "open",
+      "target": "shell:AppsFolder\\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App",
+      "arguments": "",
+      "description": "Windows Terminal"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "S",
-      "Action": "open",
-      "Target": "C:\\Program Files (x86)\\Steam\\steam.exe",
-      "Arguments": "",
-      "Description": "Steam",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "S",
-      "ComboParts": [
-        "Alt",
-        "S"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "S",
+      "action": "open",
+      "target": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "arguments": "",
+      "description": "Steam"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "E",
-      "Action": "open",
-      "Target": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
-      "Arguments": "",
-      "Description": "Excel",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "E",
-      "ComboParts": [
-        "Alt",
-        "E"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "E",
+      "action": "open",
+      "target": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+      "arguments": "",
+      "description": "Excel"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "O",
-      "Action": "open",
-      "Target": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE",
-      "Arguments": "",
-      "Description": "Word",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "W",
-      "ComboParts": [
-        "Alt",
-        "O"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "O",
+      "action": "open",
+      "target": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE",
+      "arguments": "",
+      "description": "Word"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "P",
-      "Action": "open",
-      "Target": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-      "Arguments": "",
-      "Description": "PowerShell",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "P",
-      "ComboParts": [
-        "Alt",
-        "P"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "P",
+      "action": "open",
+      "target": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "arguments": "",
+      "description": "PowerShell"
     },
     {
-      "Id": 0,
-      "Category": "app",
-      "Modifiers": "Alt",
-      "Key": "B",
-      "Action": "open",
-      "Target": "C:\\Windows\\System32\\notepad.exe",
-      "Arguments": "",
-      "Description": "Bloco de Notas",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "B",
-      "ComboParts": [
-        "Alt",
-        "B"
-      ]
+      "category": "app",
+      "modifiers": "Alt",
+      "key": "B",
+      "action": "open",
+      "target": "C:\\Windows\\System32\\notepad.exe",
+      "arguments": "",
+      "description": "Bloco de Notas"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "Y",
-      "Action": "url",
-      "Target": "https://www.youtube.com",
-      "Arguments": "",
-      "Description": "YouTube",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "Y",
-      "ComboParts": [
-        "Alt",
-        "Y"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "Y",
+      "action": "url",
+      "target": "https://www.youtube.com",
+      "arguments": "",
+      "description": "YouTube"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "G",
-      "Action": "url",
-      "Target": "https://www.google.com.br",
-      "Arguments": "",
-      "Description": "Google",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "G",
-      "ComboParts": [
-        "Alt",
-        "G"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "G",
+      "action": "url",
+      "target": "https://www.google.com.br",
+      "arguments": "",
+      "description": "Google"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "H",
-      "Action": "url",
-      "Target": "https://web.whatsapp.com",
-      "Arguments": "",
-      "Description": "WhatsApp Web",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "W",
-      "ComboParts": [
-        "Alt",
-        "H"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "H",
+      "action": "url",
+      "target": "https://web.whatsapp.com",
+      "arguments": "",
+      "description": "WhatsApp Web"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "I",
-      "Action": "url",
-      "Target": "https://www.instagram.com",
-      "Arguments": "",
-      "Description": "Instagram",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "I",
-      "ComboParts": [
-        "Alt",
-        "I"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "I",
+      "action": "url",
+      "target": "https://www.instagram.com",
+      "arguments": "",
+      "description": "Instagram"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "F",
-      "Action": "url",
-      "Target": "https://www.facebook.com",
-      "Arguments": "",
-      "Description": "Facebook",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "F",
-      "ComboParts": [
-        "Alt",
-        "F"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "F",
+      "action": "url",
+      "target": "https://www.facebook.com",
+      "arguments": "",
+      "description": "Facebook"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "X",
-      "Action": "url",
-      "Target": "https://x.com",
-      "Arguments": "",
-      "Description": "X (Twitter)",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "X",
-      "ComboParts": [
-        "Alt",
-        "X"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "X",
+      "action": "url",
+      "target": "https://x.com",
+      "arguments": "",
+      "description": "X (Twitter)"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "K",
-      "Action": "url",
-      "Target": "https://www.tiktok.com",
-      "Arguments": "",
-      "Description": "TikTok",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "T",
-      "ComboParts": [
-        "Alt",
-        "K"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "K",
+      "action": "url",
+      "target": "https://www.tiktok.com",
+      "arguments": "",
+      "description": "TikTok"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "N",
-      "Action": "url",
-      "Target": "https://www.netflix.com",
-      "Arguments": "",
-      "Description": "Netflix",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "N",
-      "ComboParts": [
-        "Alt",
-        "N"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "N",
+      "action": "url",
+      "target": "https://www.netflix.com",
+      "arguments": "",
+      "description": "Netflix"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "M",
-      "Action": "url",
-      "Target": "https://www.mercadolivre.com.br",
-      "Arguments": "",
-      "Description": "Mercado Livre",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "M",
-      "ComboParts": [
-        "Alt",
-        "M"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "M",
+      "action": "url",
+      "target": "https://www.mercadolivre.com.br",
+      "arguments": "",
+      "description": "Mercado Livre"
     },
     {
-      "Id": 0,
-      "Category": "site",
-      "Modifiers": "Alt",
-      "Key": "L",
-      "Action": "url",
-      "Target": "https://www.globo.com",
-      "Arguments": "",
-      "Description": "Globo (G1)",
-      "IconPath": "",
-      "SearchTemplate": "",
-      "HasCombo": true,
-      "AvatarChar": "G",
-      "ComboParts": [
-        "Alt",
-        "L"
-      ]
+      "category": "site",
+      "modifiers": "Alt",
+      "key": "L",
+      "action": "url",
+      "target": "https://www.globo.com",
+      "arguments": "",
+      "description": "Globo (G1)"
     }
-  ],
-  "Voice": {
-    "Enabled": true,
-    "TalkHotkey": "F9",
-    "WakeWord": false,
-    "MicrophoneId": ""
-  },
-  "Appearance": {
-    "Theme": "dark"
-  }
+  ]
 }

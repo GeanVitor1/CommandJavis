@@ -68,7 +68,7 @@ public class VoiceSettings
 
 public class AppearanceSettings
 {
-    public string Theme { get; set; } = "system";
+    public string Theme { get; set; } = "dark";
 }
 
 public class HotkeyConfig

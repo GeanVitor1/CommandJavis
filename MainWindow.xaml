@@ -11,7 +11,7 @@
         Background="{DynamicResource BgBrush}"
         Foreground="{DynamicResource TextPrimaryBrush}"
         FontFamily="Segoe UI Variable Text, Segoe UI"
-        FontSize="13.5"
+        FontSize="16.5"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="ClearType"
         UseLayoutRounding="True"
@@ -34,8 +34,8 @@
                                           AvatarChar="{Binding AvatarChar}" Category="{Binding Category}"
                                           Size="36" Margin="0,0,14,0" VerticalAlignment="Center"/>
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Description}" FontSize="14.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" TextOptions.TextFormattingMode="Ideal"/>
-                        <TextBlock Text="{Binding Target}" FontSize="12.5" Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,3,12,0"/>
+                        <TextBlock Text="{Binding Description}" FontSize="17.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" TextOptions.TextFormattingMode="Ideal"/>
+                        <TextBlock Text="{Binding Target}" FontSize="15.5" Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,3,12,0"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="0,0,16,0">
                         <ItemsControl ItemsSource="{Binding ComboParts}">
@@ -47,12 +47,12 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource Keycap}" Margin="3,0,0,0">
-                                        <TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="11" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" FontFamily="Segoe UI, Segoe UI Variable Text"/>
+                                        <TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" FontFamily="Segoe UI, Segoe UI Variable Text"/>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <TextBlock Text="Sem atalho" Foreground="{DynamicResource TextTertiaryBrush}" FontStyle="Italic" FontSize="11">
+                        <TextBlock Text="Sem atalho" Foreground="{DynamicResource TextTertiaryBrush}" FontStyle="Italic" FontSize="14">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -161,9 +161,7 @@
                                 <ImageBrush ImageSource="Vox.png" Stretch="UniformToFill"/>
                             </Border.Background>
                         </Border>
-                        <TextBlock Text="Vox" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12.5" FontWeight="SemiBold" VerticalAlignment="Center" Margin="9,0,0,0"/>
-                        <TextBlock Text="•" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="10" VerticalAlignment="Center" Margin="8,0,0,0" Opacity="0.7"/>
-                        <TextBlock Text="assistente local" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="11" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                        <TextBlock Text="Vox" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="15.5" FontWeight="SemiBold" VerticalAlignment="Center" Margin="9,0,0,0"/>
                         <!-- Navegação interna — single line, 64px cap -->
                         <StackPanel x:Name="NavBar" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
                             <RadioButton x:Name="NavHome" Style="{StaticResource TabPill}" Content="Início" IsChecked="True" Checked="NavHome_Checked"/>
@@ -189,14 +187,14 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Margin="32,22,32,18">
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="Seus atalhos" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextOptions.TextFormattingMode="Ideal"/>
-                            <TextBlock Text="Pressione a combinação em qualquer lugar do Windows" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,5,0,0" Opacity="0.95"/>
+                            <TextBlock Text="Seus atalhos" FontSize="29" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextOptions.TextFormattingMode="Ideal"/>
+                            <TextBlock Text="Pressione a combinação em qualquer lugar do Windows" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="16" Margin="0,5,0,0" Opacity="0.95"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="20" Padding="11,6" SnapsToDevicePixels="True">
-                                <TextBlock x:Name="StatsText" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="11" FontWeight="Medium"/>
+                            <Border x:Name="StatsTextBorder" Visibility="Collapsed" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="20" Padding="11,6" SnapsToDevicePixels="True">
+                                <TextBlock x:Name="StatsText" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="14" FontWeight="Medium"/>
                             </Border>
-                            <Button Style="{StaticResource PrimaryButton}" Margin="10,0,0,0" Click="Add_Click" Padding="16,8">
+                            <Button Style="{StaticResource PrimaryButton}" Click="Add_Click" Padding="16,8">
                                 <StackPanel Orientation="Horizontal"><TextBlock Text="+" FontWeight="Bold" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="Novo comando" VerticalAlignment="Center"/></StackPanel>
                             </Button>
                         </StackPanel>
@@ -217,25 +215,25 @@
                         <!-- Empty states — editorial, composed, not plain text -->
                         <StackPanel x:Name="EmptyApp" HorizontalAlignment="Center" Margin="0,48,0,0">
                             <Border Width="56" Height="56" CornerRadius="28" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" HorizontalAlignment="Center">
-                                <TextBlock Text="&#xE8FC;" FontFamily="Segoe MDL2 Assets" FontSize="22" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE8FC;" FontFamily="Segoe MDL2 Assets" FontSize="25" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Nenhum aplicativo por aqui" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,16,0,0"/>
-                            <TextBlock Text="Clique em “Novo comando” para adicionar seu primeiro atalho." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12.5" HorizontalAlignment="Center" Margin="0,6,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="320"/>
+                            <TextBlock Text="Nenhum aplicativo por aqui" FontSize="19" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,16,0,0"/>
+                            <TextBlock Text="Clique em “Novo comando” para adicionar seu primeiro atalho." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="15.5" HorizontalAlignment="Center" Margin="0,6,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="320"/>
                             <Button Style="{StaticResource GhostButton}" Content="Criar comando" Margin="0,16,0,0" HorizontalAlignment="Center" Padding="16,7" Click="Add_Click"/>
                         </StackPanel>
                         <StackPanel x:Name="EmptySite" HorizontalAlignment="Center" Margin="0,48,0,0">
                             <Border Width="56" Height="56" CornerRadius="28" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" HorizontalAlignment="Center">
-                                <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="22" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="25" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Nenhum site por aqui" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,16,0,0"/>
-                            <TextBlock Text="Seus sites favoritos aparecerão aqui." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12.5" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                            <TextBlock Text="Nenhum site por aqui" FontSize="19" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,16,0,0"/>
+                            <TextBlock Text="Seus sites favoritos aparecerão aqui." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="15.5" HorizontalAlignment="Center" Margin="0,6,0,0"/>
                         </StackPanel>
                         <StackPanel x:Name="EmptySearch" HorizontalAlignment="Center" Margin="0,48,0,0">
                             <Border Width="56" Height="56" CornerRadius="28" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" HorizontalAlignment="Center">
-                                <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="23" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="Nenhum resultado" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,16,0,0"/>
-                            <TextBlock x:Name="EmptySearchText" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11.5" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                            <TextBlock Text="Nenhum resultado" FontSize="19" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,16,0,0"/>
+                            <TextBlock x:Name="EmptySearchText" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14.5" HorizontalAlignment="Center" Margin="0,6,0,0"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -255,11 +253,11 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button Style="{StaticResource GhostButton}" Padding="10,8" Click="BackToList_Click" VerticalAlignment="Top" ToolTip="Voltar">
-                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center"/>
+                            <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center"/>
                         </Button>
                         <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
-                            <TextBlock x:Name="AddTitleText" Text="Adicionar aplicativo" FontSize="19" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextOptions.TextFormattingMode="Ideal"/>
-                            <TextBlock Text="Crie um comando para abrir sites, programas ou executar ações." FontSize="12.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="AddTitleText" Text="Adicionar aplicativo" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextOptions.TextFormattingMode="Ideal"/>
+                            <TextBlock Text="Crie um comando para abrir sites, programas ou executar ações." FontSize="15.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Grid>
 
@@ -275,30 +273,30 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                             <Border x:Name="StepCircle1" Width="22" Height="22" CornerRadius="11" Background="{DynamicResource AccentBrush}" VerticalAlignment="Center" SnapsToDevicePixels="True">
-                                <TextBlock Text="1" FontWeight="SemiBold" FontSize="11" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="1" FontWeight="SemiBold" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock x:Name="StepLabel1" Text="Nome" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
+                            <TextBlock x:Name="StepLabel1" Text="Nome" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
                         </StackPanel>
                         <Border Grid.Column="1" Height="1.5" Background="{DynamicResource BorderBrush}" VerticalAlignment="Center" Margin="10,0" Opacity="0.6"/>
                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Opacity="0.9">
                             <Border x:Name="StepCircle2" Width="22" Height="22" CornerRadius="11" Background="Transparent" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" VerticalAlignment="Center" SnapsToDevicePixels="True">
-                                <TextBlock Text="2" FontWeight="Medium" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="2" FontWeight="Medium" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock x:Name="StepLabel2" Text="Tipo" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
+                            <TextBlock x:Name="StepLabel2" Text="Tipo" FontSize="15" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
                         </StackPanel>
                         <Border Grid.Column="3" Height="1.5" Background="{DynamicResource BorderBrush}" VerticalAlignment="Center" Margin="10,0" Opacity="0.5"/>
                         <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center" Opacity="0.9">
                             <Border x:Name="StepCircle3" Width="22" Height="22" CornerRadius="11" Background="Transparent" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" VerticalAlignment="Center" SnapsToDevicePixels="True">
-                                <TextBlock Text="3" FontWeight="Medium" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="3" FontWeight="Medium" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock x:Name="StepLabel3" Text="Destino" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
+                            <TextBlock x:Name="StepLabel3" Text="Destino" FontSize="15" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
                         </StackPanel>
                         <Border Grid.Column="5" Height="1.5" Background="{DynamicResource BorderBrush}" VerticalAlignment="Center" Margin="10,0" Opacity="0.5"/>
                         <StackPanel Grid.Column="6" Orientation="Horizontal" VerticalAlignment="Center" Opacity="0.9">
                             <Border x:Name="StepCircle4" Width="22" Height="22" CornerRadius="11" Background="Transparent" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" VerticalAlignment="Center" SnapsToDevicePixels="True">
-                                <TextBlock Text="4" FontWeight="Medium" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="4" FontWeight="Medium" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock x:Name="StepLabel4" Text="Atalho" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
+                            <TextBlock x:Name="StepLabel4" Text="Atalho" FontSize="15" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="7,0,0,0"/>
                         </StackPanel>
                     </Grid>
 
@@ -313,24 +311,24 @@
                                 <StackPanel>
                                     <StackPanel Style="{StaticResource StepHeader}" Margin="0,0,0,8">
                                         <Border Width="20" Height="20" CornerRadius="10" Background="{DynamicResource AccentBrush}" SnapsToDevicePixels="True">
-                                            <TextBlock Text="1" FontWeight="SemiBold" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Text="1" FontWeight="SemiBold" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
-                                        <TextBlock Style="{StaticResource StepLabel}" Text="Nome do comando" FontSize="12.5"/>
+                                        <TextBlock Style="{StaticResource StepLabel}" Text="Nome do comando" FontSize="15.5"/>
                                     </StackPanel>
                                     <Grid>
                                         <local:WatermarkTextBox x:Name="DescriptionBox"/>
-                                        <TextBlock Text="&#xE7B5;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0" IsHitTestVisible="False" Opacity="0.85"/>
+                                        <TextBlock Text="&#xE7B5;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0" IsHitTestVisible="False" Opacity="0.85"/>
                                     </Grid>
-                                    <TextBlock x:Name="NameError" Text="Digite um nome para o comando." FontSize="11" Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
-                                    <TextBlock Text="Use um nome claro, ex: “Abrir YouTube”" FontSize="11" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,6,0,0" Opacity="0.9"/>
+                                    <TextBlock x:Name="NameError" Text="Digite um nome para o comando." FontSize="14" Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
+                                    <TextBlock Text="Use um nome claro, ex: “Abrir YouTube”" FontSize="14" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,6,0,0" Opacity="0.9"/>
 
                                     <Border Height="1" Background="{DynamicResource BorderBrush}" Opacity="0.45" Margin="0,18,0,18"/>
 
                                     <StackPanel Style="{StaticResource StepHeader}">
                                         <Border Width="20" Height="20" CornerRadius="10" Background="{DynamicResource AccentBrush}" SnapsToDevicePixels="True">
-                                            <TextBlock Text="2" FontWeight="SemiBold" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Text="2" FontWeight="SemiBold" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
-                                        <TextBlock Style="{StaticResource StepLabel}" Text="Tipo" FontSize="12.5"/>
+                                        <TextBlock Style="{StaticResource StepLabel}" Text="Tipo" FontSize="15.5"/>
                                     </StackPanel>
                                     <Grid Margin="0,8,0,0">
                                         <Grid.ColumnDefinitions>
@@ -342,16 +340,16 @@
                                             <Grid>
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Border Width="32" Height="32" CornerRadius="16" Background="{DynamicResource SurfaceHoverBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True">
-                                                        <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Border>
                                                     <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                                        <TextBlock Text="Site" FontWeight="SemiBold" FontSize="12"/>
-                                                        <TextBlock Text="Abre uma página" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
-                                                        <TextBlock Text="na web" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
+                                                        <TextBlock Text="Site" FontWeight="SemiBold" FontSize="15"/>
+                                                        <TextBlock Text="Abre uma página" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
+                                                        <TextBlock Text="na web" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                                 <Border x:Name="CheckUrl" Width="16" Height="16" CornerRadius="8" Background="{DynamicResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0" Visibility="Collapsed" SnapsToDevicePixels="True" BorderBrush="White" BorderThickness="1.5">
-                                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="7.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="10.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Border>
                                             </Grid>
                                         </RadioButton>
@@ -359,16 +357,16 @@
                                             <Grid>
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Border Width="32" Height="32" CornerRadius="16" Background="{DynamicResource SurfaceHoverBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True">
-                                                        <TextBlock Text="&#xE8FC;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="&#xE8FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Border>
                                                     <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                                        <TextBlock Text="Aplicativo" FontWeight="SemiBold" FontSize="12"/>
-                                                        <TextBlock Text="Abre um programa" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
-                                                        <TextBlock Text="instalado" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
+                                                        <TextBlock Text="Aplicativo" FontWeight="SemiBold" FontSize="15"/>
+                                                        <TextBlock Text="Abre um programa" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
+                                                        <TextBlock Text="instalado" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                                 <Border x:Name="CheckApp" Width="16" Height="16" CornerRadius="8" Background="{DynamicResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0" Visibility="Visible" SnapsToDevicePixels="True" BorderBrush="White" BorderThickness="1.5">
-                                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="7.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="10.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Border>
                                             </Grid>
                                         </RadioButton>
@@ -376,16 +374,16 @@
                                             <Grid>
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Border Width="32" Height="32" CornerRadius="16" Background="{DynamicResource SurfaceHoverBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True">
-                                                        <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Border>
                                                     <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                                        <TextBlock Text="Comando" FontWeight="SemiBold" FontSize="12"/>
-                                                        <TextBlock Text="Executa uma ação" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
-                                                        <TextBlock Text="no terminal" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
+                                                        <TextBlock Text="Comando" FontWeight="SemiBold" FontSize="15"/>
+                                                        <TextBlock Text="Executa uma ação" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
+                                                        <TextBlock Text="no terminal" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                                 <Border x:Name="CheckCmd" Width="16" Height="16" CornerRadius="8" Background="{DynamicResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0" Visibility="Collapsed" SnapsToDevicePixels="True" BorderBrush="White" BorderThickness="1.5">
-                                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="7.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="10.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Border>
                                             </Grid>
                                         </RadioButton>
@@ -396,9 +394,9 @@
 
                                     <StackPanel Style="{StaticResource StepHeader}">
                                         <Border Width="20" Height="20" CornerRadius="10" Background="{DynamicResource AccentBrush}" SnapsToDevicePixels="True">
-                                            <TextBlock Text="3" FontWeight="SemiBold" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Text="3" FontWeight="SemiBold" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
-                                        <TextBlock Style="{StaticResource StepLabel}" Text="Destino" FontSize="12.5"/>
+                                        <TextBlock Style="{StaticResource StepLabel}" Text="Destino" FontSize="15.5"/>
                                     </StackPanel>
                                     <Grid Margin="0,8,0,0">
                                         <Grid.ColumnDefinitions>
@@ -408,37 +406,37 @@
                                         <local:WatermarkTextBox x:Name="TargetBox"/>
                                         <Button x:Name="PickAppButton" Grid.Column="1" Style="{StaticResource GhostButton}" Padding="12,7" Margin="10,0,0,0" VerticalAlignment="Center" Click="PickAppInline_Click">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"/>
+                                                <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center"/>
                                                 <TextBlock Text="Escolher aplicativo" Margin="7,0,0,0" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
                                     </Grid>
-                                    <TextBlock x:Name="TargetError" Text="Digite um link, caminho ou escolha um app" FontSize="11" Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
+                                    <TextBlock x:Name="TargetError" Text="Digite um link, caminho ou escolha um app" FontSize="14" Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
                                     <TextBlock Style="{StaticResource StepHint}" Text="Cole um link, digite o caminho de um programa ou clique no botão acima."/>
 
                                     <Border Height="1" Background="{DynamicResource BorderBrush}" Opacity="0.45" Margin="0,18,0,18"/>
 
                                     <StackPanel Style="{StaticResource StepHeader}">
                                         <Border Width="20" Height="20" CornerRadius="10" Background="{DynamicResource AccentBrush}" SnapsToDevicePixels="True">
-                                            <TextBlock Text="4" FontWeight="SemiBold" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Text="4" FontWeight="SemiBold" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
-                                        <TextBlock Style="{StaticResource StepLabel}" Text="Atalho do teclado" FontSize="12.5"/>
+                                        <TextBlock Style="{StaticResource StepLabel}" Text="Atalho do teclado" FontSize="15.5"/>
                                         <Border Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="20" Padding="7,3" Margin="8,0,0,0" SnapsToDevicePixels="True">
-                                            <TextBlock Text="opcional" FontSize="10" Foreground="{DynamicResource TextTertiaryBrush}" FontWeight="Medium"/>
+                                            <TextBlock Text="opcional" FontSize="13" Foreground="{DynamicResource TextTertiaryBrush}" FontWeight="Medium"/>
                                         </Border>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                         <Button x:Name="HotkeyButton" Style="{StaticResource GhostButton}" Padding="13,7" Click="DefineHotkeyInline_Click">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center"/>
+                                                <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center"/>
                                                 <TextBlock x:Name="HotkeyButtonText" Text="Definir teclas" Margin="7,0,0,0" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
                                         <ItemsControl x:Name="KeycapDisplay" VerticalAlignment="Center" Margin="10,0,0,0">
                                             <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource Keycap}" Margin="3,0,0,0"><TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="11" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border></DataTemplate></ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource Keycap}" Margin="3,0,0,0"><TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border></DataTemplate></ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock x:Name="NoHotkeyText" Text="Sem atalho" Foreground="{DynamicResource TextTertiaryBrush}" FontStyle="Italic" FontSize="11.5" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                        <TextBlock x:Name="NoHotkeyText" Text="Sem atalho" Foreground="{DynamicResource TextTertiaryBrush}" FontStyle="Italic" FontSize="14.5" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                     </StackPanel>
                                     <TextBlock x:Name="CaptureHint" Style="{StaticResource StepHint}" Visibility="Collapsed" Text="Pressione a combinação desejada (ex: Ctrl+Alt+S) ou Esc para cancelar" Foreground="{DynamicResource FocusRingBrush}"/>
                                     <TextBlock x:Name="HotkeyHint" Style="{StaticResource StepHint}" Text="Você também pode usar o comando apenas por voz." Foreground="{DynamicResource TextTertiaryBrush}"/>
@@ -451,7 +449,7 @@
                                         <DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.08" Color="#000000"/>
                                     </Border.Effect>
                                     <StackPanel>
-                                        <TextBlock Text="PRÉ-VISUALIZAÇÃO" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextTertiaryBrush}" Opacity="0.9"/>
+                                        <TextBlock Text="PRÉ-VISUALIZAÇÃO" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource TextTertiaryBrush}" Opacity="0.9"/>
                                         <Border Margin="0,14,0,0" Background="{DynamicResource BgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="11" SnapsToDevicePixels="True">
                                             <StackPanel>
                                                 <Grid Margin="14,14,14,14">
@@ -461,11 +459,11 @@
                                                     </Grid.ColumnDefinitions>
                                                     <local:AppIconControl x:Name="PreviewIcon" Category="app" Size="44" AvatarChar="?" HasIcon="False" VerticalAlignment="Center"/>
                                                     <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                                        <TextBlock x:Name="PreviewName" Text="Abrir Spotify" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock x:Name="PreviewName" Text="Abrir Spotify" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
                                                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                                            <TextBlock x:Name="PreviewTypeText" Text="Aplicativo" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                                            <TextBlock Text=" • " FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="2,0"/>
-                                                            <TextBlock x:Name="PreviewStatusText" Text="Pronto para usar" FontSize="11.5" Foreground="#8B7CF7"/>
+                                                            <TextBlock x:Name="PreviewTypeText" Text="Aplicativo" FontSize="14.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                                            <TextBlock Text=" • " FontSize="14.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="2,0"/>
+                                                            <TextBlock x:Name="PreviewStatusText" Text="Pronto para usar" FontSize="14.5" Foreground="#8B7CF7"/>
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </Grid>
@@ -478,12 +476,12 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Width="22" Height="22" CornerRadius="6" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" VerticalAlignment="Center">
-                                                        <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Border>
-                                                    <TextBlock x:Name="PreviewHotkeyLabel" Grid.Column="1" Text="Sem atalho" FontSize="12.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                                    <TextBlock x:Name="PreviewHotkeyLabel" Grid.Column="1" Text="Sem atalho" FontSize="15.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="8,0,0,0"/>
                                                     <ItemsControl x:Name="PreviewKeycap" Grid.Column="2" VerticalAlignment="Center">
                                                         <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                                                        <ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource Keycap}" Margin="2,0,0,0" Padding="6,2"><TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="10.5" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border></DataTemplate></ItemsControl.ItemTemplate>
+                                                        <ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource Keycap}" Margin="2,0,0,0" Padding="6,2"><TextBlock Text="{Binding}" FontWeight="SemiBold" FontSize="13.5" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border></DataTemplate></ItemsControl.ItemTemplate>
                                                     </ItemsControl>
                                                 </Grid>
                                             </StackPanel>
@@ -497,13 +495,13 @@
                     <Border Grid.Row="3" Background="{DynamicResource TitleBarBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="20,12" SnapsToDevicePixels="True">
                         <Grid>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock x:Name="ReadyText" Text="Preencha o nome e o destino para continuar" FontSize="11.5" Foreground="{DynamicResource TextTertiaryBrush}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="ReadyText" Text="Preencha o nome e o destino para continuar" FontSize="14.5" Foreground="{DynamicResource TextTertiaryBrush}" VerticalAlignment="Center" TextWrapping="Wrap"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <Button Style="{StaticResource GhostButton}" Content="Cancelar" Padding="16,8" Click="AddCancel_Click"/>
                                 <Button x:Name="ConfirmButton" Style="{StaticResource PrimaryButton}" Margin="10,0,0,0" Padding="18,9" Click="ConfirmAdd_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center"/>
                                         <TextBlock Text="Adicionar comando" Margin="7,0,0,0" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
@@ -517,16 +515,16 @@
                     <StackPanel MaxWidth="640">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
                             <Button Style="{StaticResource GhostButton}" Padding="10,6" Click="BackToList_Click">
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center"/><TextBlock Text="Voltar" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel>
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center"/><TextBlock Text="Voltar" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel>
                             </Button>
-                            <TextBlock Text="Configurações" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="14,0,0,0" TextOptions.TextFormattingMode="Ideal"/>
+                            <TextBlock Text="Configurações" FontSize="23" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="14,0,0,0" TextOptions.TextFormattingMode="Ideal"/>
                         </StackPanel>
 
                         <Border Style="{StaticResource SettingsCard}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE8F2;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Assistente de voz" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Reconhecimento offline, do jeito Vox" FontSize="11.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
+                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE8F2;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Assistente de voz" FontSize="16.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Reconhecimento offline, do jeito Vox" FontSize="14.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
                                 </StackPanel>
                                 <Border Height="1" Background="{DynamicResource BorderBrush}" Opacity="0.5" Margin="0,14,0,14"/>
                                 <CheckBox x:Name="EnableVoiceCheck" Content="Habilitar comando de voz" Checked="EnableVoice_Changed" Unchecked="EnableVoice_Changed"/>
@@ -538,16 +536,16 @@
                         <Border Style="{StaticResource SettingsCard}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Segure para falar" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Tecla global — funciona de qualquer lugar" FontSize="11.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
+                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Segure para falar" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Tecla global — funciona de qualquer lugar" FontSize="14.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
                                 </StackPanel>
                                 <Grid Margin="0,16,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                    <Border Style="{StaticResource KeycapLarge}" VerticalAlignment="Center"><TextBlock x:Name="HotkeyDisplay" Text="F9" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border>
+                                    <Border Style="{StaticResource KeycapLarge}" VerticalAlignment="Center"><TextBlock x:Name="HotkeyDisplay" Text="F9" FontWeight="SemiBold" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border>
                                     <Button x:Name="SettingsHotkeyButton" Grid.Column="1" Style="{StaticResource GhostButton}" Content="Capturar tecla" Margin="12,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="16,7" Click="CaptureKey_Click"/>
                                 </Grid>
                                 <Border x:Name="CaptureHintBorder" Visibility="Collapsed" Margin="0,10,0,0" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource FocusRingBrush}" BorderThickness="1" CornerRadius="8" Padding="10,7" SnapsToDevicePixels="True">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center"/><TextBlock x:Name="SettingsCaptureHint" Text="Pressione a tecla desejada (ou Esc para cancelar)" Foreground="{DynamicResource AccentBrush}" FontSize="11.5" Margin="8,0,0,0" VerticalAlignment="Center"/></StackPanel>
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center"/><TextBlock x:Name="SettingsCaptureHint" Text="Pressione a tecla desejada (ou Esc para cancelar)" Foreground="{DynamicResource AccentBrush}" FontSize="14.5" Margin="8,0,0,0" VerticalAlignment="Center"/></StackPanel>
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -555,39 +553,39 @@
                         <Border Style="{StaticResource SettingsCard}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE720;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Microfone" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Escolha qual microfone o Vox vai ouvir" FontSize="11.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
+                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE720;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Microfone" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Escolha qual microfone o Vox vai ouvir" FontSize="14.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
                                 </StackPanel>
                                 <Grid Margin="0,16,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <ComboBox x:Name="MicrophoneCombo" VerticalContentAlignment="Center" MinHeight="38" SelectionChanged="Microphone_SelectionChanged"/>
-                                    <Button x:Name="RefreshMicrophonesButton" Grid.Column="1" Style="{StaticResource GhostButton}" Margin="10,0,0,0" Padding="13,7" Click="RefreshMicrophones_Click" ToolTip="Atualizar lista"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/><TextBlock Text="Atualizar" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel></Button>
+                                    <Button x:Name="RefreshMicrophonesButton" Grid.Column="1" Style="{StaticResource GhostButton}" Margin="10,0,0,0" Padding="13,7" Click="RefreshMicrophones_Click" ToolTip="Atualizar lista"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/><TextBlock Text="Atualizar" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel></Button>
                                 </Grid>
-                                <TextBlock Text="Use “Padrão do Windows” para seguir o microfone padrão do sistema. Útil quando você tem um mic virtual como o AudioRelay." Foreground="{DynamicResource TextTertiaryBrush}" FontSize="11" Margin="0,10,0,0" TextWrapping="Wrap" Opacity="0.9" LineHeight="17"/>
-                                <Button Style="{StaticResource GhostButton}" Margin="0,14,0,0" HorizontalAlignment="Left" Padding="13,7" Click="TestVoice_Click"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE8F2;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="Testar voz de resposta" Margin="7,0,0,0" VerticalAlignment="Center"/></StackPanel></Button>
+                                <TextBlock Text="Use “Padrão do Windows” para seguir o microfone padrão do sistema. Útil quando você tem um mic virtual como o AudioRelay." Foreground="{DynamicResource TextTertiaryBrush}" FontSize="14" Margin="0,10,0,0" TextWrapping="Wrap" Opacity="0.9" LineHeight="17"/>
+                                <Button Style="{StaticResource GhostButton}" Margin="0,14,0,0" HorizontalAlignment="Left" Padding="13,7" Click="TestVoice_Click"><StackPanel Orientation="Horizontal"><TextBlock Text="&#xE8F2;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="Testar voz de resposta" Margin="7,0,0,0" VerticalAlignment="Center"/></StackPanel></Button>
                             </StackPanel>
                         </Border>
 
                         <Border Style="{StaticResource SettingsCard}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Aparência" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Tema do aplicativo" FontSize="11.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
+                                    <Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Aparência" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/><TextBlock Text="Tema do aplicativo" FontSize="14.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,1,0,0"/></StackPanel>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-                                    <RadioButton x:Name="ThemeDark" Style="{StaticResource TypePill}" Content="Escuro"/>
+                                    <RadioButton x:Name="ThemeDark" Style="{StaticResource TypePill}" Content="Escuro" IsChecked="True"/>
                                     <RadioButton x:Name="ThemeLight" Style="{StaticResource TypePill}" Content="Claro"/>
-                                    <RadioButton x:Name="ThemeSystem" Style="{StaticResource TypePill}" Content="Sistema" IsChecked="True"/>
+                                    <RadioButton x:Name="ThemeSystem" Style="{StaticResource TypePill}" Content="Sistema"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
 
                         <Border x:Name="StatusBorder" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="10" Padding="12,10" Margin="0,2,0,0" Visibility="Collapsed" SnapsToDevicePixels="True">
-                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center"/><TextBlock x:Name="StatusText" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11.5" Margin="8,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center"/><TextBlock x:Name="StatusText" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14.5" Margin="8,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center"/></StackPanel>
                         </Border>
 
                         <Grid Margin="0,18,0,0">
-                            <TextBlock Text="As alterações são aplicadas ao salvar" FontSize="11" Foreground="{DynamicResource TextTertiaryBrush}" VerticalAlignment="Center" Opacity="0.9"/>
+                            <TextBlock Text="As alterações são aplicadas ao salvar" FontSize="14" Foreground="{DynamicResource TextTertiaryBrush}" VerticalAlignment="Center" Opacity="0.9"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Style="{StaticResource GhostButton}" Content="Cancelar" Padding="16,8" Click="SettingsCancel_Click"/>
                                 <Button Style="{StaticResource PrimaryButton}" Content="Salvar" Margin="10,0,0,0" Padding="22,8" Click="SaveSettings_Click"/>
@@ -601,20 +599,20 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
                         <Button Style="{StaticResource GhostButton}" Padding="10,6" Click="BackToList_Click">
-                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center"/><TextBlock Text="Voltar" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel>
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center"/><TextBlock Text="Voltar" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel>
                         </Button>
                         <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="Histórico" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextOptions.TextFormattingMode="Ideal"/>
-                            <TextBlock Text="Últimos 20 comandos executados" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="12.5" Margin="0,2,0,0"/>
+                            <TextBlock Text="Histórico" FontSize="23" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextOptions.TextFormattingMode="Ideal"/>
+                            <TextBlock Text="Últimos 20 comandos executados" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="15.5" Margin="0,2,0,0"/>
                         </StackPanel>
                     </StackPanel>
-                    <ListBox x:Name="HistoryList" Grid.Row="1" Background="Transparent" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="12.5" Foreground="{DynamicResource TextPrimaryBrush}" ItemContainerStyle="{StaticResource ListCardItem}"/>
+                    <ListBox x:Name="HistoryList" Grid.Row="1" Background="Transparent" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="15.5" Foreground="{DynamicResource TextPrimaryBrush}" ItemContainerStyle="{StaticResource ListCardItem}"/>
                     <StackPanel x:Name="EmptyHistory" Grid.Row="1" HorizontalAlignment="Center" Margin="0,48,0,0">
                         <Border Width="48" Height="48" CornerRadius="24" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" HorizontalAlignment="Center">
-                            <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" FontSize="23" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock Text="Nenhum comando ainda" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" Margin="0,14,0,0"/>
-                        <TextBlock Text="Seus comandos por voz aparecerão aqui." Foreground="{DynamicResource TextTertiaryBrush}" FontSize="11.5" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                        <TextBlock Text="Nenhum comando ainda" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+                        <TextBlock Text="Seus comandos por voz aparecerão aqui." Foreground="{DynamicResource TextTertiaryBrush}" FontSize="14.5" HorizontalAlignment="Center" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Grid>
 
@@ -625,20 +623,20 @@
                         <Grid Margin="18">
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Grid Grid.Row="0">
-                                <TextBlock Text="Escolher aplicativo instalado" FontWeight="SemiBold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                                <TextBlock Text="Escolher aplicativo instalado" FontWeight="SemiBold" FontSize="17" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                                 <Button Style="{StaticResource GhostButton}" Padding="8,4" HorizontalAlignment="Right" Content="✕" Click="CloseAppPicker_Click"/>
                             </Grid>
                             <Grid Grid.Row="1" Margin="0,14,0,0">
                                 <local:WatermarkTextBox x:Name="AppSearchBox" Placeholder="Buscar aplicativo..." TextChanged="AppSearch_TextChanged"/>
                             </Grid>
-                            <TextBlock x:Name="AppPickerStatus" Grid.Row="2" Text="Carregando..." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11.5" Margin="2,8,0,0"/>
+                            <TextBlock x:Name="AppPickerStatus" Grid.Row="2" Text="Carregando..." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14.5" Margin="2,8,0,0"/>
                             <ListBox x:Name="AppListBox" Grid.Row="3" Margin="0,10,0,0" Background="Transparent" BorderThickness="0" ItemContainerStyle="{StaticResource PickerItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseLeftButtonDown="AppList_PreviewMouseLeftButtonDown">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                             <local:AppIconControl Icon="{Binding Icon}" HasIcon="{Binding HasIcon}" AvatarChar="{Binding AvatarChar}" Category="app" Size="24" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="12.5" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="15.5" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -661,27 +659,62 @@
                             <Button Style="{StaticResource TitleBarButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Margin="0,6,6,0" Click="DeleteConfirmCancel_Click" ToolTip="Fechar"/>
                             <StackPanel Grid.Row="1" Margin="24,8,24,16" HorizontalAlignment="Center">
                                 <Border Width="44" Height="44" CornerRadius="22" Background="{DynamicResource DangerGhostBrush}" BorderBrush="{DynamicResource DangerSoftBrush}" BorderThickness="1" HorizontalAlignment="Center" SnapsToDevicePixels="True">
-                                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="{DynamicResource DangerBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="21" Foreground="{DynamicResource DangerBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
-                                <TextBlock Text="Remover atalho?" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" Margin="0,14,0,0" TextOptions.TextFormattingMode="Ideal"/>
-                                <TextBlock x:Name="DeleteConfirmDesc" Text="Tem certeza que deseja remover este atalho?" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12.5" TextWrapping="Wrap" TextAlignment="Center" Margin="0,6,0,0" MaxWidth="340" LineHeight="18"/>
+                                <TextBlock Text="Remover atalho?" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" Margin="0,14,0,0" TextOptions.TextFormattingMode="Ideal"/>
+                                <TextBlock x:Name="DeleteConfirmDesc" Text="Tem certeza que deseja remover este atalho?" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="15.5" TextWrapping="Wrap" TextAlignment="Center" Margin="0,6,0,0" MaxWidth="340" LineHeight="18"/>
                                 <Border Margin="0,14,0,0" Background="{DynamicResource BgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="12,10" SnapsToDevicePixels="True">
                                     <Grid>
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                         <local:AppIconControl x:Name="DeleteConfirmIcon" Size="28" VerticalAlignment="Center" Category="app" HasIcon="False" AvatarChar="?" />
                                         <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock x:Name="DeleteConfirmName" Text="Abrir Spotify" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock x:Name="DeleteConfirmTarget" Text="https://..." FontSize="11.5" Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                            <TextBlock x:Name="DeleteConfirmName" Text="Abrir Spotify" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock x:Name="DeleteConfirmTarget" Text="https://..." FontSize="14.5" Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
-                                <TextBlock Text="Esta ação não pode ser desfeita." Foreground="{DynamicResource TextTertiaryBrush}" FontSize="11" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+                                <TextBlock Text="Esta ação não pode ser desfeita." Foreground="{DynamicResource TextTertiaryBrush}" FontSize="14" HorizontalAlignment="Center" Margin="0,12,0,0"/>
                             </StackPanel>
                             <Border Grid.Row="2" Background="{DynamicResource BgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" CornerRadius="0,0,16,16" Padding="16,12" SnapsToDevicePixels="True">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                         <Button Style="{StaticResource GhostButton}" Content="Cancelar" Padding="16,8" Click="DeleteConfirmCancel_Click" IsCancel="True"/>
                                         <Button Style="{StaticResource DangerPrimaryButton}" Content="Excluir" Margin="10,0,0,0" Padding="18,8" Click="DeleteConfirmConfirm_Click" IsDefault="True"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <!-- Overlay: Capturar atalho inline (etapa 4) — mini modal editorial -->
+                <Border x:Name="AddHotkeyCaptureOverlay" Visibility="Collapsed" Background="#66000000" MouseLeftButtonDown="AddHotkeyCapture_BackdropClick">
+                    <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="16" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True" Padding="0">
+                        <Border.Effect><DropShadowEffect BlurRadius="28" ShadowDepth="10" Opacity="0.18" Color="#000000"/></Border.Effect>
+                        <Grid>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Button Style="{StaticResource TitleBarButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Margin="0,6,6,0" Click="AddHotkeyCaptureCancel_Click" ToolTip="Fechar"/>
+                            <StackPanel Grid.Row="1" Margin="24,4,24,16" HorizontalAlignment="Center">
+                                <Border Width="44" Height="44" CornerRadius="22" Background="{DynamicResource AccentGhostBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" HorizontalAlignment="Center" SnapsToDevicePixels="True">
+                                    <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="21" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="Pressione a tecla desejada" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" Margin="0,14,0,0" TextOptions.TextFormattingMode="Ideal"/>
+                                <Border Margin="0,18,0,0" Background="{DynamicResource BgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="22,20" SnapsToDevicePixels="True" MinHeight="72">
+                                    <Grid>
+                                        <ItemsControl x:Name="AddHotkeyCaptureDisplay" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource KeycapLarge}"><TextBlock Text="{Binding}" FontSize="21" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border></DataTemplate></ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock x:Name="AddHotkeyCapturePlaceholder" Text="Aguardando teclas…" Foreground="{DynamicResource TextTertiaryBrush}" FontStyle="Italic" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                                <TextBlock x:Name="AddHotkeyCaptureHint" Text="Use pelo menos Ctrl, Alt, Shift ou Win + tecla" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="14" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="340"/>
+                            </StackPanel>
+                            <Border Grid.Row="3" Background="{DynamicResource BgBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" CornerRadius="0,0,16,16" Padding="16,12" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Style="{StaticResource GhostButton}" Content="Cancelar" Padding="16,8" Click="AddHotkeyCaptureCancel_Click" IsCancel="True"/>
+                                        <Button x:Name="AddHotkeyCaptureSaveButton" Style="{StaticResource PrimaryButton}" Content="Salvar atalho" Margin="10,0,0,0" Padding="18,8" Click="AddHotkeyCaptureSave_Click" IsEnabled="False" IsDefault="True"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -696,21 +729,21 @@
                         <Grid>
                             <Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                             <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}" CornerRadius="12,12,0,0">
-                                <Grid><TextBlock Text="Definir atalho" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" VerticalAlignment="Center" Margin="16,0,0,0"/><Button Style="{StaticResource TitleBarButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Click="CloseHotkeyOverlay_Click"/></Grid>
+                                <Grid><TextBlock Text="Definir atalho" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="15" VerticalAlignment="Center" Margin="16,0,0,0"/><Button Style="{StaticResource TitleBarButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Click="CloseHotkeyOverlay_Click"/></Grid>
                             </Border>
                             <Grid Grid.Row="1" Margin="24,18,24,12">
                                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                                <TextBlock x:Name="EditCommandLabel" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock x:Name="EditCommandLabel" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="15.5" TextTrimming="CharacterEllipsis"/>
                                 <Border Grid.Row="1" Margin="0,16,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="24,26">
                                     <Grid>
                                         <ItemsControl x:Name="EditKeycapDisplay" HorizontalAlignment="Center">
                                             <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource KeycapLarge}"><TextBlock Text="{Binding}" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border></DataTemplate></ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemTemplate><DataTemplate><Border Style="{StaticResource KeycapLarge}"><TextBlock Text="{Binding}" FontSize="23" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/></Border></DataTemplate></ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock x:Name="EditPressHint" Text="Pressione a combinação..." Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="EditPressHint" Text="Pressione a combinação..." Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Grid>
                                 </Border>
-                                <TextBlock x:Name="EditHintText" Grid.Row="2" Text="Dica: Ctrl, Alt, Shift ou Win + tecla  (ex.: Alt+V)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11.5" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+                                <TextBlock x:Name="EditHintText" Grid.Row="2" Text="Dica: Ctrl, Alt, Shift ou Win + tecla  (ex.: Alt+V)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14.5" HorizontalAlignment="Center" Margin="0,12,0,0"/>
                             </Grid>
                             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="24,0,24,18">
                                 <Button Style="{StaticResource GhostButton}" Content="Cancelar" Click="CloseHotkeyOverlay_Click"/>
@@ -727,20 +760,14 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Button x:Name="MicButton" Style="{StaticResource MicButton}" Content="&#xE720;" ToolTip="Segure para falar" PreviewMouseLeftButtonDown="MicButton_MouseLeftButtonDown" PreviewMouseLeftButtonUp="MicButton_MouseLeftButtonUp" LostMouseCapture="MicButton_LostMouseCapture">
                         <Button.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Button.RenderTransform>
                     </Button>
                     <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="Comando por voz" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                        <TextBlock x:Name="VoiceStatusText" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="12.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" MaxWidth="620" HorizontalAlignment="Left"/>
-                        <Button x:Name="EnableSpeechButton" Style="{StaticResource GhostButton}" Content="Abrir configurações de fala" FontSize="11" Padding="10,4" Margin="0,6,0,0" HorizontalAlignment="Left" Visibility="Collapsed" Click="EnableSpeech_Click"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Opacity="0.9">
-                        <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="20" Padding="10,5" VerticalAlignment="Center" SnapsToDevicePixels="True">
-                            <TextBlock x:Name="FooterHint" Text="Segure • fale • solte" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="11" FontWeight="Medium" VerticalAlignment="Center"/>
-                        </Border>
+                        <TextBlock Text="Comando por voz" FontSize="16.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock x:Name="VoiceStatusText" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="15.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" MaxWidth="620" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                        <Button x:Name="EnableSpeechButton" Style="{StaticResource GhostButton}" Content="Abrir configurações de fala" FontSize="14" Padding="10,4" Margin="0,6,0,0" HorizontalAlignment="Left" Visibility="Collapsed" Click="EnableSpeech_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>

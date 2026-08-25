@@ -16,6 +16,19 @@ obj/
 # Testes
 TestResults/
 
+# VoxSetup payload (gerado a partir de publish/ — não versionar)
+VoxSetup/payload.zip
+VoxSetup/bin/
+VoxSetup/obj/
+
+# Instalador buildado (gerado via dotnet publish — opcional via LFS)
+# install/ descomente se quiser versionar o instalador
+
+# Local configs
+.agents/
+.claude/
+.commandcode/
+
 # publish/ e voice/ ficam versionados de proposito:
 # eles carregam o Vox.exe funcionando e os modelos de voz
 # para usar em outra maquina via git LFS.

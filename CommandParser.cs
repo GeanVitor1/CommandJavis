@@ -41,10 +41,39 @@ public static class CommandParser
 
         if (wantSearch)
         {
+            // Generico: "pesquise X no <site/app>" — resolve para qualquer binding, nao so YouTube.
+            // Ex: usuario cria "abroba" (app ou site) => "pesquise gatos no abroba", "pesquise abroba", "procure abroba" funcionam automaticamente.
+            var genericMatch = FindBestSearchMatch(t, bindings);
+            if (genericMatch != null)
+            {
+                var matched = genericMatch.Value.Binding;
+                var siteNames = GetNormalizedNames(matched);
+                // Se t == nome do site/app sozinho => apenas abrir sem query
+                var trimmed = t.Trim();
+                if (siteNames.Any(n => trimmed == n))
+                    return VoiceCommand.Open(matched, null);
+                foreach (var n in siteNames)
+                {
+                    StripSuffix(ref t, $"no {n}", $"no site {n}", $"em {n}", $"na {n}", $"no {n} site", $"em {n} site", $"na {n} site");
+                    // tambem sem preposicao isolada
+                    if (t == n) { t = ""; break; }
+                    StripSuffix(ref t, $" {n}");
+                }
+                t = t.Trim(' ', ',', '.');
+                return VoiceCommand.Open(matched, t.Length > 0 ? t : null);
+            }
             var yt = FindYoutube(bindings);
-            if (yt == null) return null;
-            StripSuffix(ref t, "no youtube", "no site youtube", "em youtube", "na youtube");
-            return VoiceCommand.Open(yt, t.Length > 0 ? t : null);
+            if (yt != null)
+            {
+                StripSuffix(ref t, "no youtube", "no site youtube", "em youtube", "na youtube");
+                return VoiceCommand.Open(yt, t.Length > 0 ? t : null);
+            }
+            var google = bindings.FirstOrDefault(b => b.Description.Contains("google", StringComparison.OrdinalIgnoreCase));
+            if (google != null)
+                return VoiceCommand.Open(google, t.Length > 0 ? t : null);
+            var anySite = bindings.FirstOrDefault(b => b.Category == "site");
+            if (anySite != null) return VoiceCommand.Open(anySite, t.Length > 0 ? t : null);
+            return null;
         }
 
         if (wantPlay)
@@ -181,6 +210,16 @@ public static class CommandParser
             || HasWord(t, "dormir", "suspender", "dorme"))
             return (SystemCommand.Sleep, null, 0);
 
+        var minimizeName = TryMinimizeApp(t);
+        if (minimizeName != null)
+            return (SystemCommand.MinimizeApp, minimizeName, 0);
+        var maximizeName = TryMaximizeApp(t);
+        if (maximizeName != null)
+            return (SystemCommand.MaximizeApp, maximizeName, 0);
+        var focusName = TryFocusApp(t);
+        if (focusName != null)
+            return (SystemCommand.FocusApp, focusName, 0);
+
         return null;
     }
 
@@ -205,6 +244,58 @@ public static class CommandParser
                 var rest = t[w.Length..].Trim();
                 if (rest.Length > 0 && !IsStopWord(rest.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]))
                     return rest;
+            }
+        }
+        return null;
+    }
+
+    private static string? TryMinimizeApp(string t)
+    {
+        foreach (var w in new[] { "minimizar o ", "minimize o ", "minimiza o ", "minimizar a ", "minimize a ", "minimiza a ",
+                                   "minimizar ", "minimize ", "minimiza ", "ocultar o ", "oculte o ", "esconder o ", "esconda o ",
+                                   "ocultar ", "esconder ", "minimiza essa ", "minimizar essa " })
+        {
+            if (t.StartsWith(w, StringComparison.Ordinal) && t.Length > w.Length)
+            {
+                var rest = t[w.Length..].Trim();
+                if (rest.Length > 0 && !IsStopWord(rest.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]))
+                    return rest;
+            }
+        }
+        return null;
+    }
+
+    private static string? TryMaximizeApp(string t)
+    {
+        foreach (var w in new[] { "maximizar o ", "maximize o ", "maximiza o ", "maximizar a ", "maximize a ", "maximiza a ",
+                                   "maximizar ", "maximize ", "maximiza ", "restaurar o ", "restaure o ", "restaurar a ", "restaure a ",
+                                   "restaurar ", "restaure ", "expandir o ", "expanda o " })
+        {
+            if (t.StartsWith(w, StringComparison.Ordinal) && t.Length > w.Length)
+            {
+                var rest = t[w.Length..].Trim();
+                if (rest.Length > 0 && !IsStopWord(rest.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]))
+                    return rest;
+            }
+        }
+        return null;
+    }
+
+    private static string? TryFocusApp(string t)
+    {
+        foreach (var w in new[] { "focar o ", "foca o ", "focar a ", "foca a ", "focar no ", "foca no ",
+                                   "focar ", "foca ", "mostrar o ", "mostra o ", "mostrar a ", "mostra a ",
+                                   "mostrar ", "mostra ", "traga o ", "traz o ", "traga a ", "traz a ", "traga ", "traz " })
+        {
+            // evita conflito com "mostre o vox" ja tratado como ShowWindow
+            if (t.StartsWith(w, StringComparison.Ordinal) && t.Length > w.Length)
+            {
+                var rest = t[w.Length..].Trim();
+                if (rest.Length > 0 && !IsStopWord(rest.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]))
+                {
+                    if (rest.Contains("vox")) return null;
+                    return rest;
+                }
             }
         }
         return null;
@@ -364,6 +455,35 @@ public static class CommandParser
 
     private static HotkeyBinding? FindYoutube(IReadOnlyList<HotkeyBinding> bindings)
         => bindings.FirstOrDefault(b => b.Category == "site" && b.Target.Contains("youtube", StringComparison.OrdinalIgnoreCase));
+
+    // Para "pesquise X no <app/site>" generico: encontra binding cujo nome aparece em t (longest match primeiro)
+    // Assim que criar "abroba", "pesquise gatos no abroba", "pesquise abroba" ou "procure abroba" ja funcionam sem config extra.
+    private static (HotkeyBinding Binding, string Name)? FindBestSearchMatch(string t, IReadOnlyList<HotkeyBinding> bindings)
+    {
+        var names = BuildNames(bindings);
+        foreach (var (binding, name) in names.OrderByDescending(x => x.Name.Length))
+        {
+            if (name.Length < 2) continue;
+            if (t.Contains(name, StringComparison.Ordinal))
+                return (binding, name);
+        }
+        return null;
+    }
+
+    private static List<string> GetNormalizedNames(HotkeyBinding binding)
+    {
+        var list = new List<string>();
+        if (!string.IsNullOrWhiteSpace(binding.Description))
+            list.Add(Normalize(binding.Description));
+        if (Uri.TryCreate(binding.Target, UriKind.Absolute, out var uri) && !string.IsNullOrWhiteSpace(uri.Host))
+        {
+            var host = uri.Host.Replace("www.", "", StringComparison.OrdinalIgnoreCase).Split('.')[0];
+            list.Add(Normalize(host));
+        }
+        if (binding.Description != null && binding.Description.Contains("visual studio code", StringComparison.OrdinalIgnoreCase))
+            list.Add("vs code");
+        return list.Distinct().ToList();
+    }
 
     private static string StripLeadingStopwords(string q)
     {

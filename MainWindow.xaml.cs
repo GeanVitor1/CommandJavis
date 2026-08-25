@@ -36,6 +36,8 @@ public partial class MainWindow : Window
     private bool _addWinDown;
     private bool _addWasApp = true;
     private bool _addSuppressClear;
+    private string _addPrevModifiers = "";
+    private string _addPrevKey = "";
 
     // Settings view state
     private string _settingsTalkKey = "F9";
@@ -85,16 +87,19 @@ public partial class MainWindow : Window
             RepeatBehavior = RepeatBehavior.Forever
         };
 
-        _voice.StatusChanged += s => VoiceStatusText.Text = s;
+        _voice.StatusChanged += s =>
+        {
+            VoiceStatusText.Text = s;
+            VoiceStatusText.Visibility = string.IsNullOrWhiteSpace(s) ? Visibility.Collapsed : Visibility.Visible;
+        };
         _voice.PrivacyFixRequested += () => EnableSpeechButton.Visibility = Visibility.Visible;
         _voice.CommandExecuted += OnVoiceCommandExecuted;
 
         _manager.Changed += RefreshAll;
         RefreshAll();
 
-        var voiceSettings = Config.LoadVoice();
-        var talkKey = voiceSettings.Enabled ? voiceSettings.TalkHotkey : "botão";
-        VoiceStatusText.Text = $"Segure o botão ou a tecla {talkKey} e fale, ex: \"ei vox abra o youtube em coldplay paradise\" ou \"que horas são\"";
+        VoiceStatusText.Visibility = Visibility.Collapsed;
+        VoiceStatusText.Text = "";
 
         DescriptionBox.TextChanged += (_, _) => UpdateAddPreview();
         TargetBox.TextChanged += (_, _) => { UpdateAddPreview(); AutoDetectType(); };
@@ -127,6 +132,7 @@ public partial class MainWindow : Window
             AppPickerOverlay.Visibility = Visibility.Collapsed;
             EditHotkeyOverlay.Visibility = Visibility.Collapsed;
             if (DeleteConfirmOverlay != null) DeleteConfirmOverlay.Visibility = Visibility.Collapsed;
+            if (AddHotkeyCaptureOverlay != null) AddHotkeyCaptureOverlay.Visibility = Visibility.Collapsed;
         }
 
         if (ListViewRoot == null || AddViewRoot == null || SettingsViewRoot == null || HistoryViewRoot == null)
@@ -231,10 +237,14 @@ public partial class MainWindow : Window
     private void EnableSpeech_Click(object sender, RoutedEventArgs e)
     {
         try { Process.Start(new ProcessStartInfo("ms-settings:speech") { UseShellExecute = true }); }
-        catch { VoiceStatusText.Text = "Não foi possível abrir as configurações"; }
+        catch { SetVoiceStatus("Não foi possível abrir as configurações"); }
     }
 
-    public void SetVoiceStatus(string text) => VoiceStatusText.Text = text;
+    public void SetVoiceStatus(string text)
+    {
+        VoiceStatusText.Text = text;
+        VoiceStatusText.Visibility = string.IsNullOrWhiteSpace(text) ? Visibility.Collapsed : Visibility.Visible;
+    }
 
     private void SetMicVisual(bool listening)
     {
@@ -414,24 +424,21 @@ public partial class MainWindow : Window
 
     private void DefineHotkeyInline_Click(object sender, RoutedEventArgs e)
     {
-        _capturingAddHotkey = !_capturingAddHotkey;
-        if (_capturingAddHotkey)
-        {
-            HotkeyButtonText.Text = "Pressione as teclas…";
-            HotkeyButton.BorderBrush = WBrushes.Transparent;
-            HotkeyButton.Background = FindResource("AccentBrush") as WBrush;
-            HotkeyButton.Foreground = WBrushes.White;
-            CaptureHint.Visibility = Visibility.Visible;
-            HotkeyHint.Visibility = Visibility.Collapsed;
-            Activate();
-        }
-        else CloseAddCapture();
+        _addPrevModifiers = _addModifiers;
+        _addPrevKey = _addKey;
+        _capturingAddHotkey = true;
+        _addWinDown = false;
+        UpdateAddHotkeyCaptureDisplay();
+        AddHotkeyCaptureOverlay.Visibility = Visibility.Visible;
+        Activate();
+        Focus();
     }
 
     private void CloseAddCapture()
     {
         _capturingAddHotkey = false;
         _addWinDown = false;
+        if (AddHotkeyCaptureOverlay != null) AddHotkeyCaptureOverlay.Visibility = Visibility.Collapsed;
         if (HotkeyButtonText != null) HotkeyButtonText.Text = "Definir teclas";
         if (HotkeyButton != null)
         {
@@ -441,6 +448,47 @@ public partial class MainWindow : Window
         }
         if (CaptureHint != null) CaptureHint.Visibility = Visibility.Collapsed;
         if (HotkeyHint != null) HotkeyHint.Visibility = Visibility.Visible;
+    }
+
+    private void AddHotkeyCaptureCancel_Click(object sender, RoutedEventArgs e)
+    {
+        _addModifiers = _addPrevModifiers;
+        _addKey = _addPrevKey;
+        UpdateAddKeycaps();
+        UpdateAddHotkeyCaptureDisplay();
+        CloseAddCapture();
+    }
+
+    private void AddHotkeyCaptureSave_Click(object sender, RoutedEventArgs e)
+    {
+        // mantem _addModifiers/_addKey ja atualizados
+        UpdateAddKeycaps();
+        CloseAddCapture();
+    }
+
+    private void AddHotkeyCapture_BackdropClick(object sender, WMouseButtonEventArgs e)
+    {
+        if (e.OriginalSource == AddHotkeyCaptureOverlay)
+            AddHotkeyCaptureCancel_Click(sender, e);
+    }
+
+    private void UpdateAddHotkeyCaptureDisplay()
+    {
+        if (AddHotkeyCaptureDisplay == null || AddHotkeyCapturePlaceholder == null) return;
+        var parts = new List<string>();
+        if (!string.IsNullOrWhiteSpace(_addModifiers)) parts.AddRange(_addModifiers.Split('+', StringSplitOptions.RemoveEmptyEntries));
+        if (!string.IsNullOrWhiteSpace(_addKey)) parts.Add(_addKey);
+        AddHotkeyCaptureDisplay.ItemsSource = parts;
+        AddHotkeyCapturePlaceholder.Visibility = parts.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        if (AddHotkeyCaptureHint != null)
+        {
+            if (parts.Count == 0)
+                AddHotkeyCaptureHint.Text = "Pressione a combinação desejada (ex: Ctrl+Alt+S) ou Esc para cancelar";
+            else
+                AddHotkeyCaptureHint.Text = "Pressione Esc para cancelar • Enter para salvar";
+        }
+        if (AddHotkeyCaptureSaveButton != null)
+            AddHotkeyCaptureSaveButton.IsEnabled = parts.Count > 0;
     }
 
     private void UpdateAddKeycaps()
@@ -778,8 +826,8 @@ public partial class MainWindow : Window
         App.SetAutoStart(AutoStartCheck.IsChecked == true);
         if (WApplication.Current is App app) app.ApplySettings();
         SetSettingsStatus("Configurações salvas!");
-        var talkKey = s.Enabled ? s.TalkHotkey : "botão";
-        VoiceStatusText.Text = $"Segure o botão ou a tecla {talkKey} e fale, ex: \"ei vox abra o youtube em coldplay paradise\" ou \"que horas são\"";
+        VoiceStatusText.Visibility = Visibility.Collapsed;
+        VoiceStatusText.Text = "";
     }
 
     private void SettingsCancel_Click(object sender, RoutedEventArgs e) => ShowView(View.List);
@@ -788,6 +836,7 @@ public partial class MainWindow : Window
     private void Main_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         if (DeleteConfirmOverlay != null && DeleteConfirmOverlay.Visibility == Visibility.Visible && e.Key == K.Escape) { DeleteConfirmOverlay.Visibility = Visibility.Collapsed; _pendingDelete = null; e.Handled = true; return; }
+        if (AddHotkeyCaptureOverlay != null && AddHotkeyCaptureOverlay.Visibility == Visibility.Visible) { HandleAddHotkeyDown(e); return; }
         if (AppPickerOverlay.Visibility == Visibility.Visible && e.Key == K.Escape) { AppPickerOverlay.Visibility = Visibility.Collapsed; e.Handled = true; return; }
         if (EditHotkeyOverlay.Visibility == Visibility.Visible)
         {
@@ -815,9 +864,14 @@ public partial class MainWindow : Window
     {
         e.Handled = true;
         var key = e.Key == K.System ? e.SystemKey : e.Key;
-        if (key == K.Escape) { CloseAddCapture(); return; }
-        if (key == K.LWin || key == K.RWin) { _addWinDown = true; return; }
+        if (key == K.Escape) { AddHotkeyCaptureCancel_Click(this, new RoutedEventArgs()); return; }
+        if (key == K.LWin || key == K.RWin) { _addWinDown = true; UpdateAddHotkeyCaptureDisplay(); return; }
         if (key == K.LeftCtrl || key == K.RightCtrl || key == K.LeftShift || key == K.RightShift || key == K.LeftAlt || key == K.RightAlt) return;
+        if (key == K.Enter && AddHotkeyCaptureSaveButton != null && AddHotkeyCaptureSaveButton.IsEnabled)
+        {
+            AddHotkeyCaptureSave_Click(this, new RoutedEventArgs());
+            return;
+        }
         var name = FormatKey(key);
         if (name == null) return;
         var mods = new List<string>();
@@ -825,11 +879,18 @@ public partial class MainWindow : Window
         if ((Keyboard.Modifiers & ModifierKeys.Shift) != 0) mods.Add("Shift");
         if ((Keyboard.Modifiers & ModifierKeys.Alt) != 0) mods.Add("Alt");
         if (_addWinDown || Keyboard.IsKeyDown(K.LWin) || Keyboard.IsKeyDown(K.RWin)) mods.Add("Win");
-        if (mods.Count == 0 && !name.StartsWith("F")) { CaptureHint.Text = "Use pelo menos uma tecla modificadora (Ctrl, Alt, Shift ou Win) + tecla"; return; }
+        if (mods.Count == 0 && !name.StartsWith("F"))
+        {
+            if (AddHotkeyCaptureHint != null) AddHotkeyCaptureHint.Text = "Use pelo menos Ctrl, Alt, Shift ou Win + tecla (ex: Alt+S)";
+            if (CaptureHint != null) CaptureHint.Text = "Use pelo menos uma tecla modificadora (Ctrl, Alt, Shift ou Win) + tecla";
+            return;
+        }
         _addModifiers = string.Join("+", mods);
         _addKey = name;
         UpdateAddKeycaps();
-        CloseAddCapture();
+        UpdateAddHotkeyCaptureDisplay();
+        // mantem modal aberto para confirmacao visual; usuario clica Salvar ou Enter
+        if (AddHotkeyCaptureHint != null) AddHotkeyCaptureHint.Text = "Pressione Esc para cancelar • Enter para salvar";
     }
 
     private void HandleSettingsHotkeyDown(System.Windows.Input.KeyEventArgs e)

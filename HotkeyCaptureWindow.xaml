@@ -12,7 +12,7 @@
         Background="{DynamicResource BgBrush}"
         Foreground="{DynamicResource TextPrimaryBrush}"
         FontFamily="Segoe UI Variable Text, Segoe UI"
-        FontSize="13">
+        FontSize="16">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="0" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
     </shell:WindowChrome.WindowChrome>
@@ -28,7 +28,7 @@
             <!-- ===== Barra de título ===== -->
             <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}">
                 <Grid>
-                    <TextBlock Text="Definir atalho" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                    <TextBlock Text="Definir atalho" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="15" VerticalAlignment="Center" Margin="16,0,0,0"/>
                     <Button Style="{StaticResource TitleBarCloseButton}" Content="&#xE8BB;" HorizontalAlignment="Right" Click="Close_Click"/>
                 </Grid>
             </Border>
@@ -41,7 +41,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock x:Name="CommandLabel" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="CommandLabel" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="15.5" TextTrimming="CharacterEllipsis"/>
 
                 <Border Grid.Row="1" Margin="0,16,0,0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="24,26">
                     <Grid>
@@ -54,16 +54,16 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
 <Border Style="{StaticResource KeycapLarge}">
-                                        <TextBlock Text="{Binding}" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="{Binding}" FontSize="23" FontWeight="SemiBold" HorizontalAlignment="Center" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <TextBlock x:Name="PressHint" Text="Pressione a combinação..." Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="PressHint" Text="Pressione a combinação..." Foreground="{DynamicResource TextSecondaryBrush}" FontStyle="Italic" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
 
-                <TextBlock x:Name="HintText" Grid.Row="2" Text="Dica: Ctrl, Alt, Shift ou Win + tecla  (ex.: Alt+V)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11.5" HorizontalAlignment="Center" Margin="0,12,0,0"/>
+                <TextBlock x:Name="HintText" Grid.Row="2" Text="Dica: Ctrl, Alt, Shift ou Win + tecla  (ex.: Alt+V)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="14.5" HorizontalAlignment="Center" Margin="0,12,0,0"/>
             </Grid>
 
             <!-- ===== Botões ===== -->

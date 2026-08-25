@@ -568,7 +568,7 @@
                                         <TextBox x:Name="PART_EditableTextBox" Visibility="Hidden" Background="Transparent" BorderThickness="0" Margin="13,0,0,0"
                                                  VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" CaretBrush="{DynamicResource TextPrimaryBrush}"
                                                  IsReadOnly="{TemplateBinding IsReadOnly}" Focusable="True"/>
-                                        <TextBlock x:Name="Arrow" Grid.Column="1" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="9"
+                                        <TextBlock x:Name="Arrow" Grid.Column="1" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"
                                                    VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
                                     </Grid>
                                 </Border>

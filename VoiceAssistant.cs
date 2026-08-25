@@ -494,10 +494,93 @@ private async Task ProcessAsync(Task<SpeechRecognitionResult> task)
                 CloseApp(text ?? "");
                 break;
 
+            case SystemCommand.MinimizeApp:
+                MinimizeApp(text ?? "");
+                break;
+
+            case SystemCommand.MaximizeApp:
+                MaximizeApp(text ?? "");
+                break;
+
+            case SystemCommand.FocusApp:
+                FocusApp(text ?? "");
+                break;
+
             case SystemCommand.Weather:
                 await SpeakWeatherAsync();
                 break;
         }
+    }
+
+    private void MinimizeApp(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            SetStatus("Qual aplicativo devo minimizar?");
+            Speak("Qual aplicativo devo minimizar?");
+            return;
+        }
+        if (WindowControl.MinimizeAppByName(name))
+        {
+            SetStatus($"Minimizei {name}");
+            Speak($"Minimizei {name}");
+            return;
+        }
+        // fallback: tenta fechar? nao, informa nao encontrado
+        SetStatus($"Não encontrei o {name} aberto");
+        Speak($"Não encontrei o {name} aberto");
+    }
+
+    private void MaximizeApp(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            SetStatus("Qual aplicativo devo maximizar?");
+            Speak("Qual aplicativo devo maximizar?");
+            return;
+        }
+        if (WindowControl.MaximizeAppByName(name))
+        {
+            SetStatus($"Maximizei {name}");
+            Speak($"Maximizei {name}");
+            return;
+        }
+        SetStatus($"Não encontrei o {name} aberto");
+        Speak($"Não encontrei o {name} aberto");
+    }
+
+    private void FocusApp(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            SetStatus("Qual aplicativo devo focar?");
+            Speak("Qual aplicativo devo focar?");
+            return;
+        }
+        if (name.IndexOf("vox", StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            if (System.Windows.Application.Current is App voxApp) voxApp.ActivateMainWindow();
+            SetStatus("Aqui estou");
+            Speak("Aqui estou");
+            return;
+        }
+        if (WindowControl.FocusAppByName(name))
+        {
+            SetStatus($"Mostrando {name}");
+            Speak($"Mostrando {name}");
+            return;
+        }
+        // Se nao esta aberto, tenta abrir via hotkey binding
+        var b = _manager.All.FirstOrDefault(x => RemoveAccents(x.Description ?? "").ToLowerInvariant().Contains(RemoveAccents(name).ToLowerInvariant(), StringComparison.Ordinal));
+        if (b != null)
+        {
+            _manager.Execute(b);
+            SetStatus($"Abrindo {b.Description}");
+            Speak($"Abrindo {b.Description}");
+            return;
+        }
+        SetStatus($"Não encontrei o {name}");
+        Speak($"Não encontrei o {name}");
     }
 
     private void CloseApp(string name)
@@ -826,12 +909,48 @@ public void TestSpeech()
         };
         foreach (var b in _manager.All)
         {
+            var baseNames = new List<string>();
             if (!string.IsNullOrWhiteSpace(b.Description))
-                words.Add(b.Description.Trim());
+            {
+                var desc = b.Description.Trim();
+                words.Add(desc);
+                baseNames.Add(desc);
+            }
             if (b.Category == "site" && Uri.TryCreate(b.Target, UriKind.Absolute, out var uri) && !string.IsNullOrWhiteSpace(uri.Host))
             {
-                var host = uri.Host.Replace("www.", "", StringComparison.OrdinalIgnoreCase);
-                words.Add(host.Split('.')[0]);
+                var host = uri.Host.Replace("www.", "", StringComparison.OrdinalIgnoreCase).Split('.')[0];
+                words.Add(host);
+                baseNames.Add(host);
+            }
+            if (b.Description != null && b.Description.Contains("visual studio code", StringComparison.OrdinalIgnoreCase))
+                baseNames.Add("vs code");
+
+            // Variáveis automáticas: ao criar "abroba", já funciona "abra abroba", "feche abroba", "pesquise abroba" sem config extra
+            foreach (var n in baseNames.Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                var lower = n.ToLowerInvariant();
+                words.Add($"abra {lower}");
+                words.Add($"abrir {lower}");
+                words.Add($"abre {lower}");
+                words.Add($"feche {lower}");
+                words.Add($"fecha {lower}");
+                words.Add($"fechar {lower}");
+                words.Add($"pesquise {lower}");
+                words.Add($"pesquise no {lower}");
+                words.Add($"procure {lower}");
+                words.Add($"tocar {lower}");
+                words.Add($"minimizar {lower}");
+                words.Add($"minimizar o {lower}");
+                words.Add($"minimizar a {lower}");
+                words.Add($"minimize {lower}");
+                words.Add($"maximizar {lower}");
+                words.Add($"maximizar o {lower}");
+                words.Add($"restaurar {lower}");
+                words.Add($"focar {lower}");
+                words.Add($"foca {lower}");
+                words.Add($"mostrar {lower}");
+                words.Add($"mostra {lower}");
+                words.Add($"traga {lower}");
             }
         }
         _commandWords.Clear();
