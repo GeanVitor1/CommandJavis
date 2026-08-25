@@ -4,6 +4,7 @@
         xmlns:local="clr-namespace:Vox"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="Vox"
+        Icon="Vox.ico"
         Width="1280" Height="820"
         MinWidth="1000" MinHeight="680"
         WindowStyle="None"
@@ -155,8 +156,10 @@
             <Border Grid.Row="0" Background="{DynamicResource TitleBarBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" SnapsToDevicePixels="True">
                 <Grid>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
-                        <Border Width="21" Height="21" CornerRadius="6" Background="{DynamicResource AccentBrush}" SnapsToDevicePixels="True">
-                            <TextBlock Text="V" Foreground="White" FontWeight="SemiBold" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,1"/>
+                        <Border Width="21" Height="21" CornerRadius="6" SnapsToDevicePixels="True" ClipToBounds="True">
+                            <Border.Background>
+                                <ImageBrush ImageSource="Vox.png" Stretch="UniformToFill"/>
+                            </Border.Background>
                         </Border>
                         <TextBlock Text="Vox" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="12.5" FontWeight="SemiBold" VerticalAlignment="Center" Margin="9,0,0,0"/>
                         <TextBlock Text="•" Foreground="{DynamicResource TextTertiaryBrush}" FontSize="10" VerticalAlignment="Center" Margin="8,0,0,0" Opacity="0.7"/>

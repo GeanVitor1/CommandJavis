@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="Configurações"
+        Icon="Vox.ico"
         Width="600" Height="660"
         WindowStyle="None"
         ResizeMode="NoResize"

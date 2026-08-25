@@ -4,6 +4,7 @@
         xmlns:local="clr-namespace:Vox"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="Escolher aplicativo instalado"
+        Icon="Vox.ico"
         Width="620" Height="560"
         MinWidth="520" MinHeight="420"
         WindowStyle="None"

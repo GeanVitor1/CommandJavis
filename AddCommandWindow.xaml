@@ -4,6 +4,7 @@
         xmlns:local="clr-namespace:Vox"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="Adicionar comando"
+        Icon="Vox.ico"
         Width="980" Height="720"
         MinWidth="900" MinHeight="620"
         WindowStyle="None"

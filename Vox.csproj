@@ -9,8 +9,14 @@
     <Nullable>enable</Nullable>
     <AssemblyName>Vox</AssemblyName>
     <RootNamespace>Vox</RootNamespace>
-<Version>1.1.0</Version>
+    <Version>1.1.0</Version>
+    <ApplicationIcon>Vox.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Vox.ico" />
+    <Resource Include="Vox.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="tests\**\*.cs" />
