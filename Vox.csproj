@@ -20,6 +20,11 @@
 
   <ItemGroup>
     <Compile Remove="tests\**\*.cs" />
+    <Compile Remove="VoxSetup\**\*.cs" />
+    <Compile Remove="VoxSetup\**\*.xaml.cs" />
+    <None Remove="VoxSetup\**\*.*" />
+    <Page Remove="VoxSetup\**\*.*" />
+    <Resource Remove="VoxSetup\**\*.*" />
   </ItemGroup>
 
 </Project>

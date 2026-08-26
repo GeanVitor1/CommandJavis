@@ -761,7 +761,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="MicButton" Style="{StaticResource MicButton}" Content="&#xE720;" ToolTip="Segure para falar" PreviewMouseLeftButtonDown="MicButton_MouseLeftButtonDown" PreviewMouseLeftButtonUp="MicButton_MouseLeftButtonUp" LostMouseCapture="MicButton_LostMouseCapture">
+                    <Button x:Name="MicButton" Style="{StaticResource MicButton}" Content="&#xE720;" ToolTip="Clique para falar (ou segure)" PreviewMouseLeftButtonDown="MicButton_MouseLeftButtonDown" PreviewMouseLeftButtonUp="MicButton_MouseLeftButtonUp" LostMouseCapture="MicButton_LostMouseCapture">
                         <Button.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Button.RenderTransform>
                     </Button>
                     <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">

@@ -107,13 +107,15 @@ public void ConfigureTalkHotkey(string keyName)
     {
         if (string.Equals(deviceId, _microphoneId, StringComparison.OrdinalIgnoreCase))
             return;
+        Logger.Info($"SetMicrophone: '{_microphoneId}' -> '{deviceId}' (reset recognizer)");
         _microphoneId = deviceId ?? "";
         ResetRecognizer();
     }
 
     private void ResetRecognizer()
     {
-        try { _recognizer?.Dispose(); } catch { }
+        Logger.Info("ResetRecognizer");
+        try { _recognizer?.Dispose(); } catch (Exception ex) { Logger.Error("ResetRecognizer Dispose", ex); }
         _recognizer = null;
     }
 
@@ -297,26 +299,60 @@ public async Task<bool> StartAsync()
 private async Task ProcessAsync(Task<SpeechRecognitionResult> task)
     {
         SpeechRecognitionResult? result = null;
-        try { result = await task; } catch { }
+        Exception? taskEx = null;
+        try { result = await task; } catch (Exception ex) { taskEx = ex; Logger.Error("ProcessAsync await", ex); }
         if (!ReferenceEquals(task, _pending)) return;
         _pending = null;
         _listening = false;
         ListeningChanged?.Invoke(false);
 
+        var status = result?.Status.ToString() ?? taskEx?.GetType().Name ?? "null";
+        Logger.Info($"ProcessAsync: Status={status} Text='{result?.Text}' Confidence={result?.RawConfidence:0.00} HResult=0x{(taskEx?.HResult ?? 0):X8}");
+
         var text = result?.Text?.Trim();
         if (result == null || string.IsNullOrEmpty(text))
         {
             PlayEndFeedback();
-            SetStatus(result?.Status == SpeechRecognitionResultStatus.MicrophoneUnavailable
-                ? "Microfone não disponível"
-                : "Não entendi, tente de novo");
+            // Diagnóstico mais útil
+            if (taskEx != null)
+            {
+                SetStatus($"Erro de microfone: {taskEx.Message}");
+                Logger.Error("ProcessAsync task exception", taskEx);
+                return;
+            }
+            if (result?.Status == SpeechRecognitionResultStatus.MicrophoneUnavailable)
+            {
+                SetStatus("Microfone não disponível — verifique nas Configurações > Microfone");
+                return;
+            }
+            if (result?.Status == SpeechRecognitionResultStatus.AudioQualityFailure)
+            {
+                SetStatus("Qualidade de áudio muito baixa — fale mais perto do microfone");
+                return;
+            }
+            if (result?.Status == SpeechRecognitionResultStatus.NetworkFailure)
+            {
+                SetStatus("Falha de rede no reconhecimento");
+                return;
+            }
+            // Timeout por silêncio
+            SetStatus("Não ouvi nada — clique no microfone e fale claramente em até 8s");
             return;
         }
 
         if (result.Status == SpeechRecognitionResultStatus.Success && result.RawConfidence < MinConfidence)
         {
             PlayEndFeedback();
-            SetStatus($"Não entendi, tente de novo (\"{text}\")");
+            Logger.Info($"Baixa confianca: {result.RawConfidence:0.00} para '{text}' — threshold {MinConfidence}");
+            SetStatus($"Não entendi bem (\"{text}\") — tente falar mais claro");
+            Speak("Não entendi muito bem, tente falar mais claro");
+            return;
+        }
+
+        if (result.Status != SpeechRecognitionResultStatus.Success)
+        {
+            PlayEndFeedback();
+            SetStatus($"Reconhecimento falhou: {result.Status} — tente de novo");
             return;
         }
 
@@ -787,13 +823,19 @@ public void TestSpeech()
             if (!string.IsNullOrWhiteSpace(_microphoneId))
             {
                 var ok = MicrophoneSelector.SetDefaultCaptureDevice(_microphoneId);
-                Logger.Info($"SetDefaultCaptureDevice({_microphoneId}) -> {ok}");
+                Logger.Info($"SetDefaultCaptureDevice({ShortId(_microphoneId)}) -> {ok}");
+                if (!ok)
+                {
+                    SetStatus("Não consegui trocar o microfone. Verifique a seleção em Configurações.");
+                    // continua mesmo se falhou, tenta com padrão do Windows
+                }
             }
 
             var tag = PickLanguageTag();
+            Logger.Info($"EnsureReady: idioma escolhido={tag} grammarLangs={string.Join(",", SpeechRecognizer.SupportedGrammarLanguages.Select(l=>l.LanguageTag))}");
             if (tag == null)
             {
-                SetStatus("Nenhum idioma de fala instalado");
+                SetStatus("Nenhum idioma de fala instalado — instale pt-BR em Configurações > Idioma");
                 return false;
             }
 
@@ -812,30 +854,36 @@ public void TestSpeech()
             };
 
             rec.Constraints.Add(new SpeechRecognitionTopicConstraint(SpeechRecognitionScenario.Dictation, "vox"));
+            SpeechRecognitionCompilationResult compiledDict;
             try
             {
-                var compiled = await rec.CompileConstraintsAsync();
-                if (compiled.Status != SpeechRecognitionResultStatus.Success)
-                    throw new InvalidOperationException("dictation unavailable");
+                compiledDict = await rec.CompileConstraintsAsync();
+                Logger.Info($"Compile dictation: {compiledDict.Status}");
+                if (compiledDict.Status != SpeechRecognitionResultStatus.Success)
+                    throw new InvalidOperationException($"dictation compile {compiledDict.Status}");
             }
-            catch
+            catch (Exception exDict)
             {
+                Logger.Info($"Dictation falhou ({exDict.Message}), tentando ListConstraint com {_commandWords.Count} palavras");
                 rec.Constraints.Clear();
                 rec.Constraints.Add(new SpeechRecognitionListConstraint(_commandWords, "comandos"));
                 var compiled = await rec.CompileConstraintsAsync();
+                Logger.Info($"Compile list: {compiled.Status}");
                 if (compiled.Status != SpeechRecognitionResultStatus.Success)
                 {
                     rec.Dispose();
-                    SetStatus("Reconhecimento de voz indisponível");
+                    SetStatus($"Reconhecimento de voz indisponível ({compiled.Status})");
                     return false;
                 }
             }
 
             _recognizer = rec;
+            Logger.Info("Recognizer pronto com sucesso");
             return true;
         }
         catch (Exception ex)
         {
+            Logger.Error("EnsureReadyAsync", ex);
             SetStatus("Erro ao preparar a voz: " + ex.Message);
             return false;
         }
@@ -873,13 +921,16 @@ public void TestSpeech()
 
     private static void PlayStartFeedback()
     {
-        try { SystemSounds.Beep.Play(); } catch { }
+        // Troca Beep (som de erro) por Asterisk mais suave; usuário relatou "barulho no windows"
+        try { SystemSounds.Asterisk.Play(); } catch { }
     }
 
     private static void PlayEndFeedback()
     {
         try { SystemSounds.Asterisk.Play(); } catch { }
     }
+
+    private static string ShortId(string? id) => string.IsNullOrEmpty(id) ? "(vazio)" : id.Length > 50 ? id.Substring(id.Length - 50) : id;
 
     private void RebuildCommandWords()
     {

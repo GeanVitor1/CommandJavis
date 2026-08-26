@@ -26,6 +26,7 @@ public partial class MainWindow : Window
     private readonly ICollectionView _view;
     private readonly DoubleAnimation _pulseAnim;
     private bool _micDown;
+    private DateTime _micDownTime;
     private bool _navigating;
 
     // Add view state
@@ -94,6 +95,7 @@ public partial class MainWindow : Window
         };
         _voice.PrivacyFixRequested += () => EnableSpeechButton.Visibility = Visibility.Visible;
         _voice.CommandExecuted += OnVoiceCommandExecuted;
+        _voice.ListeningChanged += OnVoiceListeningChanged;
 
         _manager.Changed += RefreshAll;
         RefreshAll();
@@ -207,13 +209,26 @@ public partial class MainWindow : Window
     }
 
     // ===== Voice mic =====
+    // Suporta clique-toggle e segurar: clique curto = liga/desliga, segurar longo = push-to-talk
     private async void MicButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        _micDown = true;
-        SetMicVisual(true);
-        if (!await _voice.StartAsync() && _micDown)
+        _micDownTime = DateTime.UtcNow;
+        // Se ja esta ouvindo, segundo clique = parar (toggle off)
+        if (_voice.IsListening)
         {
             _micDown = false;
+            e.Handled = true;
+            try { MicButton.ReleaseMouseCapture(); } catch { }
+            await _voice.StopAsync();
+            return;
+        }
+        _micDown = true;
+        SetMicVisual(true);
+        try { MicButton.CaptureMouse(); } catch { }
+        if (!await _voice.StartAsync())
+        {
+            _micDown = false;
+            try { MicButton.ReleaseMouseCapture(); } catch { }
             SetMicVisual(false);
         }
     }
@@ -221,17 +236,36 @@ public partial class MainWindow : Window
     private async void MicButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         if (!_micDown) return;
+        var heldMs = (DateTime.UtcNow - _micDownTime).TotalMilliseconds;
+        // Clique curto (<380ms) = modo toggle, mantém ouvindo até próximo clique ou timeout automático
+        if (heldMs < 380)
+        {
+            _micDown = false;
+            try { MicButton.ReleaseMouseCapture(); } catch { }
+            // Não para, deixa reconhecimento continuar (timeout de silêncio vai parar sozinho)
+            // Mantém visual ligado via ListeningChanged
+            return;
+        }
         _micDown = false;
-        SetMicVisual(false);
+        try { MicButton.ReleaseMouseCapture(); } catch { }
+        // segurar longo = push-to-talk, soltar = parar
         await _voice.StopAsync();
     }
 
     private void MicButton_LostMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
     {
         if (!_micDown) return;
+        var heldMs = (DateTime.UtcNow - _micDownTime).TotalMilliseconds;
+        // Se perdeu captura após clique curto, é toggle -> ignora
+        if (heldMs < 380) { _micDown = false; return; }
         _micDown = false;
-        SetMicVisual(false);
         _ = _voice.StopAsync();
+    }
+
+    private void OnVoiceListeningChanged(bool listening)
+    {
+        Dispatcher.BeginInvoke(() => SetMicVisual(listening));
+        if (!listening) _micDown = false;
     }
 
     private void EnableSpeech_Click(object sender, RoutedEventArgs e)
