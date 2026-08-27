@@ -61,10 +61,12 @@ public class ShortcutManager : IDisposable
     {
         try
         {
+            var expandedTarget = Environment.ExpandEnvironmentVariables(b.Target ?? "");
+            var expandedArgs = Environment.ExpandEnvironmentVariables(b.Arguments ?? "");
             ProcessStartInfo psi;
             if (b.Action.Equals("command", StringComparison.OrdinalIgnoreCase))
             {
-                psi = new ProcessStartInfo("cmd.exe", $"/c {b.Target}")
+                psi = new ProcessStartInfo("cmd.exe", $"/c {expandedTarget}")
                 {
                     UseShellExecute = false,
                     CreateNoWindow = true
@@ -72,10 +74,10 @@ public class ShortcutManager : IDisposable
             }
             else
             {
-                psi = new ProcessStartInfo(b.Target)
+                psi = new ProcessStartInfo(expandedTarget)
                 {
                     UseShellExecute = true,
-                    Arguments = b.Arguments ?? ""
+                    Arguments = expandedArgs
                 };
             }
             Process.Start(psi);

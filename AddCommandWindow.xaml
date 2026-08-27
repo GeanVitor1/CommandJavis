@@ -71,6 +71,18 @@
             <Setter Property="Margin" Value="0,6,0,0"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
+
+        <Style x:Key="TypeCardSubtitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="Opacity" Value="0.85"/>
+            <Setter Property="FontSize" Value="13.5"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=RadioButton}}" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Opacity" Value="0.90"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
@@ -145,7 +157,7 @@
                                         <local:WatermarkTextBox x:Name="DescriptionBox"/>
                                         <TextBlock Text="&#xE7B5;" FontFamily="Segoe MDL2 Assets" FontSize="15" Foreground="{DynamicResource TextTertiaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0" IsHitTestVisible="False" Opacity="0.85"/>
                                     </Grid>
-                                    <TextBlock x:Name="NameError" Text="Digite um nome para o comando." FontSize="14" Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
+                                    <TextBlock x:Name="NameError" Text="Digite um nome para o comando." FontSize="13.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,6,0,0" Visibility="Collapsed" Opacity="0.95"/>
                                     <TextBlock Text="Use um nome claro, ex: “Abrir YouTube”" FontSize="14" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,6,0,0" Opacity="0.9"/>
 
                                     <Border Height="1" Background="{DynamicResource BorderBrush}" Opacity="0.45" Margin="0,18,0,18"/>
@@ -164,7 +176,7 @@
                                             <Grid>
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Border Width="32" Height="32" CornerRadius="16" Background="{DynamicResource SurfaceHoverBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                                    <StackPanel Margin="9,0,0,0" VerticalAlignment="Center"><TextBlock Text="Site" FontWeight="SemiBold" FontSize="15"/><TextBlock Text="Abre uma página" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/><TextBlock Text="na web" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/></StackPanel>
+                                                    <StackPanel Margin="9,0,0,0" VerticalAlignment="Center"><TextBlock Text="Site" FontWeight="SemiBold" FontSize="15"/><TextBlock Text="Abre uma página" Style="{StaticResource TypeCardSubtitle}"/><TextBlock Text="na web" Style="{StaticResource TypeCardSubtitle}"/></StackPanel>
                                                 </StackPanel>
                                                 <Border x:Name="CheckUrl" Width="16" Height="16" CornerRadius="8" Background="{DynamicResource AccentBrush}" BorderBrush="White" BorderThickness="1.5" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0" Visibility="Collapsed" SnapsToDevicePixels="True"><TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="10.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
                                             </Grid>
@@ -173,7 +185,7 @@
                                             <Grid>
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Border Width="32" Height="32" CornerRadius="16" Background="{DynamicResource SurfaceHoverBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE8FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Aplicativo" FontWeight="SemiBold" FontSize="15"/><TextBlock Text="Abre um programa" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/><TextBlock Text="instalado" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/></StackPanel>
+                                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Aplicativo" FontWeight="SemiBold" FontSize="15"/><TextBlock Text="Abre um programa" Style="{StaticResource TypeCardSubtitle}"/><TextBlock Text="instalado" Style="{StaticResource TypeCardSubtitle}"/></StackPanel>
                                                 </StackPanel>
                                                 <Border x:Name="CheckApp" Width="16" Height="16" CornerRadius="8" Background="{DynamicResource AccentBrush}" BorderBrush="White" BorderThickness="1.5" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0" Visibility="Visible" SnapsToDevicePixels="True"><TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="10.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
                                             </Grid>
@@ -182,7 +194,7 @@
                                             <Grid>
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Border Width="32" Height="32" CornerRadius="16" Background="{DynamicResource SurfaceHoverBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"><TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Comando" FontWeight="SemiBold" FontSize="15"/><TextBlock Text="Executa uma ação" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/><TextBlock Text="no terminal" FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" Opacity="0.85"/></StackPanel>
+                                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center"><TextBlock Text="Comando" FontWeight="SemiBold" FontSize="15"/><TextBlock Text="Executa uma ação" Style="{StaticResource TypeCardSubtitle}"/><TextBlock Text="no terminal" Style="{StaticResource TypeCardSubtitle}"/></StackPanel>
                                                 </StackPanel>
                                                 <Border x:Name="CheckCmd" Width="16" Height="16" CornerRadius="8" Background="{DynamicResource AccentBrush}" BorderBrush="White" BorderThickness="1.5" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-5,-5,0" Visibility="Collapsed" SnapsToDevicePixels="True"><TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="10.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
                                             </Grid>
@@ -196,20 +208,26 @@
                                         <Border Width="20" Height="20" CornerRadius="10" Background="{DynamicResource AccentBrush}" SnapsToDevicePixels="True"><TextBlock Text="3" FontWeight="SemiBold" FontSize="13" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
                                         <TextBlock Style="{StaticResource StepLabel}" Text="Destino" FontSize="15.5"/>
                                     </StackPanel>
-                                    <Grid Margin="0,8,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <local:WatermarkTextBox x:Name="TargetBox"/>
-                                        <Button x:Name="PickAppButton" Grid.Column="1" Style="{StaticResource GhostButton}" Padding="12,7" Margin="10,0,0,0" VerticalAlignment="Center" Click="PickApp_Click">
+                                    <StackPanel Margin="0,8,0,0">
+                                        <Button x:Name="PickAppButton" HorizontalAlignment="Left" Padding="18,11" Margin="0,0,0,12" Click="PickApp_Click" FontSize="14.5" FontWeight="SemiBold">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource GhostButton}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsChecked, ElementName=OpenType}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center"/>
-                                                <TextBlock Text="Escolher aplicativo" Margin="7,0,0,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" FontSize="17" VerticalAlignment="Center"/>
+                                                <TextBlock Text="Escolher aplicativo" Margin="8,0,0,0" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
-                                    </Grid>
-                                    <TextBlock x:Name="TargetError" Text="Digite um link, caminho ou escolha um app" FontSize="14" Foreground="{DynamicResource DangerBrush}" Margin="0,6,0,0" Visibility="Collapsed"/>
+                                        <local:WatermarkTextBox x:Name="TargetBox"/>
+                                    </StackPanel>
+                                    <TextBlock x:Name="TargetError" Text="Digite um link, caminho ou escolha um app" FontSize="13.5" Foreground="{DynamicResource TextTertiaryBrush}" Margin="0,6,0,0" Visibility="Collapsed" Opacity="0.95"/>
                                     <TextBlock Style="{StaticResource StepHint}" Text="Cole um link, digite o caminho de um programa ou clique no botão acima."/>
 
                                     <Border Height="1" Background="{DynamicResource BorderBrush}" Opacity="0.45" Margin="0,18,0,18"/>

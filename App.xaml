@@ -673,8 +673,8 @@
                                     <Setter TargetName="bd" Property="BorderThickness" Value="1.5"/>
                                 </Trigger>
                                 <DataTrigger Binding="{Binding HasError, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                    <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource DangerBrush}"/>
-                                    <Setter TargetName="bd" Property="BorderThickness" Value="1.5"/>
+                                    <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                                    <Setter TargetName="bd" Property="BorderThickness" Value="1"/>
                                 </DataTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
