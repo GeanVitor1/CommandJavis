@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VOX — Atalhos e voz para Windows</title>
+<meta name="description" content="VOX — hub de comandos para Windows. Cada comando tem atalho global e voz em pt-BR. 100% offline." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#"><span class="nav-mark">●</span> VOX <span class="nav-ver">v1.1</span></a>
+    <div class="nav-links">
+      <a href="#filosofia">Filosofia</a>
+      <a href="#preview">Preview</a>
+      <a href="#download">Download</a>
+    </div>
+    <div class="nav-actions">
+      <span class="nav-badge"><span class="dot"></span> atalhos · voz · offline</span>
+      <a class="btn-pill btn-pill--dark" href="#download">Baixar grátis <span class="arrow">→</span></a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="#filosofia">Filosofia</a>
+    <a href="#preview">Preview</a>
+    <a href="#download">Download</a>
+    <a class="btn-pill btn-pill--dark" href="#download">Baixar grátis →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-echo-wrap">
+    <div class="echo-stack" aria-hidden="true">
+      <span class="echo e4">VOX</span><span class="echo e3">VOX</span><span class="echo e2">VOX</span><span class="echo e1">VOX</span><span class="echo e0">VOX</span>
+    </div>
+    <div class="hero-foreground">
+      <h1 class="hero-title">VOX</h1>
+      <p class="hero-sub">Teclas e <em>voz</em>.<br>Um comando, dois gatilhos.</p>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-desc">
+      <p>Cada comando tem <strong>atalho global</strong> e <strong>voz em pt-BR</strong>. <span class="kbd">Alt+Y</span> ou <strong>“abra o youtube”</strong> — mesmo alvo. 100% offline.</p>
+
+      <div class="dual-proof">
+        <div class="dual-item"><span class="dual-kbd">Alt+Y</span><span class="dual-eq">⇄</span><span class="dual-voice">“abra o youtube”</span></div>
+        <div class="dual-item"><span class="dual-kbd">Alt+V</span><span class="dual-eq">⇄</span><span class="dual-voice">“abra o vs code”</span></div>
+      </div>
+
+      <div class="hero-ctas">
+        <a class="btn-pill btn-pill--dark btn-pill--lg" href="#download">Baixar para Windows <span class="arrow">→</span></a>
+        <button class="btn-pill btn-pill--ghost btn-pill--lg" id="btnDemo">▶ Demo</button>
+      </div>
+      <div class="hero-meta"><span>hotkeys</span><span class="sep">·</span><span>voz</span><span class="sep">·</span><span>0 nuvem</span></div>
+    </div>
+
+    <div class="hero-card">
+      <div class="mic-card" id="micCard">
+        <div class="mic-card-top">
+          <span class="mic-label" id="micLabel">ATALHO · Alt+Y</span>
+          <span class="mic-live" id="micLive"><span class="live-dot"></span> OU TECLE</span>
+        </div>
+        <div class="wave" id="wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="mic-transcript" id="transcript">Alt+Y → YouTube</div>
+        <div class="mic-action" id="micAction">↗ ou diga <em>“abra o youtube”</em></div>
+        <div class="mic-hint">mesmo comando — <b>atalho</b> ou <b>voz</b></div>
+      </div>
+      <div class="hero-stats">
+        <div><strong>∞</strong><span>comandos</span></div>
+        <div><strong>2×</strong><span>gatilhos</span></div>
+        <div><strong>0</strong><span>nuvem</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>↓</span> atalho e voz lado a lado</div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Alt+Y → YouTube — </span><span>“abra o youtube em lo-fi” — </span><span>Alt+V → VS Code — </span><span>“abra o vs code” — </span><span>Alt+S → Spotify — </span><span>“toque lo-fi no spotify” — </span><span>Alt+G → Google — </span><span>“pesquise bossa nova no google” — </span><span>Alt+D → Discord — </span><span>“abra o discord” — </span><span>Alt+W → WhatsApp — </span><span>“mensagem no whatsapp” — </span><span>Alt+T → Terminal — </span><span>“que horas são” — </span><span>“que dia é hoje” — </span><span>“aumenta o volume” — </span><span>“volume 50” — </span><span>“mudo” — </span><span>“tire um print” — </span><span>“minimize tudo” — </span><span>“feche o chrome” — </span><span>“foca no whatsapp” — </span><span>“previsão do tempo” — </span><span>“me lembre em 5 minutos” — </span><span>Alt+N → Netflix — </span><span>“abra a netflix” — </span><span>Alt+M → Mercado Livre — </span><span>“pesquise no mercado livre” — </span><span>Alt+L → Globo — </span><span>“abra o globo” — </span><span>“tema escuro” — </span><span>“tema claro” — </span>
+    <span>Alt+Y → YouTube — </span><span>“abra o youtube em lo-fi” — </span><span>Alt+V → VS Code — </span><span>“abra o vs code” — </span><span>Alt+S → Spotify — </span><span>“toque lo-fi no spotify” — </span><span>Alt+G → Google — </span><span>“pesquise bossa nova no google” — </span><span>Alt+D → Discord — </span><span>“abra o discord” — </span><span>Alt+W → WhatsApp — </span><span>“mensagem no whatsapp” — </span><span>Alt+T → Terminal — </span><span>“que horas são” — </span><span>“que dia é hoje” — </span><span>“aumenta o volume” — </span><span>“volume 50” — </span><span>“mudo” — </span><span>“tire um print” — </span><span>“minimize tudo” — </span><span>“feche o chrome” — </span><span>“foca no whatsapp” — </span><span>“previsão do tempo” — </span><span>“me lembre em 5 minutos” — </span><span>Alt+N → Netflix — </span><span>“abra a netflix” — </span><span>Alt+M → Mercado Livre — </span><span>“pesquise no mercado livre” — </span><span>Alt+L → Globo — </span><span>“abra o globo” — </span><span>“tema escuro” — </span><span>“tema claro” — </span>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="filosofia">
+  <div class="hairline"></div>
+  <blockquote class="quote">Teclado para <i>velocidade</i>.<br>Voz para <i>liberdade</i>.</blockquote>
+  <p class="quote-sub">O centro é o <strong>comando</strong>, não o gatilho. Um registro, dois usos.</p>
+
+  <div class="phil-editorial">
+    <div class="phil-item" data-n="01">
+      <span class="phil-num">01 — TECLAS</span>
+      <h3>Atalhos globais</h3>
+      <p>Funcionam em qualquer janela, mesmo minimizado. Defina ou deixe só voz.</p>
+      <span class="phil-meta">hotkeys · Win32 · Alt+letra</span>
+    </div>
+    <div class="phil-divider" aria-hidden="true"></div>
+    <div class="phil-item" data-n="02">
+      <span class="phil-num">02 — VOZ</span>
+      <h3>Voz natural</h3>
+      <p>Entende “abri o yutube”. Fuzzy + pt-BR offline, sem cadastrar variações.</p>
+      <span class="phil-meta">pt-BR offline · Piper TTS</span>
+    </div>
+    <div class="phil-divider" aria-hidden="true"></div>
+    <div class="phil-item" data-n="03">
+      <span class="phil-num">03 — UNIFICADO</span>
+      <h3>Um comando,<br>dois gatilhos</h3>
+      <p>Crie “spotify” e ganhe abrir, buscar <code>{q}</code>, fechar e focar.</p>
+      <span class="phil-meta">config.json · {q} automático</span>
+    </div>
+  </div>
+</section>
+
+<!-- DUAL — sem cards, editorial -->
+<section class="dual-editorial-wrap">
+  <div class="dual-editorial-head">
+    <span class="eyebrow">— Mesmo comando. Você escolhe como dispara.</span>
+    <h2>Mesmo <i>comando</i>. Dois gatilhos.</h2>
+  </div>
+  <div class="dual-editorial">
+    <div class="dual-col dual-col--left">
+      <div class="dual-col-head"><span class="dual-col-icon">⌨</span> Via atalho</div>
+      <ul class="dual-list">
+        <li><span class="dual-k">Alt+Y</span><span class="dual-v">YouTube</span><span class="dual-dash">—</span><span class="dual-sub">em qualquer app</span></li>
+        <li><span class="dual-k">Alt+V</span><span class="dual-v">VS Code</span><span class="dual-dash">—</span><span class="dual-sub">global</span></li>
+        <li><span class="dual-k">Alt+S</span><span class="dual-v">Spotify</span><span class="dual-dash">—</span><span class="dual-sub">instantâneo</span></li>
+      </ul>
+    </div>
+    <div class="dual-centerline" aria-hidden="true">
+      <span class="dual-center-vs">⇄</span>
+      <span class="dual-center-label">mesmo<br>comando</span>
+    </div>
+    <div class="dual-col dual-col--right">
+      <div class="dual-col-head"><span class="dual-col-icon dual-col-icon--voice">◉</span> Via voz</div>
+      <ul class="dual-list">
+        <li><span class="dual-quote">“abra o youtube”</span></li>
+        <li><span class="dual-quote">“abra o vs code”</span></li>
+        <li><span class="dual-quote">“toque no spotify”</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="showcase" id="preview">
+  <div class="section-head">
+    <span class="eyebrow">— WPF minimalista · lista única</span>
+    <h2>O app é <i>brutalmente</i> simples.</h2>
+    <p>Uma lista. Cada cartão é um comando.</p>
+  </div>
+
+  <!-- APP INTERATIVO — réplica clicável do WPF -->
+  <div class="app-demo-wrap reveal">
+    <div class="app-window" id="appWindow" role="application" aria-label="Vox — demo interativa">
+      <!-- titlebar -->
+      <div class="app-titlebar">
+        <div class="app-title-left">
+          <span class="app-icon-img" aria-hidden="true">●</span>
+          <span class="app-title">Vox</span>
+          <div class="app-nav" role="tablist">
+            <button class="app-nav-pill active" data-view="list" role="tab" aria-selected="true">Início</button>
+            <button class="app-nav-pill" data-view="history" role="tab">Histórico</button>
+            <button class="app-nav-pill" data-view="settings" role="tab">Configurações</button>
+          </div>
+        </div>
+        <div class="app-title-right">
+          <button class="app-win-btn" title="Minimizar" aria-label="Minimizar">—</button>
+          <button class="app-win-btn app-win-close" title="Fechar" aria-label="Fechar">×</button>
+        </div>
+      </div>
+
+      <!-- body -->
+      <div class="app-body">
+        <!-- LIST VIEW -->
+        <div class="app-view active" id="viewList">
+          <div class="app-header">
+            <div>
+              <h3>Seus atalhos</h3>
+              <p>Pressione a combinação em qualquer lugar do Windows</p>
+            </div>
+            <button class="app-primary-btn" id="btnNewCommand">+ Novo comando</button>
+          </div>
+
+          <div class="app-tabs-bar">
+            <div class="app-tabs">
+              <button class="app-tab active" data-tab="app">Aplicativos</button>
+              <button class="app-tab" data-tab="site">Sites</button>
+            </div>
+            <div class="app-search">
+              <input id="appSearch" placeholder="Buscar comando…" autocomplete="off" spellcheck="false" />
+              <span class="app-search-icon">⌕</span>
+            </div>
+          </div>
+
+          <div class="app-list" id="appList" role="list"></div>
+
+          <div class="app-empty" id="appEmptyApp" style="display:none">
+            <div class="app-empty-icon">◧</div>
+            <b>Nenhum aplicativo por aqui</b>
+            <span>Clique em “Novo comando” para adicionar seu primeiro atalho.</span>
+            <button class="app-ghost-btn" id="emptyAddApp">Criar comando</button>
+          </div>
+          <div class="app-empty" id="appEmptySite" style="display:none">
+            <div class="app-empty-icon">◎</div>
+            <b>Nenhum site por aqui</b>
+            <span>Seus sites favoritos aparecerão aqui.</span>
+          </div>
+          <div class="app-empty" id="appEmptySearch" style="display:none">
+            <div class="app-empty-icon">⌕</div>
+            <b>Nenhum resultado</b>
+            <span id="appEmptySearchText"></span>
+          </div>
+        </div>
+
+        <!-- ADD VIEW -->
+        <div class="app-view" id="viewAdd">
+          <div class="app-add-head">
+            <button class="app-back-btn" id="btnBackList" title="Voltar">‹</button>
+            <div>
+              <h3 id="addTitle">Adicionar aplicativo</h3>
+              <p>Crie um comando para abrir sites, programas ou executar ações.</p>
+            </div>
+          </div>
+
+          <div class="app-steps">
+            <div class="app-step active" data-step="1"><span class="app-step-num">1</span><span class="app-step-label">Nome</span></div>
+            <div class="app-step-line"></div>
+            <div class="app-step" data-step="2"><span class="app-step-num">2</span><span class="app-step-label">Tipo</span></div>
+            <div class="app-step-line"></div>
+            <div class="app-step" data-step="3"><span class="app-step-num">3</span><span class="app-step-label">Destino</span></div>
+            <div class="app-step-line"></div>
+            <div class="app-step" data-step="4"><span class="app-step-num">4</span><span class="app-step-label">Atalho</span><span class="app-step-optional">opcional</span></div>
+          </div>
+
+          <div class="app-add-body">
+            <div class="app-add-form">
+              <div class="app-field">
+                <label class="app-field-head"><span class="app-field-num">1</span> Nome do comando</label>
+                <div class="app-input-wrap">
+                  <input id="addName" placeholder="Ex: Abrir YouTube" autocomplete="off" />
+                  <span class="app-input-icon">✎</span>
+                </div>
+                <span class="app-field-error" id="addNameError" style="display:none">Digite um nome para o comando.</span>
+                <span class="app-field-hint">Use um nome claro, ex: “Abrir YouTube”</span>
+              </div>
+
+              <div class="app-field">
+                <label class="app-field-head"><span class="app-field-num">2</span> Tipo</label>
+                <div class="app-type-grid">
+                  <button class="app-type-card" data-type="site">
+                    <span class="app-type-icon">◎</span>
+                    <span><b>Site</b><span>Abre uma página na web</span></span>
+                    <span class="app-type-check">✓</span>
+                  </button>
+                  <button class="app-type-card active" data-type="app">
+                    <span class="app-type-icon">◧</span>
+                    <span><b>Aplicativo</b><span>Abre um programa</span></span>
+                    <span class="app-type-check">✓</span>
+                  </button>
+                  <button class="app-type-card" data-type="command">
+                    <span class="app-type-icon">›_</span>
+                    <span><b>Comando</b><span>Executa no terminal</span></span>
+                    <span class="app-type-check">✓</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="app-field">
+                <label class="app-field-head"><span class="app-field-num">3</span> Destino</label>
+                <div class="app-input-row">
+                  <div class="app-input-wrap" style="flex:1">
+                    <input id="addTarget" placeholder="Cole um link ou caminho — ex: https://youtube.com" autocomplete="off" />
+                  </div>
+                  <button class="app-ghost-btn" id="btnPickApp">Escolher aplicativo</button>
+                </div>
+                <div class="app-picker" id="appPicker" style="display:none">
+                  <div class="app-picker-search"><input id="pickerSearch" placeholder="Buscar app instalado…" autocomplete="off" /></div>
+                  <div class="app-picker-list" id="pickerList"></div>
+                </div>
+                <span class="app-field-error" id="addTargetError" style="display:none">Digite um link ou escolha um app.</span>
+                <span class="app-field-hint">Dica: use <code>{q}</code> no link para busca por voz — ex: <code>https://open.spotify.com/search/{q}</code></span>
+              </div>
+
+              <div class="app-field">
+                <label class="app-field-head"><span class="app-field-num">4</span> Atalho do teclado <span class="app-step-optional">opcional</span></label>
+                <div class="app-hotkey-row">
+                  <button class="app-ghost-btn" id="btnHotkey">⌨ Definir teclas</button>
+                  <div class="app-keycaps" id="addKeycaps"></div>
+                  <span class="app-no-hotkey" id="addNoHotkey">Sem atalho</span>
+                </div>
+                <span class="app-field-hint" id="hotkeyHint">Você também pode usar o comando apenas por voz. Pressione <b>Alt+letra</b>.</span>
+                <span class="app-field-hint" id="hotkeyCaptureHint" style="display:none;color:var(--focus)">Pressione a combinação desejada (ex: Alt+S) ou Esc para cancelar…</span>
+              </div>
+            </div>
+
+            <div class="app-preview">
+              <div class="app-preview-label">PRÉ-VISUALIZAÇÃO</div>
+              <div class="app-preview-card">
+                <div class="app-preview-top">
+                  <div class="app-preview-icon" id="previewIcon">?</div>
+                  <div>
+                    <b id="previewName">Novo comando</b>
+                    <span><span id="previewType">Aplicativo</span> • <span id="previewStatus" style="color:var(--focus)">Pronto para usar</span></span>
+                  </div>
+                </div>
+                <div class="app-preview-divider"></div>
+                <div class="app-preview-bottom">
+                  <span class="app-preview-kbd-icon">⌨</span>
+                  <span id="previewHotkeyLabel">Sem atalho</span>
+                  <span class="app-preview-keycaps" id="previewKeycaps"></span>
+                </div>
+                <div class="app-preview-voice">🎙 voz: “<span id="previewVoice">abra o novo comando</span>”</div>
+              </div>
+              <div class="app-preview-hint">Salvou → funciona por <b>atalho</b> e por <b>voz</b> automaticamente.</div>
+            </div>
+          </div>
+
+          <div class="app-add-footer">
+            <span class="app-ready" id="addReady">Preencha o nome e o destino para continuar</span>
+            <div>
+              <button class="app-ghost-btn" id="btnCancelAdd">Cancelar</button>
+              <button class="app-primary-btn" id="btnConfirmAdd">+ Adicionar comando</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY VIEW -->
+        <div class="app-view" id="viewHistory">
+          <div class="app-header">
+            <div><h3>Histórico</h3><p>Últimos comandos executados por atalho ou voz</p></div>
+            <button class="app-ghost-btn" id="btnClearHistory">Limpar</button>
+          </div>
+          <div class="app-history-list" id="historyList">
+            <div class="app-history-empty">Nenhum histórico ainda — execute um comando na lista.</div>
+          </div>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div class="app-view" id="viewSettings">
+          <div class="app-settings-head">
+            <button class="app-back-btn" id="btnBackFromSettings">‹</button>
+            <h3>Configurações</h3>
+          </div>
+          <div class="app-settings-card">
+            <div class="app-settings-row">
+              <span class="app-settings-icon">●</span>
+              <div><b>Assistente de voz</b><span>Reconhecimento offline</span></div>
+              <label class="app-switch"><input type="checkbox" id="setVoice" checked /><span></span></label>
+            </div>
+            <label class="app-check"><input type="checkbox" id="setWakeWord" /> Ouvir sempre — diga “Ei Vox”</label>
+            <label class="app-check"><input type="checkbox" id="setAutoStart" /> Iniciar com o Windows</label>
+          </div>
+          <div class="app-settings-card">
+            <div class="app-settings-row">
+              <span class="app-settings-icon">⌨</span>
+              <div><b>Segure para falar</b><span>Tecla global</span></div>
+              <span class="app-kbd-mini">F9</span>
+            </div>
+            <div class="app-settings-row" style="margin-top:10px">
+              <span class="app-settings-icon">◐</span>
+              <div><b>Tema</b><span>Sistema · Claro · Escuro</span></div>
+              <span class="app-kbd-mini" style="background:var(--accent);color:#fff;border-color:var(--accent)">Dark</span>
+            </div>
+          </div>
+          <div class="app-settings-hint">Esta é uma réplica web — as alterações ficam no navegador. No app real, salvas em <code>config.json</code>.</div>
+        </div>
+
+        <!-- mic overlay (simula widget) -->
+        <div class="app-mic-widget" id="appMicWidget" style="display:none">
+          <div class="app-mic-wave"><span></span><span></span><span></span><span></span><span></span></div>
+          <span id="appMicText">Ouvindo… “abra o youtube”</span>
+          <span class="app-mic-kbd">F9</span>
+        </div>
+      </div>
+    </div>
+    <div class="app-demo-hint">↕ Demo clicável — pesquise, adicione e pressione <span class="kbd">Alt+letra</span> ou <b>F9</b> para falar. Tudo roda no navegador.</div>
+  </div>
+
+  <div class="grid12" style="margin-top:18px">
+    <div class="card card--pill span4 reveal">
+      <div class="card-media card-media--pill">
+        <div class="pill-mock">
+          <div class="pill-wave"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="pill-text">“abra o spotify”</div>
+          <div class="pill-badge">F9 ⇄ Alt+S</div>
+        </div>
+        <div class="pill-overlay"><span>atalho<br>ou voz</span></div>
+      </div>
+      <div class="card-info">
+        <h3>Dois gatilhos</h3>
+        <p>Widget só na voz. Atalho é instantâneo.</p>
+      </div>
+    </div>
+
+    <div class="card card--circle span4 reveal">
+      <div class="card-media card-media--circle">
+        <div class="circle-mock"><div class="circle-inner"><span class="circle-kbd">Alt + letra</span><span class="circle-label">ou<br>segure F9</span></div></div>
+      </div>
+      <div class="card-info">
+        <h3>Você escolhe</h3>
+        <p>Desative a voz e use só teclas. Ou ative “Ei Vox”.</p>
+      </div>
+    </div>
+
+    <div class="card card--wide span4 reveal">
+      <div class="card-media card-media--wide" style="height:260px">
+        <div class="wide-mock" style="grid-template-columns:1fr">
+          <div class="wide-preview-card"><div class="wide-icon">♪</div><div><b>Spotify</b><span>Alt+S · voz “spotify”</span></div><span class="wide-kbd">Alt S</span></div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+            <div class="wide-step"><span>1</span><b>Nome</b><em>Spotify</em></div>
+            <div class="wide-step"><span>4</span><b>Atalho</b><em>Alt+S · opcional</em></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-info">
+        <h3>Criar em 4 passos</h3>
+        <p>Salvou, já funciona dos dois jeitos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD — minimal -->
+<section class="download" id="download">
+  <div class="dl-inner">
+    <div class="dl-left">
+      <span class="eyebrow eyebrow--light">— Pronto em segundos</span>
+      <h2>Baixe.<br><i>Use do seu jeito.</i></h2>
+      <div class="dl-options">
+        <a class="dl-card dl-card--primary" href="#" id="dlPrimary"><div class="dl-card-icon">⬇</div><div><b>Baixar Vox v1.1 — Windows</b><span>~85 MB · .NET 10 incluído</span></div><span class="dl-arrow">→</span></a>
+        <div class="dl-row">
+          <a class="dl-card dl-card--ghost" href="#" id="dlInstaller"><b>Instalador .exe</b><span>%LOCALAPPDATA%\Vox</span></a>
+          <a class="dl-card dl-card--ghost" href="#"><b>GitHub</b><span>código e releases</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="dl-right" style="align-items:center;justify-content:center">
+      <p style="font-family:'Instrument Serif',serif;font-size:18px;line-height:1.4;color:rgba(255,255,255,.72);text-align:center">Atalhos + voz.<br><i style="font-style:italic;background:var(--accent);color:#fff;padding:0 8px;border-radius:6px">100% offline</i>.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="footer-logo">● VOX</span><p>Hub de comandos — atalhos + voz.</p><span class="footer-copy">© 2026 VOX · v1.1</span></div>
+    <div class="footer-col"><h4>Produto</h4><a href="#filosofia">Filosofia</a><a href="#preview">Preview</a></div>
+    <div class="footer-col"><h4>Links</h4><a href="#download">Download</a><a href="#">GitHub</a></div>
+    <div class="footer-col"><h4>Contato</h4><a href="#">Issues</a><span class="footer-hint">Hotkeys · Speech · Piper</span></div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Fechar">×</button>
+  <img id="lightboxImg" alt="Captura ampliada" />
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

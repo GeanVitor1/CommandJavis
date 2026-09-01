@@ -23,6 +23,7 @@ VoxSetup/obj/
 
 # Instalador buildado (gerado via dotnet publish — opcional via LFS)
 # install/ descomente se quiser versionar o instalador
+install/VoxSetup-*.exe
 
 # Local configs
 .agents/
